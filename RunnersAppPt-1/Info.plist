@@ -3,7 +3,13 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
-	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<string>en_GB</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>allow user localization to user app properly</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>allow user localization to user app properly</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>iOS&lt;11 support -&gt; allow user localization to user app properly, and update your OS!</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
