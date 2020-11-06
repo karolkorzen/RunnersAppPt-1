@@ -4,12 +4,6 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en_GB</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>allow user localization to user app properly</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>allow user localization to user app properly</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>iOS&lt;11 support -&gt; allow user localization to user app properly, and update your OS!</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -26,6 +20,12 @@
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>allow user localization to user app properly</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>iOS&lt;11 support -&gt; allow user localization to user app properly, and update your OS!</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>allow user localization to user app properly</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
@@ -45,6 +45,14 @@
 			</array>
 		</dict>
 	</dict>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>audio</string>
+		<string>fetch</string>
+		<string>location</string>
+		<string>processing</string>
+		<string>remote-notification</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

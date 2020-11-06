@@ -112,13 +112,13 @@ class UploadPostController: UIViewController {
         }
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-         self.addKeyboardObserver()
-     }
-
-     override func viewWillDisappear(_ animated: Bool) {
-         self.removeKeyboardObserver()
-     }
+//    override func viewWillAppear(_ animated: Bool) {
+//         self.addKeyboardObserver()
+//     }
+//
+//     override func viewWillDisappear(_ animated: Bool) {
+//         self.removeKeyboardObserver()
+//     }
     
     // MARK: - Selectors
     

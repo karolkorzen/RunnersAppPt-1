@@ -12,6 +12,7 @@
 		4B125F70252F02F100E31C2B /* NotificationsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B125F6F252F02F100E31C2B /* NotificationsController.swift */; };
 		4B125F72252F030800E31C2B /* ConversationsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B125F71252F030800E31C2B /* ConversationsController.swift */; };
 		4B151FD6253CC765003F46E6 /* UploadPostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B151FD5253CC765003F46E6 /* UploadPostViewModel.swift */; };
+		4B2D49002554AB2200BD6CC9 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B2D48FF2554AB2200BD6CC9 /* MapKit.framework */; };
 		4B2DA3522538A4E500A3182F /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2DA3512538A4E500A3182F /* UserCell.swift */; };
 		4B2DA355253A058800A3182F /* PostController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2DA354253A058800A3182F /* PostController.swift */; };
 		4B2DA359253A093700A3182F /* PostHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2DA358253A093700A3182F /* PostHeader.swift */; };
@@ -68,6 +69,7 @@
 		4B125F6F252F02F100E31C2B /* NotificationsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsController.swift; sourceTree = "<group>"; };
 		4B125F71252F030800E31C2B /* ConversationsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationsController.swift; sourceTree = "<group>"; };
 		4B151FD5253CC765003F46E6 /* UploadPostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadPostViewModel.swift; sourceTree = "<group>"; };
+		4B2D48FF2554AB2200BD6CC9 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		4B2DA3512538A4E500A3182F /* UserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
 		4B2DA354253A058800A3182F /* PostController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostController.swift; sourceTree = "<group>"; };
 		4B2DA358253A093700A3182F /* PostHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostHeader.swift; sourceTree = "<group>"; };
@@ -125,6 +127,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4B2D49002554AB2200BD6CC9 /* MapKit.framework in Frameworks */,
 				64DA71BA1B14BDC55105DA94 /* Pods_RunnersAppPt_1.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -294,6 +297,7 @@
 		8A6794513E1AE923990DEEAE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4B2D48FF2554AB2200BD6CC9 /* MapKit.framework */,
 				8C71A36941110D7E19DE84A4 /* Pods_RunnersAppPt_1.framework */,
 			);
 			name = Frameworks;
@@ -615,6 +619,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -Xfrontend -warn-long-function-bodies=300 -Xfrontend -warn-long-expression-type-checking=300";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.korzen.RunnersAppPt-1";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -634,6 +639,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -Xfrontend -warn-long-function-bodies=300 -Xfrontend -warn-long-expression-type-checking=300";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.korzen.RunnersAppPt-1";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;

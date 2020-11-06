@@ -138,9 +138,9 @@ extension MainTabController: UITabBarControllerDelegate {
             self.actionButton.isHidden=true
         } else {
             self.actionButton.isHidden=false
-            let imageName = index == 3 ? "mail" : "text.badge.plus"
+            let imageName = index == 4 ? "mail" : "text.badge.plus"
             self.actionButton.setImage(UIImage(systemName: imageName), for: .normal)
-            buttonConfig = index == 3 ? .message : .post
+            buttonConfig = index == 4 ? .message : .post
             //FIXME: - fix size
         }
     }

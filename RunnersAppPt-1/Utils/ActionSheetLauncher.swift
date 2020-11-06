@@ -10,6 +10,7 @@ import UIKit
 
 private let reuseidentifier = "actionsheet"
 
+/// Action sheet for post  details
 protocol ActionSheetLauncherDelegate: class {
     func didSelect(option: ActionSheetOptions)
 }

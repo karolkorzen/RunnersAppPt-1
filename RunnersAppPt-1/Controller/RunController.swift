@@ -259,7 +259,8 @@ class RunController: UIViewController {
     
     func configureLocationManager(){
         locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
+        locationManager.activityType = .fitness
         
 //        locationManager.pausesLocationUpdatesAutomatically = false
 //        locationManager.allowsBackgroundLocationUpdates = true
@@ -376,6 +377,7 @@ extension RunController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else {return}
         
+        
         if !self.mapViewZoomed{
 //            let center = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
 //            let region = MKCoordinateRegion.init(center: center, latitudinalMeters: 100, longitudinalMeters: 100)
@@ -406,7 +408,12 @@ extension RunController: CLLocationManagerDelegate {
             //let geodesic = MKGeodesicPolyline(coordinates: polylineTable, count: polylineTable.count)
             let polyline = MKPolyline(coordinates: polylineTable, count: polylineTable.count)
             
-            print(polylineTable.count)
+//            print(polylineTable.count)
+            if UIApplication.shared.applicationState == .active {
+                print("DEBUG: inside app: \(polylineTable.count)")
+            } else {
+                print("DEBUG: outside app: \(polylineTable.count)")
+            }
             
             self.mapView.addOverlay(polyline)
             //self.mapView.addOverlay(polyline)
