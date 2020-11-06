@@ -39,7 +39,7 @@
 		4B957A91252F6B4100C12263 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B957A90252F6B4000C12263 /* Extensions.swift */; };
 		4B95DA5425370C0B00FF4A2B /* ProfileHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B95DA5325370C0B00FF4A2B /* ProfileHeader.swift */; };
 		4BA6B92B25496ECD00FAB906 /* EditProfileFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA6B92A25496ECD00FAB906 /* EditProfileFooterView.swift */; };
-		4BA6B92E2549899600FAB906 /* MessagesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA6B92D2549899600FAB906 /* MessagesController.swift */; };
+		4BA6B92E2549899600FAB906 /* NewMessageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA6B92D2549899600FAB906 /* NewMessageController.swift */; };
 		4BB69EDB2541809700259D9A /* NotificationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BB69EDA2541809700259D9A /* NotificationCell.swift */; };
 		4BC390A02546DA1700DF5F1E /* EditProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BC3909F2546DA1700DF5F1E /* EditProfileController.swift */; };
 		4BC84FEE2531C9F3002B07B3 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BC84FED2531C9F3002B07B3 /* Constants.swift */; };
@@ -59,6 +59,7 @@
 		4BF17ABD252329CD00872619 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4BF17ABB252329CD00872619 /* LaunchScreen.storyboard */; };
 		4BF75B142530D34A00F94EDF /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BF75B132530D34A00F94EDF /* Utilities.swift */; };
 		4BF75B172530ED8300F94EDF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4BF75B162530ED8200F94EDF /* GoogleService-Info.plist */; };
+		4BFECF852555B67F00C6FEC3 /* StatsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BFECF842555B67F00C6FEC3 /* StatsController.swift */; };
 		64DA71BA1B14BDC55105DA94 /* Pods_RunnersAppPt_1.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C71A36941110D7E19DE84A4 /* Pods_RunnersAppPt_1.framework */; };
 /* End PBXBuildFile section */
 
@@ -96,7 +97,7 @@
 		4B957A90252F6B4000C12263 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		4B95DA5325370C0B00FF4A2B /* ProfileHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeader.swift; sourceTree = "<group>"; };
 		4BA6B92A25496ECD00FAB906 /* EditProfileFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileFooterView.swift; sourceTree = "<group>"; };
-		4BA6B92D2549899600FAB906 /* MessagesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesController.swift; sourceTree = "<group>"; };
+		4BA6B92D2549899600FAB906 /* NewMessageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMessageController.swift; sourceTree = "<group>"; };
 		4BB69EDA2541809700259D9A /* NotificationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCell.swift; sourceTree = "<group>"; };
 		4BC3909F2546DA1700DF5F1E /* EditProfileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileController.swift; sourceTree = "<group>"; };
 		4BC84FED2531C9F3002B07B3 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -118,6 +119,7 @@
 		4BF17ABE252329CD00872619 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4BF75B132530D34A00F94EDF /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		4BF75B162530ED8200F94EDF /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
+		4BFECF842555B67F00C6FEC3 /* StatsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsController.swift; sourceTree = "<group>"; };
 		7E68C4BF3FBFCF3036AF117F /* Pods-RunnersAppPt-1.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnersAppPt-1.debug.xcconfig"; path = "Target Support Files/Pods-RunnersAppPt-1/Pods-RunnersAppPt-1.debug.xcconfig"; sourceTree = "<group>"; };
 		8C71A36941110D7E19DE84A4 /* Pods_RunnersAppPt_1.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RunnersAppPt_1.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -175,9 +177,10 @@
 			isa = PBXGroup;
 			children = (
 				4B5C5E642523629100DCFE3E /* MainTabController.swift */,
-				4BA6B92D2549899600FAB906 /* MessagesController.swift */,
 				4B125F6B252F028A00E31C2B /* FeedController.swift */,
 				4B125F6D252F02E300E31C2B /* ExploreController.swift */,
+				4B643E4F254AD99600049ECE /* RunController.swift */,
+				4BFECF842555B67F00C6FEC3 /* StatsController.swift */,
 				4B125F6F252F02F100E31C2B /* NotificationsController.swift */,
 				4B125F71252F030800E31C2B /* ConversationsController.swift */,
 			);
@@ -256,8 +259,8 @@
 				4BE5A3B32535BCB900A381A8 /* ProfileController.swift */,
 				4B2DA354253A058800A3182F /* PostController.swift */,
 				4BC3909F2546DA1700DF5F1E /* EditProfileController.swift */,
-				4B643E4F254AD99600049ECE /* RunController.swift */,
 				4B93ECF22552C75600BB57FF /* RunSummaryController.swift */,
+				4BA6B92D2549899600FAB906 /* NewMessageController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -421,7 +424,7 @@
 			files = (
 				4B3BF2B025321B8400F38822 /* UserService.swift in Sources */,
 				4B125F70252F02F100E31C2B /* NotificationsController.swift in Sources */,
-				4BA6B92E2549899600FAB906 /* MessagesController.swift in Sources */,
+				4BA6B92E2549899600FAB906 /* NewMessageController.swift in Sources */,
 				4BD214E525349FA100FEE09E /* InputTextView.swift in Sources */,
 				4B384CAE253831D6003CECD2 /* ProfileFilterCell.swift in Sources */,
 				4B125F72252F030800E31C2B /* ConversationsController.swift in Sources */,
@@ -438,6 +441,7 @@
 				4BE5A3B42535BCB900A381A8 /* ProfileController.swift in Sources */,
 				4B95DA5425370C0B00FF4A2B /* ProfileHeader.swift in Sources */,
 				4B6097A22547233600E2437A /* EditProfileCell.swift in Sources */,
+				4BFECF852555B67F00C6FEC3 /* StatsController.swift in Sources */,
 				4BD214E92534A44E00FEE09E /* PostService.swift in Sources */,
 				4B91F47E252F94B6002458CA /* LoginController.swift in Sources */,
 				4BD6FAF6254168D700143E99 /* Notification.swift in Sources */,

@@ -1,5 +1,5 @@
 //
-//  MessagesController.swift
+//  NewMessageController.swift
 //  RunnersAppPt-1
 //
 //  Created by Karol Korzeń on 28/10/2020.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MessagesController: UITableViewController{
+class NewMessageController: UITableViewController{
     
     //MARK: - Lifecycle
     

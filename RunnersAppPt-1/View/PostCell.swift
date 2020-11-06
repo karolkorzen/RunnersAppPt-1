@@ -177,10 +177,8 @@ class PostCell: UICollectionViewCell{
         
         infoLabel.attributedText = viewModel.userInfoText
         
-        UIView.animate(withDuration: 0.5) {
-            self.likeButton.tintColor = viewModel.likeButtonTintColor
-            self.likeButton.setImage(viewModel.likeButtonImage, for: .normal)
-        }
+        self.likeButton.tintColor = viewModel.likeButtonTintColor
+        self.likeButton.setImage(viewModel.likeButtonImage, for: .normal)
         
         replyLabel.isHidden = viewModel.shouldHideReplyLabel
         replyLabel.text = viewModel.replyText //FIXME: - TAKE LINK TO SB'S PROFILE (BETTER POST OR TRAINING)

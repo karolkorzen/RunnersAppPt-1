@@ -156,6 +156,7 @@ extension PostController: ActionSheetLauncherDelegate {
             print("delete")
             //FIXME - POPUP
             PostService.shared.deletePost(forPost: post)
+            self.navigationController?.popViewController(animated: true)
             print("deleted xddd")
         }
     }

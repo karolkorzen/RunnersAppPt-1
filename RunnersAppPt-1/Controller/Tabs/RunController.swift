@@ -21,6 +21,7 @@ class RunController: UIViewController {
     
     private var runTable: [Location] = []
     private var isRunning: Bool = false
+    private var polylineTable: [CLLocationCoordinate2D]  = []
     private var speedChartTable:[ChartDataEntry] = [] {
         didSet{
             setChartData()
@@ -121,13 +122,20 @@ class RunController: UIViewController {
     //MARK: - Selectors
     
     @objc func toggleRunButton() {
-        print("DEBUG: setting runButton")
         if isRunning == false {
             UIView.animate(withDuration: 0.5) {
                 self.runButton.setTitle("STOP", for: .normal)
                 self.runButton.backgroundColor = .red
                 self.addChartView()
                 self.isRunning.toggle()
+                
+                self.runTable.append(Location(number: self.runTable.count, coordinate: self.locationManager.location!))
+                print("DEBUG: first location's speed = \(self.locationManager.location!.speed)")
+                
+                self.polylineTable = self.runTable.map{CLLocationCoordinate2D(latitude: $0.coordinate.coordinate.latitude, longitude: $0.coordinate.coordinate.longitude)}
+                let polyline = MKPolyline(coordinates: self.polylineTable, count: self.polylineTable.count)
+                self.addPolyline(withPolyline: polyline)
+                print("DEBUG: polyline count = \(polyline.pointCount)")
             }
         } else {
             UIView.animate(withDuration: 0.5) {
@@ -146,6 +154,7 @@ class RunController: UIViewController {
                     self.runTable.removeAll()
                     self.distance = 0.0
                     self.speedChartTable.removeAll()
+                    self.polylineTable.removeAll()
                     self.isRunning.toggle()
                 }))
                 alert.addAction(UIAlertAction(title: "No", style: .destructive, handler: { (UIAlertAction) in
@@ -154,6 +163,7 @@ class RunController: UIViewController {
                     self.runTable.removeAll()
                     self.distance = 0.0
                     self.speedChartTable.removeAll()
+                    self.polylineTable.removeAll()
                     self.isRunning.toggle()
                 }))
                 alert.addAction(UIAlertAction(title: "I want to continue training!!!", style: .cancel, handler: { (UIAlertAction) in
@@ -261,9 +271,10 @@ class RunController: UIViewController {
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
         locationManager.activityType = .fitness
+        locationManager.distanceFilter = 10
         
 //        locationManager.pausesLocationUpdatesAutomatically = false
-//        locationManager.allowsBackgroundLocationUpdates = true
+        locationManager.allowsBackgroundLocationUpdates = true
     }
     
     func checkLocationServices(){
@@ -387,10 +398,10 @@ extension RunController: CLLocationManagerDelegate {
             
         }
         
-        self.speedLabel.text =  "\((location.speed*3.6).rounded()) km/h"
+        self.speedLabel.text = location.speed > 0.0 ? "\((location.speed*3.6).rounded()) km/h" : "0 km/h"
         self.distanceLabel.text = "0.0 m"
         
-        if isRunning && location.speed>0.0 && location.horizontalAccuracy <= 10.0 {
+        if isRunning && location.speed>0.6 /*&& location.horizontalAccuracy <= 10.0*/ {
             appendDistance(coord: location)
             if distance.rounded()/1000 < 1 {
                 self.distanceLabel.text = "\(self.distance.rounded()) m"
@@ -402,10 +413,7 @@ extension RunController: CLLocationManagerDelegate {
             self.runTable.append(Location(number: runTable.count, coordinate: location))
             self.speedChartTable.append(ChartDataEntry(x: Double(self.speedChartTable.count), y: location.speed*3.6))
             
-            //FIXME: - addPolyLane
-            let polylineTable = runTable.map{CLLocationCoordinate2D(latitude: $0.coordinate.coordinate.latitude, longitude: $0.coordinate.coordinate.longitude)}
-            
-            //let geodesic = MKGeodesicPolyline(coordinates: polylineTable, count: polylineTable.count)
+            self.polylineTable = runTable.map{CLLocationCoordinate2D(latitude: $0.coordinate.coordinate.latitude, longitude: $0.coordinate.coordinate.longitude)}
             let polyline = MKPolyline(coordinates: polylineTable, count: polylineTable.count)
             
 //            print(polylineTable.count)
@@ -415,7 +423,7 @@ extension RunController: CLLocationManagerDelegate {
                 print("DEBUG: outside app: \(polylineTable.count)")
             }
             
-            self.mapView.addOverlay(polyline)
+            addPolyline(withPolyline: polyline)
             //self.mapView.addOverlay(polyline)
             
         }
@@ -428,6 +436,10 @@ extension RunController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         print("DEBUG: didChangeAuthorization")
         checkLocationAuthorization() //inits after setting allow or not to localize
+    }
+    
+    func addPolyline(withPolyline polyline: MKPolyline) {
+        self.mapView.addOverlay(polyline)
     }
     
 }

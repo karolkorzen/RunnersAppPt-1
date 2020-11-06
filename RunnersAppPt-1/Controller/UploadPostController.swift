@@ -17,37 +17,37 @@ class UploadPostController: UIViewController {
     private let user: User
     private let config: UploadPostConfiguration
     private lazy var viewModel = UploadPostViewModel(config: config)
-    private let imagePicker = UIImagePickerController()
-    private var selectedImage: UIImage? {
-        didSet{
-            postImage.image = selectedImage
-            selectImageButton.isHidden = true
-        }
-    }
+    //private let imagePicker = UIImagePickerController()
+//    private var selectedImage: UIImage? {
+//        didSet{
+//            postImage.image = selectedImage
+//            selectImageButton.isHidden = true
+//        }
+//    }
     
-    lazy var postImage: UIImageView = {
-        let iv = UIImageView()
-        iv.contentMode = .scaleAspectFit
-        iv.clipsToBounds = true
-        iv.backgroundColor = .lightGray
-        iv.layer.cornerRadius = 10
-        iv.layer.masksToBounds = true
-
-        return iv
-    }()
-    
-    private var selectImageButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.backgroundColor = .bluish
-        button.setTitle("Add Image", for: .normal)
-        button.titleLabel?.textAlignment = .center
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
-        button.setTitleColor(.white, for: .normal)
-        button.layer.cornerRadius = 10
-        button.addTarget(self, action: #selector(handleAddImage), for: .touchUpInside)
-        
-        return button
-    }()
+//    lazy var postImage: UIImageView = {
+//        let iv = UIImageView()
+//        iv.contentMode = .scaleAspectFit
+//        iv.clipsToBounds = true
+//        iv.backgroundColor = .lightGray
+//        iv.layer.cornerRadius = 10
+//        iv.layer.masksToBounds = true
+//
+//        return iv
+//    }()
+//
+//    private var selectImageButton: UIButton = {
+//        let button = UIButton(type: .system)
+//        button.backgroundColor = .bluish
+//        button.setTitle("Add Image", for: .normal)
+//        button.titleLabel?.textAlignment = .center
+//        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
+//        button.setTitleColor(.white, for: .normal)
+//        button.layer.cornerRadius = 10
+//        button.addTarget(self, action: #selector(handleAddImage), for: .touchUpInside)
+//
+//        return button
+//    }()
 
     private lazy var actionButton: UIButton = {
         let button = UIButton(type: .system)
@@ -101,7 +101,7 @@ class UploadPostController: UIViewController {
         super.viewDidLoad()
         configureUI()
         configureMentionHandler()
-        configureImagePicker()
+        //configureImagePicker()
         
         switch config {
         case .post:
@@ -122,9 +122,9 @@ class UploadPostController: UIViewController {
     
     // MARK: - Selectors
     
-    @objc func handleAddImage(){
-        self.present(imagePicker, animated: true, completion: nil)
-    }
+//    @objc func handleAddImage(){
+//        self.present(imagePicker, animated: true, completion: nil)
+//    }
 
     @objc func handleCancel(){
         dismiss(animated: true, completion: nil)
@@ -200,15 +200,15 @@ class UploadPostController: UIViewController {
         view.addSubview(stack)
         stack.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 16, paddingLeft: 16, paddingRight: 16)
 
-        let stackAddPhoto = UIStackView(arrangedSubviews: [selectImageButton, postImage])
-        stackAddPhoto.axis = .horizontal
-        stackAddPhoto.spacing = 12
-        view.addSubview(stackAddPhoto)
-        postImage.isHidden = true
-        stackAddPhoto.backgroundColor = .brown
-
-        stackAddPhoto.anchor(left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor, paddingLeft: 16, paddingBottom: 16, paddingRight: 16, height: self.view.frame.height/2)
-        
+//        let stackAddPhoto = UIStackView(arrangedSubviews: [selectImageButton, postImage])
+//        stackAddPhoto.axis = .horizontal
+//        stackAddPhoto.spacing = 12
+//        view.addSubview(stackAddPhoto)
+//        postImage.isHidden = true
+//        stackAddPhoto.backgroundColor = .brown
+//
+//        stackAddPhoto.anchor(left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor, paddingLeft: 16, paddingBottom: 16, paddingRight: 16, height: self.view.frame.height/2)
+//        
 //        view.addSubview(selectImageButton)
 //        selectImageButton.anchor(left: view.leftAnchor, right: view.rightAnchor, paddingLeft: 16, paddingBottom: 16, paddingRight: 16, height: 50)
 //
@@ -241,18 +241,20 @@ class UploadPostController: UIViewController {
         }
     }
     
+    /* image picker
     func configureImagePicker() {
         imagePicker.delegate = self
         imagePicker.allowsEditing = true
     }
+     */
 }
 
-extension UploadPostController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        print("DEBUG: selected image")
-        guard let image = info[.editedImage] as? UIImage else {return}
-        self.selectedImage = image
-        print("DEBUG: selected image")
-        dismiss(animated: true, completion: nil)
-    }
-}
+//extension UploadPostController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+//    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+//        print("DEBUG: selected image")
+//        guard let image = info[.editedImage] as? UIImage else {return}
+//        self.selectedImage = image
+//        print("DEBUG: selected image")
+//        dismiss(animated: true, completion: nil)
+//    }
+//}

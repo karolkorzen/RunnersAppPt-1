@@ -83,7 +83,7 @@ class MainTabController: UITabBarController {
             nav.modalPresentationStyle = .fullScreen
             present(nav, animated: true, completion: nil)
         case .message:
-            let controller = MessagesController()
+            let controller = NewMessageController()
             let nav = UINavigationController(rootViewController: controller)
             present(nav, animated: true, completion: nil)
         case .run:

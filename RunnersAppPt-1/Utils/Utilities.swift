@@ -14,6 +14,8 @@ class Utilities {
     /// object that allow us to take funcs from class without constructing its object
     static let shared = Utilities()
     
+    
+    
     /// function returs input view with image and textfield right next to it with white divider of height = 0.75 and white colour with paddings = 8
     /// - Parameters:
     ///   - image: image
