@@ -269,7 +269,7 @@ class RunController: UIViewController {
     
     func configureLocationManager(){
         locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.activityType = .fitness
         locationManager.distanceFilter = 10
         

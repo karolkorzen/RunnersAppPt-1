@@ -6,4 +6,20 @@
 //  Copyright © 2020 Karol Korzeń. All rights reserved.
 //
 
-import Foundation
+import UIKit
+
+class StatsController: UICollectionViewController {
+    
+    
+    // MARK: - Lifecycle
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.barStyle = .default
+        navigationController?.navigationBar.isHidden = false
+    }
+}

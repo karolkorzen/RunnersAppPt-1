@@ -63,6 +63,8 @@ struct PostService{
         }
     }
     
+    /// function fetch posts of people that user follows
+    /// - Parameter completion: completion on callers site
     func fetchPosts(completion: @escaping([Post]) -> Void) {
         var posts = [Post]()
         guard let currentUID = Auth.auth().currentUser?.uid else {return}

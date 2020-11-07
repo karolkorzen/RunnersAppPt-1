@@ -113,8 +113,14 @@ class RegistrationController: UIViewController {
     }
     
     @objc func handleRegistration(){
+        //FIXME: - let user know that its actually registering and show alerts with erroer
+        //FIXME: - allow user to make acc w/o profile img
         guard let profileImage = profileImage else {
-            print("DEBUG: Please select a profile image")
+            let alert = UIAlertController(title: "please select profile image", message: nil, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Dismiss", style: .destructive, handler: { (action) in
+                
+            }))
+            present(alert, animated: true, completion: nil)
             return
         }
         guard let email = emailTextField.text else {return}
@@ -125,10 +131,15 @@ class RegistrationController: UIViewController {
         let credentials = AuthCredentials(email: email, password: password, fullname: fullname, username: username, profileImage: profileImage)
         
         AuthService.shared.registerUser(credentials: credentials) { (error, ref) in
-            print("DEBUG: Sign up successfull")
-            guard let window = UIApplication.shared.windows.first(where: {$0.isKeyWindow}) else {
-                return
+            if let error = error {
+                let alert = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Ok", style: .destructive, handler: { (action) in
+                    
+                }))
+                alert.present(self, animated: true, completion: nil)
             }
+            print("DEBUG: Sign up successfull")
+            guard let window = UIApplication.shared.windows.first(where: {$0.isKeyWindow}) else {return}
             guard let tab = window.rootViewController as? MainTabController else {return}
             tab.authenticateUserAndConfigureUI()
             

@@ -23,7 +23,9 @@ class FeedController: UICollectionViewController {
     
     private var posts = [Post]() {
         didSet {
-            collectionView.reloadData()
+            DispatchQueue.main.async {
+                self.collectionView.reloadData()
+            }
         }
     }
     
@@ -36,7 +38,10 @@ class FeedController: UICollectionViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        fetchPosts()
+        DispatchQueue.main.async {
+            self.fetchPosts()
+            self.collectionView.reloadData()
+        }
         super.viewWillAppear(animated)
         navigationController?.navigationBar.barStyle = .default
         navigationController?.navigationBar.isHidden = false
@@ -52,6 +57,11 @@ class FeedController: UICollectionViewController {
         guard let user = user else {return}
         let controller = ProfileController(user: user)
         navigationController?.pushViewController(controller, animated: true)
+    }
+    
+    @objc func search(){
+        let explore = SearchController()
+        navigationController?.pushViewController(explore, animated: true)
     }
     
     // MARK: - API
@@ -96,6 +106,8 @@ class FeedController: UICollectionViewController {
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(handleRefresh), for: .valueChanged) //for is cool
         collectionView.refreshControl = refreshControl
+        
+        configureRightBarButton()
     }
     
     func configureLeftBarButton() {
@@ -113,8 +125,21 @@ class FeedController: UICollectionViewController {
         profileImageView.sd_setImage(with: user.profileImageUrl, completed: nil)
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: profileImageView)
-        //FIXME: - TAKE TO PROFILE WHILE PUSHED IMAGE
     }
+    
+    func configureRightBarButton(){
+        let image = UIImageView(image: UIImage(named: "search_unselected")!)
+        image.setDimensions(width: 25, height: 25)
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(search))
+        image.addGestureRecognizer(tap)
+        image.isUserInteractionEnabled = true
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: image)
+        
+    }
+    
+    
 }
 
 // MARK: - UICollectionViewDelegate/DataSource
@@ -135,7 +160,6 @@ extension FeedController {
         let controller = PostController(post: posts[indexPath.row])
         navigationController?.pushViewController(controller, animated: true)
     }
-
 }
 
 // MARK: - UICollectionViewDelegateFlowLayout

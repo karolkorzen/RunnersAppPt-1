@@ -107,11 +107,14 @@ class MainTabController: UITabBarController {
         let feed = FeedController(collectionViewLayout: UICollectionViewFlowLayout())
         let nav1 = templateNavigationController(image: UIImage(named: "home_unselected")!, rootViewController: feed)
         
-        let explore = ExploreController()
+        let explore = SearchController()
         let nav2 = templateNavigationController(image: UIImage(named: "search_unselected")!, rootViewController: explore)
         
         let run = RunController(tabBarHeight: self.tabBar.frame.size.height)
         let navR = templateNavigationController(image: UIImage(named: "like_unselected")!, rootViewController: run)
+        
+        let stats = StatsController(collectionViewLayout: UICollectionViewFlowLayout())
+        let navS = templateNavigationController(image: UIImage(named: "like_unselected")!, rootViewController: stats)
     
         let notifications = NotificationsController(collectionViewLayout: UICollectionViewFlowLayout())
         let nav3 = templateNavigationController(image: UIImage(named: "like_unselected")!, rootViewController: notifications)
@@ -119,7 +122,7 @@ class MainTabController: UITabBarController {
         let conversations = ConversationsController()
         let nav4 = templateNavigationController(image: UIImage(named: "ic_mail_outline_white_2x-1")!, rootViewController: conversations)
         
-        viewControllers = [nav1, nav2, navR, nav3, nav4]
+        viewControllers = [nav1, nav2, navR, navS, nav3, nav4]
     }
 
     func templateNavigationController(image: UIImage, rootViewController: UIViewController) -> UINavigationController {
@@ -134,13 +137,13 @@ class MainTabController: UITabBarController {
 extension MainTabController: UITabBarControllerDelegate {
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         let index = viewControllers?.firstIndex(of: viewController)
-        if index == 2 {
+        if index == 2 || index == 3 {
             self.actionButton.isHidden=true
         } else {
             self.actionButton.isHidden=false
-            let imageName = index == 4 ? "mail" : "text.badge.plus"
+            let imageName = index == 5 ? "mail" : "text.badge.plus"
             self.actionButton.setImage(UIImage(systemName: imageName), for: .normal)
-            buttonConfig = index == 4 ? .message : .post
+            buttonConfig = index == 5 ? .message : .post
             //FIXME: - fix size
         }
     }
