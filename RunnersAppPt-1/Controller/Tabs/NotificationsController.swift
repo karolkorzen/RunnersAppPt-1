@@ -52,6 +52,9 @@ class NotificationsController: UICollectionViewController {
     func fetchNotifications() {
         NotificationService.shared.fetchNotifications { (notifications) in
             self.notifications = notifications
+            self.notifications.sort { (notification1, notification2) -> Bool in
+                notification1.timestamp>notification2.timestamp
+            }
             self.checkIfUserIsFollowed(notifications: notifications)
         }
     }

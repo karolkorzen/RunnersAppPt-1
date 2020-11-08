@@ -125,7 +125,7 @@ class RunController: UIViewController {
         if isRunning == false {
             UIView.animate(withDuration: 0.5) {
                 self.runButton.setTitle("STOP", for: .normal)
-                self.runButton.backgroundColor = .red
+                self.runButton.backgroundColor = UIColor(red: 0.13, green: 0.19, blue: 0.25, alpha: 1.00)
                 self.addChartView()
                 self.isRunning.toggle()
                 
@@ -159,7 +159,7 @@ class RunController: UIViewController {
                 }))
                 alert.addAction(UIAlertAction(title: "No", style: .destructive, handler: { (UIAlertAction) in
                     self.runButton.setTitle("START", for: .normal)
-                    self.runButton.backgroundColor = .blue
+                    self.runButton.backgroundColor = .pinkish
                     self.runTable.removeAll()
                     self.distance = 0.0
                     self.speedChartTable.removeAll()
@@ -356,6 +356,33 @@ class RunController: UIViewController {
 
 extension RunController: MKMapViewDelegate {
     
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        switch annotation {
+        // 1
+        case let user as MKUserLocation:
+            // 2
+            if mapViewZoomed {
+                let view = MKAnnotationView(annotation: user, reuseIdentifier: "user")
+                let image = UIImage(systemName: "circle.fill")
+                view.image = image
+                return view
+            }
+            if let existingView = mapView
+                .dequeueReusableAnnotationView(withIdentifier: "user") {
+                return existingView
+            } else {
+                // 3
+                let view = MKAnnotationView(annotation: user, reuseIdentifier: "user")
+                view.image = UIImage(systemName: "location.north.fill")
+                return view
+            }
+            
+        default:
+            return nil
+        }
+    }
+    
+    
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         if overlay is MKPolyline {
             let polylineRenderer = MKPolylineRenderer(overlay: overlay)
@@ -375,7 +402,9 @@ extension RunController: MKMapViewDelegate {
     }
     
     func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
-        //print("DEBUG: updated user location")
+        guard let location = locationManager.location else {return}
+        let mapCamera = MKMapCamera(lookingAtCenter: CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude), fromDistance: 100, pitch: 60, heading: location.course)
+        self.mapView.setCamera(mapCamera, animated: true)
     }
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
@@ -393,9 +422,8 @@ extension RunController: CLLocationManagerDelegate {
 //            let center = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
 //            let region = MKCoordinateRegion.init(center: center, latitudinalMeters: 100, longitudinalMeters: 100)
 //            self.mapView.setRegion(region, animated: true)
-            let mapCamera = MKMapCamera(lookingAtCenter: CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude), fromDistance: 100, pitch: 60, heading: location.course)
-            self.mapView.setCamera(mapCamera, animated: true)
-            
+
+
         }
         
         self.speedLabel.text = location.speed > 0.0 ? "\((location.speed*3.6).rounded()) km/h" : "0 km/h"
