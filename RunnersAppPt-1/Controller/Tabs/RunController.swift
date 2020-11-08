@@ -61,7 +61,7 @@ class RunController: UIViewController {
         let button = UIButton()
         button.tintColor = .white
         button.layer.cornerRadius = 10
-        button.backgroundColor = .bluish
+        button.backgroundColor = .pinkish
         button.titleLabel?.text = "START"
         button.setTitle("START", for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
@@ -339,8 +339,8 @@ class RunController: UIViewController {
         set1.drawCirclesEnabled = false
         set1.mode = .cubicBezier
         set1.lineWidth = 3
-        set1.setColor(.bluish)
-        set1.fill = Fill(color: .bluish)
+        set1.setColor(.pinkish)
+        set1.fill = Fill(color: .pinkish)
         set1.fillAlpha = 0.6
         set1.drawFilledEnabled = true
         set1.drawHorizontalHighlightIndicatorEnabled = false
@@ -359,7 +359,7 @@ extension RunController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         if overlay is MKPolyline {
             let polylineRenderer = MKPolylineRenderer(overlay: overlay)
-            polylineRenderer.strokeColor = UIColor.bluish
+            polylineRenderer.strokeColor = UIColor.pinkish
             polylineRenderer.lineWidth = 3
             return polylineRenderer
         }

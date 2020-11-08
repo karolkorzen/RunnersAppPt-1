@@ -42,11 +42,11 @@ class NotificationCell: UICollectionViewCell {
     private lazy var followButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Loading", for: .normal)
-        button.setTitleColor(.bluish, for: .normal)
+        button.setTitleColor(.pinkish, for: .normal)
         //button.setDimensions(width: 92, height: 32)
         button.layer.cornerRadius = 16
         button.backgroundColor = .white
-        button.layer.borderColor = UIColor.bluish.cgColor
+        button.layer.borderColor = UIColor.pinkish.cgColor
         button.layer.borderWidth = 2
         button.addTarget(self, action: #selector(handleFollowButtonTapped), for: .touchUpInside)
         return button

@@ -83,5 +83,22 @@ class Utilities {
     func dispatchDelay(delay:Double, closure:@escaping ()->()) {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + delay, execute: closure)
     }
+    
+    /// function returs UIButton for new post or new message with decared systemName icon and optional color
+    /// - Parameters:
+    ///   - systemName: SF Symbolname
+    ///   - color: UIColor
+    /// - Returns: UIButton
+    func actionButton(withSystemName systemName: String, withColor color: UIColor = UIColor(red: 0.95, green: 0.66, blue: 0.63, alpha: 1.00)) -> UIButton{
+        let button = UIButton(type: .system)
+        button.tintColor = .white
+        button.backgroundColor = color
+        let runIconConfig = UIImage.SymbolConfiguration(pointSize: 25, weight: .bold, scale: .default)
+        let img = UIImage(systemName: "pencil.and.outline", withConfiguration: runIconConfig)
+        button.setImage(img, for: .normal)
+        
+        
+        return button
+    }
 }
 

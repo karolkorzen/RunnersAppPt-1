@@ -46,7 +46,7 @@ class PostCell: UICollectionViewCell{
         let label = ActiveLabel()
         label.textColor = .lightGray
         label.font = UIFont.systemFont(ofSize: 12)
-        label.mentionColor = .bluish
+        label.mentionColor = .pinkish
         return label
     }()
     
@@ -54,8 +54,8 @@ class PostCell: UICollectionViewCell{
         let label = ActiveLabel()
         label.font = UIFont.systemFont(ofSize: 14)
         label.numberOfLines = 0
-        label.mentionColor = .bluish
-        label.hashtagColor = .bluish
+        label.mentionColor = .pinkish
+        label.hashtagColor = .pinkish
         return label
     }()
     
@@ -101,7 +101,8 @@ class PostCell: UICollectionViewCell{
     override init(frame: CGRect) {
         super.init(frame:  frame)
         
-        backgroundColor = .white
+        backgroundColor = UIColor(red: 0.93, green: 0.94, blue: 0.95, alpha: 1.00)
+        layer.cornerRadius = 30
         
         let captionStack = UIStackView(arrangedSubviews: [infoLabel, captionLabel])
         captionStack.axis = .vertical
@@ -119,7 +120,7 @@ class PostCell: UICollectionViewCell{
         stack.distribution = .fillProportionally
         
         addSubview(stack)
-        stack.anchor(top: topAnchor, left: leftAnchor, right: rightAnchor, paddingTop: 4, paddingLeft: 12, paddingRight: 12)
+        stack.anchor(top: topAnchor, left: leftAnchor, right: rightAnchor, paddingTop: 17, paddingLeft: 17, paddingBottom: 10, paddingRight: 17)
         
         
         infoLabel.font = UIFont.systemFont(ofSize: 14)
@@ -129,12 +130,12 @@ class PostCell: UICollectionViewCell{
         actionStack.spacing = 72
         addSubview(actionStack)
         actionStack.centerX(inView: self)
-        actionStack.anchor(bottom: bottomAnchor, paddingBottom: 8)
+        actionStack.anchor(bottom: bottomAnchor, paddingBottom: 17)
         
-        let underLineView = UIView()
-        underLineView.backgroundColor = .systemGroupedBackground
-        addSubview(underLineView)
-        underLineView.anchor(left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, height: 1)
+//        let underLineView = UIView()
+//        underLineView.backgroundColor = .systemGroupedBackground
+//        addSubview(underLineView)
+//        underLineView.anchor(left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, height: 1)
     }
     
     required init?(coder: NSCoder) {

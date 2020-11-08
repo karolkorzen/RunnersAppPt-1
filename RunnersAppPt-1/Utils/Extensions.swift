@@ -140,6 +140,8 @@ extension UIColor {
     }
     
     static let bluish = UIColor.rgb(red: 29, green: 161, blue: 242)
+    
+    static let pinkish = UIColor(red: 0.95, green: 0.66, blue: 0.63, alpha: 1.00)
 }
 
 /* //MARK: - Scene going up at keyboard display

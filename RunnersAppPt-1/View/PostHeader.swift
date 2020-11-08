@@ -60,8 +60,8 @@ class PostHeader: UICollectionReusableView {
         let label = ActiveLabel()
         label.font = UIFont.systemFont(ofSize: 20)
         label.numberOfLines = 0
-        label.mentionColor = .bluish
-        label.hashtagColor = .bluish
+        label.mentionColor = .pinkish
+        label.hashtagColor = .pinkish
         return label
     }()
     
@@ -86,7 +86,7 @@ class PostHeader: UICollectionReusableView {
         let label = ActiveLabel()
         label.textColor = .lightGray
         label.font = UIFont.systemFont(ofSize: 12)
-        label.mentionColor = .bluish
+        label.mentionColor = .pinkish
         return label
     }()
     

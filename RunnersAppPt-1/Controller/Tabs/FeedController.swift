@@ -98,9 +98,10 @@ class FeedController: UICollectionViewController {
         collectionView.register(PostCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         collectionView.backgroundColor = .white
         
-        let imageView = UIImageView(image: UIImage(named: "running_logo"))
+        let imageView = UIImageView(image: UIImage(systemName: "mappin.and.ellipse"))
         imageView.contentMode = .scaleAspectFit
-        imageView.setDimensions(width: 44, height: 44)
+        imageView.setDimensions(width: 30, height: 30)
+        imageView.tintColor = .pinkish
         navigationItem.titleView = imageView
         
         let refreshControl = UIRefreshControl()
@@ -136,6 +137,7 @@ class FeedController: UICollectionViewController {
         image.isUserInteractionEnabled = true
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: image)
+        navigationItem.rightBarButtonItem?.tintColor = .pinkish
         
     }
     
@@ -169,7 +171,7 @@ extension FeedController: UICollectionViewDelegateFlowLayout {
         let viewModel = PostViewModel(post: posts[indexPath.row])
         let height = viewModel.size(forWidth: view.frame.width).height
         
-        return CGSize(width: view.frame.width, height: height + 72)
+        return CGSize(width: view.frame.width-12, height: height + 100)
     }
 }
 

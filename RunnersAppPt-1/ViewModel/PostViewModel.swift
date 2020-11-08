@@ -55,7 +55,7 @@ struct PostViewModel {
     }
     
     var likeButtonTintColor: UIColor {
-        return post.didLike ? .red : .darkGray
+        return post.didLike ? .pinkish : .darkGray
     }
     
     var likeButtonImage: UIImage {
