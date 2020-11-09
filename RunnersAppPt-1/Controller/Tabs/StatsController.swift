@@ -21,5 +21,9 @@ class StatsController: UICollectionViewController {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.barStyle = .default
         navigationController?.navigationBar.isHidden = false
+        
+        RunService.shared.fetchRunningSessions { (array) in
+            print("DEBUG: FETCHED COMPLETE")
+        }
     }
 }

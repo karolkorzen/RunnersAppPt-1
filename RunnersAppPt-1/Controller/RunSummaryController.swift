@@ -107,7 +107,7 @@ class RunSummaryController: UIViewController {
                 self.mapView.isPitchEnabled = false
                 self.mapView.isScrollEnabled = false
                 
-                let center = CLLocationCoordinate2D(latitude: self.runTable[self.runTable.count/2].coordinate.coordinate.latitude, longitude: self.runTable[self.runTable.count/2].coordinate.coordinate.longitude)
+                let center = CLLocationCoordinate2D(latitude: self.runTable[self.runTable.count/2].latitude, longitude: self.runTable[self.runTable.count/2].longitude)
                 let region = MKCoordinateRegion(center: center, latitudinalMeters: self.distance+100, longitudinalMeters: self.distance+100)
                 self.mapView.setRegion(region, animated: true)
             }
@@ -121,7 +121,7 @@ class RunSummaryController: UIViewController {
                 self.mapView.isPitchEnabled = true
                 self.mapView.isScrollEnabled = true
                 
-                let center = CLLocationCoordinate2D(latitude: self.runTable[self.runTable.count/2].coordinate.coordinate.latitude, longitude: self.runTable[self.runTable.count/2].coordinate.coordinate.longitude)
+                let center = CLLocationCoordinate2D(latitude: self.runTable[self.runTable.count/2].latitude, longitude: self.runTable[self.runTable.count/2].longitude)
                 let region = MKCoordinateRegion(center: center, latitudinalMeters: self.distance+100, longitudinalMeters: self.distance+100)
                 mapView.setRegion(region, animated: true)
             }
@@ -164,7 +164,7 @@ class RunSummaryController: UIViewController {
         view.addSubview(speedLabel)
         speedLabel.anchor(top: mapView.topAnchor, left: view.leftAnchor, paddingTop: 0, paddingLeft: 10)
         let avgSpeed = runTable.reduce(0) { (result, location) in
-            (result + location.coordinate.speed) / 2
+            (result + location.speed) / 2
         }
         speedLabel.text = "average speed: \((avgSpeed*3.6).rounded()) km/h"
         speedLabel.textAlignment = .center
@@ -183,22 +183,22 @@ class RunSummaryController: UIViewController {
         
         let start = MKPointAnnotation()
         start.title = "Start"
-        guard let coord_start = runTable.first?.coordinate.coordinate else {return}
+        guard let coord_start = runTable.first?.retCLLocationCoordinate2D() else {return}
         start.coordinate = CLLocationCoordinate2D(latitude: coord_start.latitude, longitude: coord_start.longitude)
         mapView.addAnnotation(start)
         
         let stop = MKPointAnnotation()
         stop.title = "Stop"
-        guard let coord_stop = runTable.first?.coordinate.coordinate else {return}
+        guard let coord_stop = runTable.first?.retCLLocationCoordinate2D() else {return}
         stop.coordinate = CLLocationCoordinate2D(latitude: coord_stop.latitude, longitude: coord_stop.longitude)
         mapView.addAnnotation(stop)
         
         
-        let center = CLLocationCoordinate2D(latitude: runTable[runTable.count/2].coordinate.coordinate.latitude, longitude: runTable[runTable.count/2].coordinate.coordinate.longitude)
+        let center = CLLocationCoordinate2D(latitude: runTable[runTable.count/2].latitude, longitude: runTable[runTable.count/2].longitude)
         let region = MKCoordinateRegion(center: center, latitudinalMeters: self.distance+100, longitudinalMeters: self.distance+100)
         mapView.setRegion(region, animated: true)
         
-        let polylineTable = runTable.map{CLLocationCoordinate2D(latitude: $0.coordinate.coordinate.latitude, longitude: $0.coordinate.coordinate.longitude)}
+        let polylineTable = runTable.map{$0.retCLLocationCoordinate2D()}
         let polyline = MKPolyline(coordinates: polylineTable, count: polylineTable.count)
         print("DEBUG: runTable.count -> \(runTable.count)")
         print("DEBUG: polylineTable.count -> \(polylineTable.count)")
@@ -248,7 +248,7 @@ class RunSummaryController: UIViewController {
     
     func appendDistance(coord: CLLocation){
         if let last = runTable.last {
-            distance += coord.distance(from: last.coordinate)
+            distance += coord.distance(from: last.retCLLocation())
             //print("DEBUG: added \(coord.distance(from: last.coordinate)) to distance")
         }
     }

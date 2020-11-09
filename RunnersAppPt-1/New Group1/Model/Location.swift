@@ -9,6 +9,61 @@
 import MapKit
 
 struct Location {
-    let number: Int
-    let coordinate: CLLocation
+    
+    let readNumber: Int
+    
+    let longitude: Double
+    let latitude: Double
+    /// in meters
+    let horizontalAccuracy: Double
+    
+    
+    /// in meters per second but rounded to 1st decimal
+    let speed: Double
+    /// in meters per second
+    let speedAccuracy: Double
+    
+    
+    /// in meters
+    let altitude: Double
+    /// in numbers
+    let floor: Int?
+    /// in meters
+    let verticalAccuracy: Double
+    
+    
+    let timestamp: Date
+    
+    
+    /// from -180 to 180. 0 is north
+    let course: Double
+    /// The lower the value the more precise thedirection is.  A negative accuracy value indicates an invalid direction.
+    let courseAccuracy: Double
+    
+    init(withCLLoaction location: CLLocation, withNumber number: Int = -1) {
+        self.readNumber = number
+        self.longitude = location.coordinate.longitude
+        self.latitude = location.coordinate.latitude
+        self.horizontalAccuracy = location.horizontalAccuracy
+        self.speed = round(location.speed*10)/10
+        self.speedAccuracy = location.speedAccuracy
+        self.altitude = location.altitude
+        self.floor = location.floor?.level
+        self.verticalAccuracy = location.verticalAccuracy
+        self.timestamp = location.timestamp
+        self.course = location.course
+        self.courseAccuracy = location.courseAccuracy
+    }
+    
+    /// function returs CLLocation
+    /// - Returns: CLLocation
+    func retCLLocation() -> CLLocation {
+        return CLLocation(coordinate: CLLocationCoordinate2D(latitude: self.latitude, longitude: self.longitude), altitude: self.altitude, horizontalAccuracy: self.horizontalAccuracy, verticalAccuracy: self.verticalAccuracy, course: self.course, courseAccuracy: self.courseAccuracy, speed: self.speed, speedAccuracy: self.speedAccuracy, timestamp: self.timestamp)
+    }
+    
+    /// Function returs  CLLocationCoordinate2D
+    /// - Returns: CLLocationCoordinate2D
+    func retCLLocationCoordinate2D() -> CLLocationCoordinate2D {
+        return CLLocationCoordinate2D(latitude: self.latitude, longitude: self.longitude)
+    }
 }

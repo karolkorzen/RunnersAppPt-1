@@ -19,6 +19,8 @@ class RunController: UIViewController {
     var mapViewZoomed: Bool = false
     var statsViewZoomed: Bool = false
     
+    private let viewModel = RunViewModel()
+    
     private var runTable: [Location] = []
     private var isRunning: Bool = false
     private var polylineTable: [CLLocationCoordinate2D]  = []
@@ -107,7 +109,6 @@ class RunController: UIViewController {
         self.safeTopBarHeight = UIApplication.shared.windows.first!.safeAreaInsets.top
         checkLocationServices()
         addMapView()
-        addRunInfo()
         configureUI()
         
         //addChartView()
@@ -128,14 +129,6 @@ class RunController: UIViewController {
                 self.runButton.backgroundColor = UIColor(red: 0.13, green: 0.19, blue: 0.25, alpha: 1.00)
                 self.addChartView()
                 self.isRunning.toggle()
-                
-                self.runTable.append(Location(number: self.runTable.count, coordinate: self.locationManager.location!))
-                print("DEBUG: first location's speed = \(self.locationManager.location!.speed)")
-                
-                self.polylineTable = self.runTable.map{CLLocationCoordinate2D(latitude: $0.coordinate.coordinate.latitude, longitude: $0.coordinate.coordinate.longitude)}
-                let polyline = MKPolyline(coordinates: self.polylineTable, count: self.polylineTable.count)
-                self.addPolyline(withPolyline: polyline)
-                print("DEBUG: polyline count = \(polyline.pointCount)")
             }
         } else {
             UIView.animate(withDuration: 0.5) {
@@ -322,18 +315,6 @@ class RunController: UIViewController {
         }
     }
     
-    func addRunInfo (){
-        
-    }
-    
-    
-    func appendDistance(coord: CLLocation){
-        if let last = runTable.last {
-            distance += coord.distance(from: last.coordinate)
-            //print("DEBUG: added \(coord.distance(from: last.coordinate)) to distance")
-        }
-    }
-    
     func setChartData(){
         let set1 = LineChartDataSet(entries: speedChartTable, label: "Speed")
         set1.drawCirclesEnabled = false
@@ -352,6 +333,22 @@ class RunController: UIViewController {
         lineChartView.data = data
     }
     
+    func handleNewLocation(withLocation location: CLLocation){
+        self.speedLabel.text = viewModel.speedLabelText(withSpeed: location.speed) //LABEL
+        
+        
+        //FIXME : - Ccheck if there is property isAnimating? idk it sucks all
+        if isRunning {
+            if let last = runTable.last {
+                self.distance = viewModel.appendDistance(withCurrentDistance: self.distance, fromLocation: (last.retCLLocation()), toLocation: location) //MODEL
+                self.distanceLabel.text = viewModel.distanceLabelText(withDistance: self.distance)
+            }
+            self.runTable = viewModel.appendRunTable(withTable: runTable, withNewLocation: location)//MODEL
+            self.speedChartTable.append(ChartDataEntry(x: Double(self.speedChartTable.count), y: viewModel.retSpeedRounded(withSpeed: location.speed) )) //MODEL
+            let polyline = MKPolyline(coordinates: viewModel.retRunTablesCLLocationCoordinates2D(withTable: runTable), count: runTable.count) // view
+            addPolyline(withPolyline: polyline) // VIEW
+        }
+    }
 }
 
 extension RunController: MKMapViewDelegate {
@@ -415,50 +412,22 @@ extension RunController: MKMapViewDelegate {
 extension RunController: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        mapView.showsUserLocation = true
         guard let location = locations.last else {return}
-        
-        
-        if !self.mapViewZoomed{
-//            let center = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
-//            let region = MKCoordinateRegion.init(center: center, latitudinalMeters: 100, longitudinalMeters: 100)
-//            self.mapView.setRegion(region, animated: true)
-
-
-        }
-        
-        self.speedLabel.text = location.speed > 0.0 ? "\((location.speed*3.6).rounded()) km/h" : "0 km/h"
-        self.distanceLabel.text = "0.0 m"
-        
-        if isRunning && location.speed>0.6 /*&& location.horizontalAccuracy <= 10.0*/ {
-            appendDistance(coord: location)
-            if distance.rounded()/1000 < 1 {
-                self.distanceLabel.text = "\(self.distance.rounded()) m"
-            } else {
-                self.distanceLabel.text = "\(self.distance.rounded()/1000) km"
-            }
-            
-            
-            self.runTable.append(Location(number: runTable.count, coordinate: location))
-            self.speedChartTable.append(ChartDataEntry(x: Double(self.speedChartTable.count), y: location.speed*3.6))
-            
-            self.polylineTable = runTable.map{CLLocationCoordinate2D(latitude: $0.coordinate.coordinate.latitude, longitude: $0.coordinate.coordinate.longitude)}
-            let polyline = MKPolyline(coordinates: polylineTable, count: polylineTable.count)
+        print("DEBUG: location.altitude.description: \(location.altitude.description)")
+        handleNewLocation(withLocation: location)
             
 //            print(polylineTable.count)
-            if UIApplication.shared.applicationState == .active {
-                print("DEBUG: inside app: \(polylineTable.count)")
-            } else {
-                print("DEBUG: outside app: \(polylineTable.count)")
-            }
+//            if UIApplication.shared.applicationState == .active {
+//                print("DEBUG: inside app: \(polylineTable.count)")
+//            } else {
+//                print("DEBUG: outside app: \(polylineTable.count)")
+//            }
             
-            addPolyline(withPolyline: polyline)
-            //self.mapView.addOverlay(polyline)
+  
             
-        }
         
-        mapView.showsUserLocation = true
-        //print("DEBUG: didUpdateLocations with \(location.timestamp)")
-        
+//        mapView.showsUserLocation = true
     }
 
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {

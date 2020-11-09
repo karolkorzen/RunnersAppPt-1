@@ -12,18 +12,43 @@ struct RunService {
     static let shared = RunService()
     
     func uploadRunSession(withRunSession runTable: [Location], completion: @escaping(()->Void) ) {
-        print("DEBUG: uploading to firebase..")
         guard let currentUid = Auth.auth().currentUser?.uid else {return}
         let ref = REF_USER_RUNS.child(currentUid).childByAutoId()
         for index in runTable {
-            let ref_num = ref.child("\(index.number)")
-            ref_num.updateChildValues(["latitude" : index.coordinate.coordinate.latitude])
-            ref_num.updateChildValues(["longitude" : index.coordinate.coordinate.longitude])
-            ref_num.updateChildValues(["speed" : index.coordinate.speed])
-            ref_num.updateChildValues(["timestamp" : index.coordinate.timestamp.timeIntervalSince1970])
-            //REF_USER_RUNS.child(currentUid).ID_RUN.runTable.updateChildValues([AnyHashable : Any])
+            let ref_num = ref.child("\(index.readNumber)")
+            ref_num.updateChildValues(["latitude" : index.latitude])
+            ref_num.updateChildValues(["longitude" : index.longitude])
+            ref_num.updateChildValues(["speed" : index.speed])
+            ref_num.updateChildValues(["altitude" : index.altitude])
+            if let floor = index.floor {
+                ref_num.updateChildValues(["floor" : floor])
+            }
+            ref_num.updateChildValues(["timestamp" : index.timestamp.timeIntervalSince1970])
+            ref_num.updateChildValues(["course" : index.course])
         }
         completion()
+    }
+    
+    func fetchRunningSessions(completion : @escaping( ([[Location]]) -> Void)) {
+        var array = [[Location]]()
+        guard let currentUid = Auth.auth().currentUser?.uid else {return}
+        let ref = REF_USER_RUNS.child(currentUid)
+        ref.observe(.childAdded) { (snapshot) in
+            let trainingUid = snapshot.key
+            guard let trainingValues = snapshot.value as? NSArray else {return}
+            createTrainingFromDictionary(withDictionary: trainingValues)
+            
+//            print("DEBUG: \(uid)")
+//            guard let dictionary = snapshot.value as? [String: AnyObject] else {return}
+            //array.append()
+        }
+    }
+    
+    func createTrainingFromDictionary(withDictionary dictionary: NSArray) {
+        for index in dictionary {
+            print("\(index)")
+        }
+
     }
 }
 

@@ -36,6 +36,7 @@
 		4B91F482252F953C002458CA /* RegistrationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B91F481252F953C002458CA /* RegistrationController.swift */; };
 		4B93ECED2551CEC700BB57FF /* RunService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B93ECEC2551CEC600BB57FF /* RunService.swift */; };
 		4B93ECF32552C75600BB57FF /* RunSummaryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B93ECF22552C75600BB57FF /* RunSummaryController.swift */; };
+		4B94BB292559550200E158BC /* RunViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B94BB282559550200E158BC /* RunViewModel.swift */; };
 		4B957A91252F6B4100C12263 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B957A90252F6B4000C12263 /* Extensions.swift */; };
 		4B95DA5425370C0B00FF4A2B /* ProfileHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B95DA5325370C0B00FF4A2B /* ProfileHeader.swift */; };
 		4BA6B92B25496ECD00FAB906 /* EditProfileFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA6B92A25496ECD00FAB906 /* EditProfileFooterView.swift */; };
@@ -94,6 +95,7 @@
 		4B91F481252F953C002458CA /* RegistrationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationController.swift; sourceTree = "<group>"; };
 		4B93ECEC2551CEC600BB57FF /* RunService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunService.swift; sourceTree = "<group>"; };
 		4B93ECF22552C75600BB57FF /* RunSummaryController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunSummaryController.swift; sourceTree = "<group>"; };
+		4B94BB282559550200E158BC /* RunViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunViewModel.swift; sourceTree = "<group>"; };
 		4B957A90252F6B4000C12263 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		4B95DA5325370C0B00FF4A2B /* ProfileHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeader.swift; sourceTree = "<group>"; };
 		4BA6B92A25496ECD00FAB906 /* EditProfileFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileFooterView.swift; sourceTree = "<group>"; };
@@ -246,6 +248,7 @@
 				4B151FD5253CC765003F46E6 /* UploadPostViewModel.swift */,
 				4BED470D253ED14900F39250 /* ActionSheetViewModel.swift */,
 				4B60979E254722E800E2437A /* EditProfileViewModel.swift */,
+				4B94BB282559550200E158BC /* RunViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -428,6 +431,7 @@
 				4BD214E525349FA100FEE09E /* InputTextView.swift in Sources */,
 				4B384CAE253831D6003CECD2 /* ProfileFilterCell.swift in Sources */,
 				4B125F72252F030800E31C2B /* ConversationsController.swift in Sources */,
+				4B94BB292559550200E158BC /* RunViewModel.swift in Sources */,
 				4B2DA3522538A4E500A3182F /* UserCell.swift in Sources */,
 				4BF75B142530D34A00F94EDF /* Utilities.swift in Sources */,
 				4BC390A02546DA1700DF5F1E /* EditProfileController.swift in Sources */,
