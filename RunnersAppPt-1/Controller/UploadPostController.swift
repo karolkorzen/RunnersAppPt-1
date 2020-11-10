@@ -51,7 +51,7 @@ class UploadPostController: UIViewController {
 
     private lazy var actionButton: UIButton = {
         let button = UIButton(type: .system)
-        button.backgroundColor = .pinkish
+        button.backgroundColor = .mainAppColor
         button.setTitle("Share", for: .normal)
         button.titleLabel?.textAlignment = .center
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
@@ -70,7 +70,7 @@ class UploadPostController: UIViewController {
         iv.clipsToBounds = true
         iv.setDimensions(width: 48, height: 48)
         iv.layer.cornerRadius = 10
-        iv.backgroundColor = .pinkish
+        iv.backgroundColor = .mainAppColor
         return iv
     }()
     
@@ -78,7 +78,7 @@ class UploadPostController: UIViewController {
         let label = ActiveLabel()
         label.font = UIFont.systemFont(ofSize: 14)
         label.textColor = .lightGray
-        label.mentionColor = .pinkish
+        label.mentionColor = .mainAppColor
         label.widthAnchor.constraint(equalToConstant: view.frame.width).isActive = true
         return label
     }()
@@ -230,7 +230,7 @@ class UploadPostController: UIViewController {
         navigationController?.navigationBar.isTranslucent = false
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(handleCancel))
-        navigationItem.leftBarButtonItem?.tintColor = .pinkish
+        navigationItem.leftBarButtonItem?.tintColor = .mainAppColor
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: actionButton)
     }
     

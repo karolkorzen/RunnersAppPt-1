@@ -11,7 +11,7 @@ import Firebase
 struct RunService {
     static let shared = RunService()
     
-    func uploadRunSession(withRunSession runTable: [Location], completion: @escaping(()->Void) ) {
+    func uploadRunSession(withRunSession runTable: [Location] ) {
         guard let currentUid = Auth.auth().currentUser?.uid else {return}
         let ref = REF_USER_RUNS.child(currentUid).childByAutoId()
         for index in runTable {
@@ -26,7 +26,6 @@ struct RunService {
             ref_num.updateChildValues(["timestamp" : index.timestamp.timeIntervalSince1970])
             ref_num.updateChildValues(["course" : index.course])
         }
-        completion()
     }
     
     func fetchRunningSessions(completion : @escaping( ([[Location]]) -> Void)) {

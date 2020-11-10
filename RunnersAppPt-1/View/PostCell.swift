@@ -46,7 +46,7 @@ class PostCell: UICollectionViewCell{
         let label = ActiveLabel()
         label.textColor = .lightGray
         label.font = UIFont.systemFont(ofSize: 12)
-        label.mentionColor = .pinkish
+        label.mentionColor = .mainAppColor
         return label
     }()
     
@@ -54,8 +54,8 @@ class PostCell: UICollectionViewCell{
         let label = ActiveLabel()
         label.font = UIFont.systemFont(ofSize: 14)
         label.numberOfLines = 0
-        label.mentionColor = .pinkish
-        label.hashtagColor = .pinkish
+        label.mentionColor = .mainAppColor
+        label.hashtagColor = .mainAppColor
         return label
     }()
     

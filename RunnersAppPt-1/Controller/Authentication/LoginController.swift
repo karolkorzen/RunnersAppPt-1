@@ -45,7 +45,7 @@ class LoginController: UIViewController {
     private let loginButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Log In", for: .normal)
-        button.setTitleColor(.pinkish, for: .normal)
+        button.setTitleColor(.mainAppColor, for: .normal)
         button.backgroundColor = .white
         button.heightAnchor.constraint(equalToConstant: 50).isActive = true
         button.layer.cornerRadius = 5
@@ -96,7 +96,7 @@ class LoginController: UIViewController {
     //MARK: - Helpers
     
     func configureUI(){
-        view.backgroundColor = .pinkish
+        view.backgroundColor = .mainAppColor
         navigationController?.navigationBar.barStyle = .black
         navigationController?.navigationBar.isHidden = true
         

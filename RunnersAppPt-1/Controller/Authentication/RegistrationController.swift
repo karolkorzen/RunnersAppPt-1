@@ -81,7 +81,7 @@ class RegistrationController: UIViewController {
     private let registrationButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Sign Up", for: .normal)
-        button.setTitleColor(.pinkish, for: .normal)
+        button.setTitleColor(.mainAppColor, for: .normal)
         button.backgroundColor = .white
         button.heightAnchor.constraint(equalToConstant: 50).isActive = true
         button.layer.cornerRadius = 5
@@ -149,7 +149,7 @@ class RegistrationController: UIViewController {
     //MARK: - Helpers
     
     func configureUI(){
-        view.backgroundColor = .pinkish
+        view.backgroundColor = .mainAppColor
         
         imagePicker.delegate = self
         imagePicker.allowsEditing = true

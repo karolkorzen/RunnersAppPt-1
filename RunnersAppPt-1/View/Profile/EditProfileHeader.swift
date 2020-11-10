@@ -46,7 +46,7 @@ class EditProfileHeader: UIView{
         self.user = user
         super.init(frame: .zero)
         
-        backgroundColor = .pinkish
+        backgroundColor = .mainAppColor
         
         addSubview(profileImageView)
         profileImageView.center(inView: self, yConstant: -16)

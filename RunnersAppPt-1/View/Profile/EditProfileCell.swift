@@ -35,7 +35,7 @@ class EditProfileCell: UITableViewCell {
         tf.borderStyle = .none
         tf.font = UIFont.systemFont(ofSize: 14)
         tf.textAlignment = .left
-        tf.textColor = .pinkish
+        tf.textColor = .mainAppColor
         tf.text = "test tf"
         tf.isUserInteractionEnabled = true
         
@@ -45,7 +45,7 @@ class EditProfileCell: UITableViewCell {
     let bioTextView: InputTextView = {
         let tv = InputTextView()
         tv.font = UIFont.systemFont(ofSize: 14)
-        tv.textColor = .pinkish
+        tv.textColor = .mainAppColor
         tv.placeholderLabel.text = "Bio"
         return tv
     }()

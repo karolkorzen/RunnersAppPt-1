@@ -89,7 +89,7 @@ class Utilities {
     ///   - systemName: SF Symbolname
     ///   - color: UIColor
     /// - Returns: UIButton
-    func actionButton(withSystemName systemName: String, withColor color: UIColor = UIColor(red: 0.95, green: 0.66, blue: 0.63, alpha: 1.00)) -> UIButton{
+    func actionButton(withSystemName systemName: String, withColor color: UIColor = .mainAppColor) -> UIButton{
         let button = UIButton(type: .system)
         button.tintColor = .white
         button.backgroundColor = color
@@ -99,6 +99,18 @@ class Utilities {
         
         
         return button
+    }
+    
+    /// func creates label for speed and distance in run controller
+    /// - Returns: UILabel
+    func infoRunLabel() -> UILabel {
+        let label = UILabel()
+        label.textColor = .black // FIXME: - make it dynamic // some library?
+        label.font = UIFont.boldSystemFont(ofSize: 30)
+        label.backgroundColor = .lightGray
+        label.layer.cornerRadius = 10
+        label.layer.masksToBounds = true
+        return label
     }
 }
 

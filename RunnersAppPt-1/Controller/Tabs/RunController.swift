@@ -11,14 +11,11 @@ import MapKit
 import CoreLocation
 import Charts
 
+//FIXME: - Whole charts are dumb
+
 class RunController: UIViewController {
     
     //MARK: - Properties
-    
-    private var mapView = MKMapView()
-    var mapViewZoomed: Bool = false
-    var statsViewZoomed: Bool = false
-    
     private let viewModel = RunViewModel()
     
     private var runTable: [Location] = []
@@ -26,58 +23,33 @@ class RunController: UIViewController {
     private var polylineTable: [CLLocationCoordinate2D]  = []
     private var speedChartTable:[ChartDataEntry] = [] {
         didSet{
-            setChartData()
+                setChartData()
         }
     }
+    
+    
+    private var mapView = MKMapView()
+    var mapViewZoomed: Bool = false
+    var statsViewZoomed: Bool = false
     
     private var distance: CLLocationDistance = 0
     private let locationManager = CLLocationManager()
     
-    
     var safeViewHeight: CGFloat?
     var safeTopBarHeight: CGFloat?
-    
     var tabBarHeight: CGFloat
     
-    private var speedLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .black // FIXME: - make it dynamic // some library?
-        label.font = UIFont.boldSystemFont(ofSize: 30)
-        label.backgroundColor = .lightGray
-        label.layer.cornerRadius = 10
-        label.layer.masksToBounds = true
-        return label
-    }()
-    
-    private var distanceLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .black // FIXME: - make it dynamic // some library?
-        label.font = UIFont.boldSystemFont(ofSize: 30)
-        label.backgroundColor = .lightGray
-        label.layer.masksToBounds = true
-        label.layer.cornerRadius = 10
-        return label
-    }()
-    
+    private var speedLabel = Utilities.shared.infoRunLabel()
+    private var distanceLabel = Utilities.shared.infoRunLabel()
     private var runButton: UIButton = {
         let button = UIButton()
         button.tintColor = .white
         button.layer.cornerRadius = 10
-        button.backgroundColor = .pinkish
+        button.backgroundColor = .mainAppColor
         button.titleLabel?.text = "START"
         button.setTitle("START", for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
         button.addTarget(self, action: #selector(toggleRunButton), for: .touchUpInside)
-        return button
-    }()
-    
-    private var stopButton: UIButton = {
-        let button = UIButton()
-        button.tintColor = .white
-        button.layer.cornerRadius = 10
-        button.backgroundColor = .red
-        button.titleLabel?.text = "STOP"
-        
         return button
     }()
     
@@ -110,8 +82,6 @@ class RunController: UIViewController {
         checkLocationServices()
         addMapView()
         configureUI()
-        
-        //addChartView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -124,93 +94,65 @@ class RunController: UIViewController {
     
     @objc func toggleRunButton() {
         if isRunning == false {
-            UIView.animate(withDuration: 0.5) {
-                self.runButton.setTitle("STOP", for: .normal)
-                self.runButton.backgroundColor = UIColor(red: 0.13, green: 0.19, blue: 0.25, alpha: 1.00)
-                self.addChartView()
-                self.isRunning.toggle()
-            }
+            startTraining()
         } else {
-            UIView.animate(withDuration: 0.5) {
-                let alert = UIAlertController(title: "Do you want to save your training?", message: nil, preferredStyle: .alert)
-                
-                alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (UIAlertAction) in
-                    RunService.shared.uploadRunSession(withRunSession: self.runTable) {
-                        print("DEBUG: UPDATED RUN SESSION")
-                    }
-                    self.runButton.setTitle("START", for: .normal)
-            
-                    
-                    let summary = RunSummaryController(tabBarHeight: self.tabBarHeight, runTable: self.runTable, speedChartTable: self.speedChartTable, distance: self.distance)
-                    self.present(summary, animated: true, completion: nil)
-                    self.runButton.backgroundColor = .blue
-                    self.runTable.removeAll()
-                    self.distance = 0.0
-                    self.speedChartTable.removeAll()
-                    self.polylineTable.removeAll()
-                    self.isRunning.toggle()
-                }))
-                alert.addAction(UIAlertAction(title: "No", style: .destructive, handler: { (UIAlertAction) in
-                    self.runButton.setTitle("START", for: .normal)
-                    self.runButton.backgroundColor = .pinkish
-                    self.runTable.removeAll()
-                    self.distance = 0.0
-                    self.speedChartTable.removeAll()
-                    self.polylineTable.removeAll()
-                    self.isRunning.toggle()
-                }))
-                alert.addAction(UIAlertAction(title: "I want to continue training!!!", style: .cancel, handler: { (UIAlertAction) in
-                    
-                }))
-                
-                self.present(alert, animated: true, completion: nil)
-            }
+            stopTraining()
         }
-        print("DEBUG: runTable.count -> \(runTable.count)")
     }
     
-    @objc func showController(){
+    @objc func mapViewTapped(){
+        guard let location = self.locationManager.location else {return}
         if mapViewZoomed {
-            UIView.animate(withDuration: 0.3) {
-                self.mapView.frame = CGRect(x: self.view.frame.width/2 + 5, y: self.safeTopBarHeight! + 10, width: self.view.frame.width/2 - 15 , height: self.view.frame.height/3)
-                self.mapView.isZoomEnabled = false
-                self.mapView.isRotateEnabled = false
-                self.mapView.isPitchEnabled = false
-                self.mapView.isScrollEnabled = false
-                guard let location = self.locationManager.location else {return}
-                let mapCamera = MKMapCamera(lookingAtCenter: CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude), fromDistance: 100, pitch: 60, heading: location.course)
-                self.mapView.setCamera(mapCamera, animated: true)
-            }
+            restoreMapView(withLocation: location)
         } else {
-            UIView.animate(withDuration: 0.3) { [self] in
-                self.mapView.frame = CGRect(x: 10, y: self.safeTopBarHeight!+10, width: self.view.frame.width-20, height: self.safeViewHeight! - self.tabBarHeight - 20)
-                self.view.bringSubviewToFront(self.mapView)
-                
-                self.mapView.isZoomEnabled = true
-                self.mapView.isRotateEnabled = true
-                self.mapView.isPitchEnabled = true
-                self.mapView.isScrollEnabled = true
-                guard let location = self.locationManager.location else {return}
-                let mapCamera = MKMapCamera(lookingAtCenter: CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude), fromDistance: 400, pitch: 0, heading: 0)
-                self.mapView.setCamera(mapCamera, animated: true)
-            }
+            zoomMapView(withLocation: location)
         }
         mapViewZoomed.toggle()
     }
     
-    @objc func showStatsController() {
-        if statsViewZoomed {
-            print(statsViewZoomed)
-        } else {
-            print(statsViewZoomed)
-        }
-        statsViewZoomed.toggle()
-    }
-    
     //MARK: - Helpers
     
+    func startTraining() {
+        UIView.animate(withDuration: 0.5) {
+            self.runButton.setTitle("STOP", for: .normal)
+            self.runButton.backgroundColor = UIColor(red: 0.13, green: 0.19, blue: 0.25, alpha: 1.00)
+        }
+        self.addChartView()
+        self.isRunning.toggle()
+    }
+    
+    func stopTraining(){
+            let alert = configAlert()
+            self.present(alert, animated: true, completion: nil)
+    }
+    
+    func restoreMapView(withLocation location: CLLocation){
+        UIView.animate(withDuration: 0.3) {
+            self.mapView.frame = CGRect(x: self.view.frame.width/2 + 5, y: self.safeTopBarHeight! + 10, width: self.view.frame.width/2 - 15 , height: self.view.frame.height/3)
+        }
+        self.mapView.isZoomEnabled = false
+        self.mapView.isRotateEnabled = false
+        self.mapView.isPitchEnabled = false
+        self.mapView.isScrollEnabled = false
+        let mapCamera = MKMapCamera(lookingAtCenter: CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude), fromDistance: 100, pitch: 60, heading: location.course)
+        self.mapView.setCamera(mapCamera, animated: true)
+    }
+    
+    func zoomMapView(withLocation location: CLLocation){
+        UIView.animate(withDuration: 0.3) {
+            self.mapView.frame = CGRect(x: 10, y: self.safeTopBarHeight!+10, width: self.view.frame.width-20, height: self.safeViewHeight! - self.tabBarHeight - 20)
+        }
+        self.view.bringSubviewToFront(self.mapView)
+        self.mapView.isZoomEnabled = true
+        self.mapView.isRotateEnabled = true
+        self.mapView.isPitchEnabled = true
+        self.mapView.isScrollEnabled = true
+        let mapCamera = MKMapCamera(lookingAtCenter: CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude), fromDistance: 400, pitch: 0, heading: 0)
+        self.mapView.setCamera(mapCamera, animated: true)
+    }
+    
     func addMapView(){
-        let tap = UITapGestureRecognizer(target: self, action: #selector(showController))
+        let tap = UITapGestureRecognizer(target: self, action: #selector(mapViewTapped))
         
         let frame = CGRect(x: self.view.frame.width/2 + 5, y: self.safeTopBarHeight! + 10, width: self.view.frame.width/2 - 15, height: self.view.frame.height/3)
         mapView = MKMapView(frame: frame)
@@ -226,20 +168,50 @@ class RunController: UIViewController {
         mapView.addGestureRecognizer(tap)
     }
     
+    func configAlert() -> UIAlertController{
+        let alert = UIAlertController(title: "Do you want to save your training?", message: nil, preferredStyle: .actionSheet)
+    
+        alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (UIAlertAction) in
+            self.finishTraining(withSavingDecision: true)
+        }))
+        alert.addAction(UIAlertAction(title: "No", style: .destructive, handler: { (UIAlertAction) in
+            self.finishTraining(withSavingDecision: false)
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
+        return alert
+    }
+    
+    func finishTraining(withSavingDecision decision: Bool){
+        if decision {
+            RunService.shared.uploadRunSession(withRunSession: self.runTable)
+            let summary = RunSummaryController(tabBarHeight: self.tabBarHeight, runTable: self.runTable, speedChartTable: self.speedChartTable, distance: self.distance)
+            self.present(summary, animated: true, completion: nil)
+        }
+        self.isRunning.toggle()
+        self.runTable.removeAll()
+        self.distance = 0.0
+        self.speedChartTable.removeAll()
+        self.polylineTable.removeAll()
+        
+        UIView.animate(withDuration: 0.5) {
+            self.runButton.setTitle("START", for: .normal)
+            self.runButton.backgroundColor = .mainAppColor
+        }
+    }
+    
     func addChartView(){
         view.addSubview(lineChartView)
-        lineChartView.anchor(top: runButton.bottomAnchor,left: view.leftAnchor, bottom: self.view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor, paddingTop: 10, paddingLeft: 10, paddingBottom: 10, paddingRight: 10)
+        lineChartView.anchor(top: runButton.bottomAnchor, left: view.leftAnchor, bottom: self.view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor, paddingTop: 10, paddingLeft: 10, paddingBottom: 10, paddingRight: 10)
         lineChartView.layer.cornerRadius = 10
         lineChartView.layer.borderWidth = 4
         lineChartView.layer.borderColor = UIColor.darkGray.cgColor
         lineChartView.layer.masksToBounds = true
-         self.view.bringSubviewToFront(mapView)
+        self.view.bringSubviewToFront(mapView)
     }
     
     func configureUI(){
         view.backgroundColor = .white
-        
-        
         
         view.addSubview(speedLabel)
         speedLabel.anchor(top: mapView.topAnchor, left: view.leftAnchor, paddingTop: 0, paddingLeft: 10)
@@ -254,10 +226,9 @@ class RunController: UIViewController {
         distanceLabel.textAlignment = .center
         
         view.addSubview(runButton)
-        runButton.anchor(top: mapView.bottomAnchor, left: view.leftAnchor, paddingTop: 10, paddingLeft: 10)
+        runButton.anchor(top: distanceLabel.bottomAnchor, left: view.leftAnchor, paddingTop: 10, paddingLeft: 10)
         
         runButton.setDimensions(width: self.view.frame.width - 20, height: self.view.frame.height/8)
-        
     }
     
     func configureLocationManager(){
@@ -265,8 +236,6 @@ class RunController: UIViewController {
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.activityType = .fitness
         locationManager.distanceFilter = 10
-        
-//        locationManager.pausesLocationUpdatesAutomatically = false
         locationManager.allowsBackgroundLocationUpdates = true
     }
     
@@ -279,21 +248,12 @@ class RunController: UIViewController {
         }
     }
     
-    func centerViewOnUserLocation() { //FIXME: -not used much ONLY ONCE LOL
-        if let location = locationManager.location?.coordinate{
-            print("DEBUG: inside centerViewOnUserLocation with location \(location)")
-            let region = MKCoordinateRegion.init(center: location, latitudinalMeters: 100, longitudinalMeters: 100) //FIXME: - Dynamic for route size?
-            mapView.setRegion(region, animated: true)
-        }
-    }
-    
     func checkLocationAuthorization(){
         switch CLLocationManager.authorizationStatus() {
         case .authorizedWhenInUse:
             //FIXME: - ALERT: TO PROPERLY USE APP SET ALWAYS IN SETTINGS
             locationManager.requestAlwaysAuthorization()
             mapView.showsUserLocation = true
-            centerViewOnUserLocation()
             locationManager.startUpdatingLocation()
             break
         case .denied:
@@ -302,12 +262,10 @@ class RunController: UIViewController {
         case .notDetermined:
             locationManager.requestWhenInUseAuthorization()
             break
-        case .restricted:
-            // not permitted by parent
+        case .restricted: // not permitted by parent
             break
         case .authorizedAlways:
             mapView.showsUserLocation = true
-            centerViewOnUserLocation()
             locationManager.startUpdatingLocation()
             break
         @unknown default:
@@ -320,62 +278,53 @@ class RunController: UIViewController {
         set1.drawCirclesEnabled = false
         set1.mode = .cubicBezier
         set1.lineWidth = 3
-        set1.setColor(.pinkish)
-        set1.fill = Fill(color: .pinkish)
+        set1.setColor(.mainAppColor)
+        set1.fill = Fill(color: .mainAppColor)
         set1.fillAlpha = 0.6
         set1.drawFilledEnabled = true
         set1.drawHorizontalHighlightIndicatorEnabled = false
         set1.highlightColor = .black
-    
-        
+
         let data = LineChartData(dataSet: set1)
         data.setDrawValues(false)
         lineChartView.data = data
     }
     
     func handleNewLocation(withLocation location: CLLocation){
-        self.speedLabel.text = viewModel.speedLabelText(withSpeed: location.speed) //LABEL
-        
-        
-        //FIXME : - Ccheck if there is property isAnimating? idk it sucks all
+        self.speedLabel.text = viewModel.speedLabelText(withSpeed: location.speed)
         if isRunning {
             if let last = runTable.last {
-                self.distance = viewModel.appendDistance(withCurrentDistance: self.distance, fromLocation: (last.retCLLocation()), toLocation: location) //MODEL
+                self.distance = viewModel.appendDistance(withCurrentDistance: self.distance, fromLocation: (last.retCLLocation()), toLocation: location)
                 self.distanceLabel.text = viewModel.distanceLabelText(withDistance: self.distance)
             }
-            self.runTable = viewModel.appendRunTable(withTable: runTable, withNewLocation: location)//MODEL
-            self.speedChartTable.append(ChartDataEntry(x: Double(self.speedChartTable.count), y: viewModel.retSpeedRounded(withSpeed: location.speed) )) //MODEL
-            let polyline = MKPolyline(coordinates: viewModel.retRunTablesCLLocationCoordinates2D(withTable: runTable), count: runTable.count) // view
-            addPolyline(withPolyline: polyline) // VIEW
+            self.runTable = viewModel.appendRunTable(withTable: runTable, withNewLocation: location)
+            
+            self.speedChartTable.append(ChartDataEntry(x: Double(self.speedChartTable.count), y: viewModel.retSpeedRounded(withSpeed: location.speed) ))
+            
+            let polyline = MKPolyline(coordinates: viewModel.retRunTablesCLLocationCoordinates2D(withTable: runTable), count: runTable.count)
+            addPolyline(withPolyline: polyline)
         }
     }
 }
+
+//MARK: - MKMapViewDelegate
 
 extension RunController: MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         switch annotation {
-        // 1
-        case let user as MKUserLocation:
-            // 2
-            if mapViewZoomed {
-                let view = MKAnnotationView(annotation: user, reuseIdentifier: "user")
-                let image = UIImage(systemName: "circle.fill")
-                view.image = image
-                return view
-            }
-            if let existingView = mapView
-                .dequeueReusableAnnotationView(withIdentifier: "user") {
-                return existingView
-            } else {
-                // 3
-                let view = MKAnnotationView(annotation: user, reuseIdentifier: "user")
-                view.image = UIImage(systemName: "location.north.fill")
-                return view
-            }
-            
-        default:
-            return nil
+            case let user as MKUserLocation:
+                if let existingView = mapView
+                    .dequeueReusableAnnotationView(withIdentifier: "user") {
+                    return existingView
+                } else {
+                    let view = MKAnnotationView(annotation: user, reuseIdentifier: "user")
+                    view.image = UIImage(systemName: "location.north.fill")
+                    return view
+                }
+                
+            default:
+                return nil
         }
     }
     
@@ -383,7 +332,7 @@ extension RunController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         if overlay is MKPolyline {
             let polylineRenderer = MKPolylineRenderer(overlay: overlay)
-            polylineRenderer.strokeColor = UIColor.pinkish
+            polylineRenderer.strokeColor = UIColor.mainAppColor
             polylineRenderer.lineWidth = 3
             return polylineRenderer
         }
@@ -393,21 +342,14 @@ extension RunController: MKMapViewDelegate {
         return polylineRenderer
     }
     
-    func mapViewWillStartLocatingUser(_ mapView: MKMapView) {
-        //print("DEBUG: LOCATING USER")
-        
-    }
-    
     func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
         guard let location = locationManager.location else {return}
         let mapCamera = MKMapCamera(lookingAtCenter: CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude), fromDistance: 100, pitch: 60, heading: location.course)
         self.mapView.setCamera(mapCamera, animated: true)
     }
-    
-    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-        //print("DEBUG: didSelect view!")
-    }
 }
+
+//MARK: - CLLocationManagerDelegate
 
 extension RunController: CLLocationManagerDelegate {
     
@@ -416,18 +358,14 @@ extension RunController: CLLocationManagerDelegate {
         guard let location = locations.last else {return}
         print("DEBUG: location.altitude.description: \(location.altitude.description)")
         handleNewLocation(withLocation: location)
-            
+        
+        //FIXME: - IN BACKGROUND MODE
 //            print(polylineTable.count)
 //            if UIApplication.shared.applicationState == .active {
 //                print("DEBUG: inside app: \(polylineTable.count)")
 //            } else {
 //                print("DEBUG: outside app: \(polylineTable.count)")
 //            }
-            
-  
-            
-        
-//        mapView.showsUserLocation = true
     }
 
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
@@ -441,8 +379,8 @@ extension RunController: CLLocationManagerDelegate {
     
 }
 
+//MARK: - ChartViewDelegate
+
 extension RunController: ChartViewDelegate {
-    func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
-        print("DEBUG: entry : \(entry)")
-    }
+
 }

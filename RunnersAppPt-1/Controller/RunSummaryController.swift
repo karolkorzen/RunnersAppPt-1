@@ -132,7 +132,7 @@ class RunSummaryController: UIViewController {
     //MARK: - Helpers
     
     func addMapView(){
-        let tap = UITapGestureRecognizer(target: self, action: #selector(showController))
+        let tap = UITapGestureRecognizer(target: self, action: #selector(mapViewTapped))
         
         let frame = CGRect(x: self.view.frame.width/2 + 5, y: 10, width: self.view.frame.width/2 - 15, height: self.view.frame.height/3)
         mapView = MKMapView(frame: frame)
@@ -258,8 +258,8 @@ class RunSummaryController: UIViewController {
         set1.drawCirclesEnabled = false
         set1.mode = .cubicBezier
         set1.lineWidth = 3
-        set1.setColor(.pinkish)
-        set1.fill = Fill(color: .pinkish)
+        set1.setColor(.mainAppColor)
+        set1.fill = Fill(color: .mainAppColor)
         set1.fillAlpha = 0.6
         set1.drawFilledEnabled = true
         set1.drawHorizontalHighlightIndicatorEnabled = false
@@ -278,7 +278,7 @@ extension RunSummaryController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         if overlay is MKPolyline {
             let polylineRenderer = MKPolylineRenderer(overlay: overlay)
-            polylineRenderer.strokeColor = UIColor.pinkish
+            polylineRenderer.strokeColor = UIColor.mainAppColor
             polylineRenderer.lineWidth = 3
             return polylineRenderer
         }

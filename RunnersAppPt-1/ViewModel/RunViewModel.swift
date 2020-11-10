@@ -11,18 +11,17 @@ import CoreLocation
 struct RunViewModel {
     
     func speedLabelText(withSpeed speed: Double) -> String{
-        if speed>0.0 {
-            return "\(speed*3.6) km/h"
-        } else {
-            return "0 km/h"
+        if speed > 0.0 {
+            return "\(Int(speed*3.6)) km/h"
         }
+        return "0 km/h"
     }
     func distanceLabelText(withDistance distance: Double) -> String {
         if distance>0.0 {
             if distance >= 1000 {
-                return "\(round(100*distance)/100) km"
+                return "\(round(distance)/100) km"
             } else {
-                return "\(round(100*distance)/100) m"
+                return "\(Int(distance)) m"
             }
         } else {
             return "0 m"
@@ -39,7 +38,7 @@ struct RunViewModel {
     }
     
     func retSpeedRounded (withSpeed speed: Double) -> Double{
-        return (speed*3.6)
+        return round(speed*3.6)
     }
     
     func retRunTablesCLLocationCoordinates2D (withTable table: [Location]) -> [CLLocationCoordinate2D] {

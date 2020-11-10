@@ -93,7 +93,6 @@ class FeedController: UICollectionViewController {
     // MARK: - Helpers
     
     func configureUI(){
-        view.backgroundColor = .white
         
         collectionView.register(PostCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         collectionView.backgroundColor = .white
@@ -101,7 +100,7 @@ class FeedController: UICollectionViewController {
         let imageView = UIImageView(image: UIImage(systemName: "mappin.and.ellipse"))
         imageView.contentMode = .scaleAspectFit
         imageView.setDimensions(width: 30, height: 30)
-        imageView.tintColor = .pinkish
+        imageView.tintColor = .mainAppColor
         navigationItem.titleView = imageView
         
         let refreshControl = UIRefreshControl()
@@ -137,7 +136,7 @@ class FeedController: UICollectionViewController {
         image.isUserInteractionEnabled = true
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: image)
-        navigationItem.rightBarButtonItem?.tintColor = .pinkish
+        navigationItem.rightBarButtonItem?.tintColor = .mainAppColor
         
     }
     

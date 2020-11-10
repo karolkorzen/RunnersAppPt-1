@@ -40,8 +40,8 @@ class MainTabController: UITabBarController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        view.backgroundColor = .pinkish
-        view.tintColor = .pinkish
+        view.backgroundColor = .mainAppColor
+        view.tintColor = .mainAppColor
     }
     
     // MARK: -API
@@ -97,8 +97,8 @@ class MainTabController: UITabBarController {
         actionButton.anchor(bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.safeAreaLayoutGuide.rightAnchor, paddingBottom: 64, paddingRight: 16, width: 45, height: 45)
         actionButton.layer.cornerRadius = 10
         
-        view.backgroundColor = .pinkish
-        view.tintColor = .pinkish
+        view.backgroundColor = .mainAppColor
+        view.tintColor = .mainAppColor
     }
     
     func configureViewControllers(){
