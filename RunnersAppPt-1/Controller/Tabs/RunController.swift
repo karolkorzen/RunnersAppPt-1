@@ -30,7 +30,6 @@ class RunController: UIViewController {
     
     private var mapView = MKMapView()
     var mapViewZoomed: Bool = false
-    var statsViewZoomed: Bool = false
     
     private var distance: CLLocationDistance = 0
     private let locationManager = CLLocationManager()
@@ -41,6 +40,7 @@ class RunController: UIViewController {
     
     private var speedLabel = Utilities.shared.infoRunLabel()
     private var distanceLabel = Utilities.shared.infoRunLabel()
+    
     private var runButton: UIButton = {
         let button = UIButton()
         button.tintColor = .white
@@ -80,7 +80,7 @@ class RunController: UIViewController {
         self.safeViewHeight = UIApplication.shared.windows.first!.safeAreaLayoutGuide.layoutFrame.size.height
         self.safeTopBarHeight = UIApplication.shared.windows.first!.safeAreaInsets.top
         checkLocationServices()
-        addMapView()
+        configureMapView()
         configureUI()
     }
     
@@ -117,7 +117,6 @@ class RunController: UIViewController {
             self.runButton.setTitle("STOP", for: .normal)
             self.runButton.backgroundColor = UIColor(red: 0.13, green: 0.19, blue: 0.25, alpha: 1.00)
         }
-        self.addChartView()
         self.isRunning.toggle()
     }
     
@@ -151,7 +150,7 @@ class RunController: UIViewController {
         self.mapView.setCamera(mapCamera, animated: true)
     }
     
-    func addMapView(){
+    func configureMapView(){
         let tap = UITapGestureRecognizer(target: self, action: #selector(mapViewTapped))
         
         let frame = CGRect(x: self.view.frame.width/2 + 5, y: self.safeTopBarHeight! + 10, width: self.view.frame.width/2 - 15, height: self.view.frame.height/3)
@@ -161,11 +160,13 @@ class RunController: UIViewController {
         mapView.layer.borderColor = UIColor.darkGray.cgColor
         mapView.layer.masksToBounds = true
         
-        view.addSubview(mapView)
         mapView.delegate = self
         mapView.isZoomEnabled = false
         mapView.isRotateEnabled = false
         mapView.addGestureRecognizer(tap)
+        
+        view.addSubview(mapView)
+        
     }
     
     func configAlert() -> UIAlertController{
@@ -229,6 +230,9 @@ class RunController: UIViewController {
         runButton.anchor(top: distanceLabel.bottomAnchor, left: view.leftAnchor, paddingTop: 10, paddingLeft: 10)
         
         runButton.setDimensions(width: self.view.frame.width - 20, height: self.view.frame.height/8)
+        
+        self.addChartView()
+        setChartData()
     }
     
     func configureLocationManager(){
@@ -292,17 +296,14 @@ class RunController: UIViewController {
     
     func handleNewLocation(withLocation location: CLLocation){
         self.speedLabel.text = viewModel.speedLabelText(withSpeed: location.speed)
-        if isRunning {
+        if isRunning && location.speed>0.0 {
             if let last = runTable.last {
-                self.distance = viewModel.appendDistance(withCurrentDistance: self.distance, fromLocation: (last.retCLLocation()), toLocation: location)
+                self.distance = viewModel.appendDistance(withCurrentDistance: self.distance, fromLocation: (last.retFullCLLocation()), toLocation: location)
                 self.distanceLabel.text = viewModel.distanceLabelText(withDistance: self.distance)
             }
             self.runTable = viewModel.appendRunTable(withTable: runTable, withNewLocation: location)
             
             self.speedChartTable.append(ChartDataEntry(x: Double(self.speedChartTable.count), y: viewModel.retSpeedRounded(withSpeed: location.speed) ))
-            
-            let polyline = MKPolyline(coordinates: viewModel.retRunTablesCLLocationCoordinates2D(withTable: runTable), count: runTable.count)
-            addPolyline(withPolyline: polyline)
         }
     }
 }
@@ -344,8 +345,15 @@ extension RunController: MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
         guard let location = locationManager.location else {return}
-        let mapCamera = MKMapCamera(lookingAtCenter: CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude), fromDistance: 100, pitch: 60, heading: location.course)
-        self.mapView.setCamera(mapCamera, animated: true)
+        
+        if !mapViewZoomed {
+            let mapCamera = MKMapCamera(lookingAtCenter: CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude), fromDistance: 100, pitch: 60, heading: location.course)
+            self.mapView.setCamera(mapCamera, animated: true)
+        }
+        if isRunning {
+            let polyline = MKPolyline(coordinates: viewModel.retRunTablesCLLocationCoordinates2D(withTable: runTable), count: runTable.count)
+            addPolyline(withPolyline: polyline)
+        }
     }
 }
 
@@ -355,8 +363,8 @@ extension RunController: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         mapView.showsUserLocation = true
+
         guard let location = locations.last else {return}
-        print("DEBUG: location.altitude.description: \(location.altitude.description)")
         handleNewLocation(withLocation: location)
         
         //FIXME: - IN BACKGROUND MODE

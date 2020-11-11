@@ -10,9 +10,13 @@ import Firebase
 
 struct RunService {
     static let shared = RunService()
+    typealias trainingsList = [String: [Location]]
+    typealias dateTrainingList = [String: trainingsList]
     
     func uploadRunSession(withRunSession runTable: [Location] ) {
         guard let currentUid = Auth.auth().currentUser?.uid else {return}
+//        let monthYear = monthYearTimestamp(withDate: runTable[0].timestamp)
+        
         let ref = REF_USER_RUNS.child(currentUid).childByAutoId()
         for index in runTable {
             let ref_num = ref.child("\(index.readNumber)")
@@ -20,34 +24,68 @@ struct RunService {
             ref_num.updateChildValues(["longitude" : index.longitude])
             ref_num.updateChildValues(["speed" : index.speed])
             ref_num.updateChildValues(["altitude" : index.altitude])
-            if let floor = index.floor {
-                ref_num.updateChildValues(["floor" : floor])
-            }
             ref_num.updateChildValues(["timestamp" : index.timestamp.timeIntervalSince1970])
             ref_num.updateChildValues(["course" : index.course])
         }
     }
     
-    func fetchRunningSessions(completion : @escaping( ([[Location]]) -> Void)) {
-        var array = [[Location]]()
+    private func monthYearTimestamp (withDate date: Date) -> String {
+        let format = DateFormatter()
+        format.dateFormat = "MMMM-yyyy"
+        return format.string(from: date)
+    }
+    
+//    func fetchRunningSessions(completion : @escaping( (dateTrainingList) -> Void)) {
+//        var dict = dateTrainingList()
+//        guard let currentUid = Auth.auth().currentUser?.uid else {return}
+//        let db_ref = REF_USER_RUNS.child(currentUid)
+//        REF_USER_RUNS.child(currentUid).child(currentUid).observe(.childAdded) { (dateMonthDict) in
+//            print("111111111")
+//            print("DATEMONTJ : \(dateMonthDict)")
+//            let dateMonth = dateMonthDict.key
+//            print("111111111")
+//            print("DATEMONTJ : \(dateMonthDict)")
+//            let ref2 = db_ref.child(currentUid).child(dateMonth)
+//
+//            ref2.observe(.childAdded) { (snapshot) in
+//                print("222222222")
+//                guard let trainingValues = snapshot.value as? NSArray else {return}
+//                print("33333333")
+//                var dict1 = trainingsList ()
+//                let trainingUid = snapshot.key
+//                let training = createTrainingFromDictionary(withNSArray: trainingValues)
+//
+//                dict1[trainingUid] = training
+//                dict[dateMonth] = dict1
+//                print("DEBUG: dict -> \(dict)")
+//                completion(dict)
+//            }
+//        }
+//    }
+    
+    func fetchRunningSessions(completion : @escaping( (trainingsList) -> Void)) {
+        var dict = trainingsList ()
         guard let currentUid = Auth.auth().currentUser?.uid else {return}
         let ref = REF_USER_RUNS.child(currentUid)
         ref.observe(.childAdded) { (snapshot) in
-            let trainingUid = snapshot.key
             guard let trainingValues = snapshot.value as? NSArray else {return}
-            createTrainingFromDictionary(withDictionary: trainingValues)
-            
-//            print("DEBUG: \(uid)")
-//            guard let dictionary = snapshot.value as? [String: AnyObject] else {return}
-            //array.append()
+
+            let trainingUid = snapshot.key
+            let training = createTrainingFromDictionary(withNSArray: trainingValues)
+
+            dict[trainingUid] = training
+            completion(dict)
         }
     }
     
-    func createTrainingFromDictionary(withDictionary dictionary: NSArray) {
-        for index in dictionary {
-            print("\(index)")
+    private func createTrainingFromDictionary(withNSArray array: NSArray) -> [Location] {
+        var training = [Location]()
+        for (index, value) in array.enumerated() {
+            let value = value as! Dictionary<String, Any>
+            let loc = Location(readNumber: index, altitude: value["altitude"] as! Double, course: value["course"] as! Double, longitude: value["longitude"] as! Double, latitude: value["latitude"] as! Double, speed: value["speed"] as! Double, timestamp: value["timestamp"] as! Double)
+            training.append(loc)
         }
-
+        return training
     }
 }
 

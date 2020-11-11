@@ -30,6 +30,8 @@
 		4B643E50254AD99600049ECE /* RunController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B643E4F254AD99600049ECE /* RunController.swift */; };
 		4B643E53254ADFD400049ECE /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B643E52254ADFD300049ECE /* Location.swift */; };
 		4B6625E22541C85C00FE0AC7 /* NotificationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B6625E12541C85C00FE0AC7 /* NotificationViewModel.swift */; };
+		4B6B62C1255C1C090017952C /* TrainingListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B6B62C0255C1C090017952C /* TrainingListViewModel.swift */; };
+		4B6B62C4255C28EF0017952C /* TrainingMonthCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B6B62C3255C28EF0017952C /* TrainingMonthCell.swift */; };
 		4B867C722534DB6E0016B94D /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B867C712534DB6E0016B94D /* Post.swift */; };
 		4B867C752534FA0B0016B94D /* PostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B867C742534FA0B0016B94D /* PostCell.swift */; };
 		4B91F47E252F94B6002458CA /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B91F47D252F94B6002458CA /* LoginController.swift */; };
@@ -89,6 +91,8 @@
 		4B643E4F254AD99600049ECE /* RunController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunController.swift; sourceTree = "<group>"; };
 		4B643E52254ADFD300049ECE /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		4B6625E12541C85C00FE0AC7 /* NotificationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewModel.swift; sourceTree = "<group>"; };
+		4B6B62C0255C1C090017952C /* TrainingListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingListViewModel.swift; sourceTree = "<group>"; };
+		4B6B62C3255C28EF0017952C /* TrainingMonthCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingMonthCell.swift; sourceTree = "<group>"; };
 		4B867C712534DB6E0016B94D /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		4B867C742534FA0B0016B94D /* PostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCell.swift; sourceTree = "<group>"; };
 		4B91F47D252F94B6002458CA /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
@@ -167,6 +171,7 @@
 				4B6097982546E03A00E2437A /* Profile */,
 				4BD214E425349FA100FEE09E /* InputTextView.swift */,
 				4B867C742534FA0B0016B94D /* PostCell.swift */,
+				4B6B62C3255C28EF0017952C /* TrainingMonthCell.swift */,
 				4B2DA3512538A4E500A3182F /* UserCell.swift */,
 				4BB69EDA2541809700259D9A /* NotificationCell.swift */,
 				4B2DA358253A093700A3182F /* PostHeader.swift */,
@@ -243,6 +248,7 @@
 			isa = PBXGroup;
 			children = (
 				4BE5A3B02535B52900A381A8 /* PostViewModel.swift */,
+				4B6B62C0255C1C090017952C /* TrainingListViewModel.swift */,
 				4B6625E12541C85C00FE0AC7 /* NotificationViewModel.swift */,
 				4B384CB025383B05003CECD2 /* ProfileHeaderViewModel.swift */,
 				4B151FD5253CC765003F46E6 /* UploadPostViewModel.swift */,
@@ -435,6 +441,7 @@
 				4B2DA3522538A4E500A3182F /* UserCell.swift in Sources */,
 				4BF75B142530D34A00F94EDF /* Utilities.swift in Sources */,
 				4BC390A02546DA1700DF5F1E /* EditProfileController.swift in Sources */,
+				4B6B62C1255C1C090017952C /* TrainingListViewModel.swift in Sources */,
 				4BD9C8FC253EB7180086A450 /* ActionSheetCell.swift in Sources */,
 				4BF17AB1252329C300872619 /* AppDelegate.swift in Sources */,
 				4B643E50254AD99600049ECE /* RunController.swift in Sources */,
@@ -474,6 +481,7 @@
 				4BD9C8F9253EABB00086A450 /* ActionSheetLauncher.swift in Sources */,
 				4B867C752534FA0B0016B94D /* PostCell.swift in Sources */,
 				4B151FD6253CC765003F46E6 /* UploadPostViewModel.swift in Sources */,
+				4B6B62C4255C28EF0017952C /* TrainingMonthCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -15,13 +15,13 @@ struct Location {
     let longitude: Double
     let latitude: Double
     /// in meters
-    let horizontalAccuracy: Double
+    let horizontalAccuracy: Double?
     
     
     /// in meters per second but rounded to 1st decimal
     let speed: Double
     /// in meters per second
-    let speedAccuracy: Double
+    let speedAccuracy: Double?
     
     
     /// in meters
@@ -29,7 +29,7 @@ struct Location {
     /// in numbers
     let floor: Int?
     /// in meters
-    let verticalAccuracy: Double
+    let verticalAccuracy: Double?
     
     
     let timestamp: Date
@@ -38,7 +38,7 @@ struct Location {
     /// from -180 to 180. 0 is north
     let course: Double
     /// The lower the value the more precise thedirection is.  A negative accuracy value indicates an invalid direction.
-    let courseAccuracy: Double
+    let courseAccuracy: Double?
     
     init(withCLLoaction location: CLLocation, withNumber number: Int = -1) {
         self.readNumber = number
@@ -47,7 +47,7 @@ struct Location {
         self.horizontalAccuracy = location.horizontalAccuracy
         self.speed = round(location.speed*10)/10
         self.speedAccuracy = location.speedAccuracy
-        self.altitude = location.altitude
+        self.altitude = location.altitude.binade
         self.floor = location.floor?.level
         self.verticalAccuracy = location.verticalAccuracy
         self.timestamp = location.timestamp
@@ -55,10 +55,25 @@ struct Location {
         self.courseAccuracy = location.courseAccuracy
     }
     
-    /// function returs CLLocation
+    init(readNumber: Int, altitude: Double, course: Double, longitude: Double, latitude: Double, speed: Double, timestamp: Double){
+        self.readNumber = readNumber
+        self.altitude = altitude
+        self.course = course
+        self.longitude = longitude
+        self.latitude = latitude
+        self.speed = speed
+        self.timestamp = Date(timeIntervalSince1970: timestamp)
+        self.horizontalAccuracy = nil
+        self.verticalAccuracy = nil
+        self.speedAccuracy = nil
+        self.courseAccuracy = nil
+        self.floor = nil
+    }
+    
+    /// function returs FULL CLLocation
     /// - Returns: CLLocation
-    func retCLLocation() -> CLLocation {
-        return CLLocation(coordinate: CLLocationCoordinate2D(latitude: self.latitude, longitude: self.longitude), altitude: self.altitude, horizontalAccuracy: self.horizontalAccuracy, verticalAccuracy: self.verticalAccuracy, course: self.course, courseAccuracy: self.courseAccuracy, speed: self.speed, speedAccuracy: self.speedAccuracy, timestamp: self.timestamp)
+    func retFullCLLocation() -> CLLocation {
+        return CLLocation(coordinate: CLLocationCoordinate2D(latitude: self.latitude, longitude: self.longitude), altitude: self.altitude, horizontalAccuracy: self.horizontalAccuracy!, verticalAccuracy: self.verticalAccuracy!, course: self.course, courseAccuracy: self.courseAccuracy!, speed: self.speed, speedAccuracy: self.speedAccuracy!, timestamp: self.timestamp)
     }
     
     /// Function returs  CLLocationCoordinate2D

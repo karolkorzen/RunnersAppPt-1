@@ -108,6 +108,10 @@ class FeedController: UICollectionViewController {
         collectionView.refreshControl = refreshControl
         
         configureRightBarButton()
+
+        RunService.shared.fetchRunningSessions { (list) in
+            print("DEBUG: \(list)") //FIXME: - DELETE FOR TEST PURP
+        }
     }
     
     func configureLeftBarButton() {

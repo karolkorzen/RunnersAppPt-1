@@ -98,7 +98,7 @@ class RunSummaryController: UIViewController {
     
     //MARK: - Selectors
     
-    @objc func showController(){
+    @objc func mapViewTapped(){
         if mapViewZoomed {
             UIView.animate(withDuration: 0.3) {
                 self.mapView.frame = CGRect(x: self.view.frame.width/2 + 5, y: 10, width: self.view.frame.width/2 - 15 , height: self.view.frame.height/3)
@@ -200,8 +200,6 @@ class RunSummaryController: UIViewController {
         
         let polylineTable = runTable.map{$0.retCLLocationCoordinate2D()}
         let polyline = MKPolyline(coordinates: polylineTable, count: polylineTable.count)
-        print("DEBUG: runTable.count -> \(runTable.count)")
-        print("DEBUG: polylineTable.count -> \(polylineTable.count)")
         self.mapView.addOverlay(polyline)
     }
     
@@ -248,7 +246,7 @@ class RunSummaryController: UIViewController {
     
     func appendDistance(coord: CLLocation){
         if let last = runTable.last {
-            distance += coord.distance(from: last.retCLLocation())
+            distance += coord.distance(from: last.retFullCLLocation())
             //print("DEBUG: added \(coord.distance(from: last.coordinate)) to distance")
         }
     }
