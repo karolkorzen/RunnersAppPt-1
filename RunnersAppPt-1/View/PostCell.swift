@@ -126,6 +126,7 @@ class PostCell: UICollectionViewCell{
         infoLabel.font = UIFont.systemFont(ofSize: 14)
         
         let actionStack = UIStackView(arrangedSubviews: [commentButton, repostButton, likeButton, shareButton])
+        
         actionStack.axis = .horizontal
         actionStack.spacing = 72
         addSubview(actionStack)

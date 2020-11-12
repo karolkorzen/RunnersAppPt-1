@@ -6,6 +6,15 @@
 //  Copyright © 2020 Karol Korzeń. All rights reserved.
 //
 
+//FIXME: - FIX SORTING POSTS DUE TO THE FACT THAT COMPLETION WORKS IMMEDIATELY AND THATS WHY I LOOKS AWFUL AFTER REFRESH
+//FIXME: - I MEAN ADD POSTS SORTED SOMEHOW IDK FETCH BY TIME ADDED
+
+//FIXME: - USE DATA FAN OUT (https://firebase.google.com/docs/database/ios/read-and-write?hl=en)
+//FIXME: - USE SET DATA TO EDIT (link above)
+//FIXME: - USE TRANSACTIONS TO LIKE (link also above)
+//FIXME: - SORT DATA (https://firebase.google.com/docs/database/ios/read-and-write?hl=en)
+//FIXME: - FILTER DATA FOR FEED CONTROLLER TO FETCH for ex. only 30 posts! (https://firebase.google.com/docs/database/ios/read-and-write?hl=en)
+
 import Firebase
 
 struct PostService{

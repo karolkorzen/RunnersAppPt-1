@@ -9,7 +9,7 @@
 import Foundation
 
 struct TrainingListViewModel {
-    typealias dateTrainingList = RunService.trainingsList
+    typealias dateTrainingList = RunService.dateTrainingList
     
     var dict: dateTrainingList
     
@@ -17,10 +17,9 @@ struct TrainingListViewModel {
         self.dict = dict
     }
     
-    var numberOfTrainings: Int {
+    var numberOfMonths: Int {
         return dict.count
     }
-    
 }
 
 

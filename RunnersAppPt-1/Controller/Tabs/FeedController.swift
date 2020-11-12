@@ -40,7 +40,7 @@ class FeedController: UICollectionViewController {
     override func viewWillAppear(_ animated: Bool) {
         DispatchQueue.main.async {
             self.fetchPosts()
-            self.collectionView.reloadData()
+            self.collectionView.reloadData() //FIXME: - too many reloads?
         }
         super.viewWillAppear(animated)
         navigationController?.navigationBar.barStyle = .default
@@ -108,10 +108,6 @@ class FeedController: UICollectionViewController {
         collectionView.refreshControl = refreshControl
         
         configureRightBarButton()
-
-        RunService.shared.fetchRunningSessions { (list) in
-            print("DEBUG: \(list)") //FIXME: - DELETE FOR TEST PURP
-        }
     }
     
     func configureLeftBarButton() {

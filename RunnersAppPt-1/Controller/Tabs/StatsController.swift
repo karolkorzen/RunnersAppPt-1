@@ -22,14 +22,13 @@ class StatsController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         DispatchQueue.main.async {
-            self.fetchTrainings()
             self.configureUI()
+            self.fetchTrainings()
         }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         DispatchQueue.main.async {
-            self.fetchTrainings()
             self.collectionView.reloadData()
         }
         super.viewWillAppear(animated)
@@ -39,9 +38,10 @@ class StatsController: UICollectionViewController {
     
     //MARK: - API
     
-    func fetchTrainings(){ //FIXME: not working lol
-        RunService.shared.fetchRunningSessions { (dict) in
-            self.viewModel = TrainingListViewModel(dict: dict)
+    func fetchTrainings(){
+        RunService.shared.fetchRuns { (dictionary) in
+            let vm = TrainingListViewModel(dict: dictionary)
+            self.viewModel = TrainingListViewModel(dict: dictionary)
         }
     }
     

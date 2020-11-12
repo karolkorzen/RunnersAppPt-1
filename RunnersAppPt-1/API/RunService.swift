@@ -13,11 +13,13 @@ struct RunService {
     typealias trainingsList = [String: [Location]]
     typealias dateTrainingList = [String: trainingsList]
     
+    
+    
     func uploadRunSession(withRunSession runTable: [Location] ) {
         guard let currentUid = Auth.auth().currentUser?.uid else {return}
-//        let monthYear = monthYearTimestamp(withDate: runTable[0].timestamp)
+        let monthYear = monthYearTimestamp(withDate: runTable[0].timestamp)
         
-        let ref = REF_USER_RUNS.child(currentUid).childByAutoId()
+        let ref = REF_USER_RUNS.child(currentUid).child(monthYear).childByAutoId()
         for index in runTable {
             let ref_num = ref.child("\(index.readNumber)")
             ref_num.updateChildValues(["latitude" : index.latitude])
@@ -31,7 +33,7 @@ struct RunService {
     
     private func monthYearTimestamp (withDate date: Date) -> String {
         let format = DateFormatter()
-        format.dateFormat = "MMMM-yyyy"
+        format.dateFormat = "MMMM yyyy"
         return format.string(from: date)
     }
     
@@ -63,22 +65,48 @@ struct RunService {
 //        }
 //    }
     
-    func fetchRunningSessions(completion : @escaping( (trainingsList) -> Void)) {
-        var dict = trainingsList ()
-        guard let currentUid = Auth.auth().currentUser?.uid else {return}
-        let ref = REF_USER_RUNS.child(currentUid)
-        ref.observe(.childAdded) { (snapshot) in
-            guard let trainingValues = snapshot.value as? NSArray else {return}
-
-            let trainingUid = snapshot.key
-            let training = createTrainingFromDictionary(withNSArray: trainingValues)
-
-            dict[trainingUid] = training
-            completion(dict)
+    func fetchRuns(completion: @escaping((dateTrainingList) -> Void)) {
+        var dictionary = dateTrainingList()
+        guard let currentUID = Auth.auth().currentUser?.uid else {return}
+        
+        REF_USER_RUNS.child(currentUID).observe(.childAdded) { (snapshot) in
+            let monthYear = snapshot.key
+            let trainings = snapshot.value as! [String : AnyObject]
+            var tmp = trainingsList()
+            for (index, value) in trainings.enumerated() {
+                let trainingID = Array(trainings)[index].key
+                let array = Array(trainings)[index].value
+                tmp[trainingID]  = createTrainingFromDictionary(withArray: array as! Array<Any>)
+                dictionary[monthYear] = tmp
+                completion(dictionary)
+            }
+//            REF_USER_RUNS.child(currentUID).observe(snapshot) { (snapshot) in
+//                let postID = snapshot.key
+//
+//                self.fetchPost(forPostID: postID) { (post) in
+//                    posts.append(post)
+//                    completion(posts)
+//                }
+//            }
         }
     }
     
-    private func createTrainingFromDictionary(withNSArray array: NSArray) -> [Location] {
+//    func fetchRunningSessions(completion : @escaping( (trainingsList) -> Void)) {
+//        var dict = trainingsList()
+//        guard let currentUid = Auth.auth().currentUser?.uid else {return}
+//        let ref = REF_USER_RUNS.child(currentUid)
+//        ref.observe(.childAdded) { (snapshot) in
+//            guard let trainingValues = snapshot.value as? NSArray else {return}
+//
+//            let trainingUid = snapshot.key
+//            let training = createTrainingFromDictionary(withNSArray: trainingValues)
+//
+//            dict[trainingUid] = training
+//            completion(dict)
+//        }
+//    }
+//
+    private func createTrainingFromDictionary(withArray array: Array<Any>) -> [Location] {
         var training = [Location]()
         for (index, value) in array.enumerated() {
             let value = value as! Dictionary<String, Any>
@@ -87,5 +115,6 @@ struct RunService {
         }
         return training
     }
+    
 }
 
