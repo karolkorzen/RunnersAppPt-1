@@ -44,4 +44,26 @@ struct RunViewModel {
     func retRunTablesCLLocationCoordinates2D (withTable table: [Location]) -> [CLLocationCoordinate2D] {
         return table.map{$0.retCLLocationCoordinate2D()}
     }
+    
+    func createStats(runTable: [Location], distance: Double) -> Stats {
+        let time = runTable.last!.timestamp.distance(to: runTable.first!.timestamp)
+        var max = 0.0
+        var avg = 0.0
+        var altmin = 0.0
+        var altmax = 0.0
+        for index in runTable {
+            avg+=index.speed
+            if index.speed>max {
+                max = index.speed
+            }
+            if index.altitude > altmin {
+                altmin = index.altitude
+            }
+            if index.altitude > altmax {
+                altmax = index.altitude
+            }
+        }
+        avg/=Double(runTable.count)
+        return Stats(time: time, timestampStart: runTable.first!.timestamp.timeIntervalSince1970, timestampStop: runTable.last!.timestamp.timeIntervalSince1970, distance: distance, avgSpeed: avg, maxSpeed: max, altitudeMin: altmin, altitudeMax: altmax)
+    }
 }

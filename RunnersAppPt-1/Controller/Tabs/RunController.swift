@@ -184,8 +184,9 @@ class RunController: UIViewController {
     }
     
     func finishTraining(withSavingDecision decision: Bool){
+        
         if decision {
-            RunService.shared.uploadRunSession(withRunSession: self.runTable)
+            RunService.shared.uploadRunSession(withRunSession: self.runTable, withStats: viewModel.createStats(runTable: runTable, distance: distance))
             let summary = RunSummaryController(tabBarHeight: self.tabBarHeight, runTable: self.runTable, speedChartTable: self.speedChartTable, distance: self.distance)
             self.present(summary, animated: true, completion: nil)
         }

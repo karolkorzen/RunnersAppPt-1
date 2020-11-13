@@ -140,12 +140,18 @@ extension UIColor {
     }
     
     
-    static let bluish = UIColor.rgb(red: 29, green: 161, blue: 242)
+    
     
     static let mainAppColor = blueish
     
-    static let pinkish = UIColor(red: 0.95, green: 0.66, blue: 0.63, alpha: 1.00)
+    static let appTintColor = UIColor.darkGray
+    static let secondaryAppColor = pinkish
+    static let cellBackground = UIColor(red: 0.150, green: 0.250, blue: 0.300, alpha: 0.1)
     
+    
+    static let previousCellBackground = UIColor(red: 0.93, green: 0.94, blue: 0.95, alpha: 1.00)
+    static let pinkish = UIColor(red: 0.95, green: 0.66, blue: 0.63, alpha: 1.00)
+    static let twitterBlue = UIColor.rgb(red: 29, green: 161, blue: 242)
     static let blueish = UIColor(red: 0.310, green: 0.416, blue: 0.561, alpha: 1.000)
 }
 

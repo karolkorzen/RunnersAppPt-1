@@ -55,6 +55,8 @@
 		4BE5A3B12535B52900A381A8 /* PostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BE5A3B02535B52900A381A8 /* PostViewModel.swift */; };
 		4BE5A3B42535BCB900A381A8 /* ProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BE5A3B32535BCB900A381A8 /* ProfileController.swift */; };
 		4BED470E253ED14900F39250 /* ActionSheetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BED470D253ED14900F39250 /* ActionSheetViewModel.swift */; };
+		4BF169F7255E89B6000251B1 /* MonthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BF169F6255E89B6000251B1 /* MonthViewModel.swift */; };
+		4BF16A13255EE715000251B1 /* Stats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BF16A12255EE715000251B1 /* Stats.swift */; };
 		4BF17AB1252329C300872619 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BF17AB0252329C300872619 /* AppDelegate.swift */; };
 		4BF17AB3252329C300872619 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BF17AB2252329C300872619 /* SceneDelegate.swift */; };
 		4BF17AB8252329C300872619 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4BF17AB6252329C300872619 /* Main.storyboard */; };
@@ -116,6 +118,8 @@
 		4BE5A3B02535B52900A381A8 /* PostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewModel.swift; sourceTree = "<group>"; };
 		4BE5A3B32535BCB900A381A8 /* ProfileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileController.swift; sourceTree = "<group>"; };
 		4BED470D253ED14900F39250 /* ActionSheetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionSheetViewModel.swift; sourceTree = "<group>"; };
+		4BF169F6255E89B6000251B1 /* MonthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthViewModel.swift; sourceTree = "<group>"; };
+		4BF16A12255EE715000251B1 /* Stats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stats.swift; sourceTree = "<group>"; };
 		4BF17AAD252329C300872619 /* RunnersAppPt-1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "RunnersAppPt-1.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4BF17AB0252329C300872619 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4BF17AB2252329C300872619 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -194,6 +198,15 @@
 			path = Tabs;
 			sourceTree = "<group>";
 		};
+		4BF169F5255E899D000251B1 /* training */ = {
+			isa = PBXGroup;
+			children = (
+				4B6B62C0255C1C090017952C /* TrainingListViewModel.swift */,
+				4BF169F6255E89B6000251B1 /* MonthViewModel.swift */,
+			);
+			path = training;
+			sourceTree = "<group>";
+		};
 		4BF17AA4252329C300872619 = {
 			isa = PBXGroup;
 			children = (
@@ -239,6 +252,7 @@
 				4B867C712534DB6E0016B94D /* Post.swift */,
 				4BD6FAF5254168D700143E99 /* Notification.swift */,
 				4B643E52254ADFD300049ECE /* Location.swift */,
+				4BF16A12255EE715000251B1 /* Stats.swift */,
 			);
 			name = Model;
 			path = "New Group1/Model";
@@ -247,8 +261,8 @@
 		4BF17ACA25235BF500872619 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				4BF169F5255E899D000251B1 /* training */,
 				4BE5A3B02535B52900A381A8 /* PostViewModel.swift */,
-				4B6B62C0255C1C090017952C /* TrainingListViewModel.swift */,
 				4B6625E12541C85C00FE0AC7 /* NotificationViewModel.swift */,
 				4B384CB025383B05003CECD2 /* ProfileHeaderViewModel.swift */,
 				4B151FD5253CC765003F46E6 /* UploadPostViewModel.swift */,
@@ -436,6 +450,7 @@
 				4BA6B92E2549899600FAB906 /* NewMessageController.swift in Sources */,
 				4BD214E525349FA100FEE09E /* InputTextView.swift in Sources */,
 				4B384CAE253831D6003CECD2 /* ProfileFilterCell.swift in Sources */,
+				4BF169F7255E89B6000251B1 /* MonthViewModel.swift in Sources */,
 				4B125F72252F030800E31C2B /* ConversationsController.swift in Sources */,
 				4B94BB292559550200E158BC /* RunViewModel.swift in Sources */,
 				4B2DA3522538A4E500A3182F /* UserCell.swift in Sources */,
@@ -448,6 +463,7 @@
 				4B6625E22541C85C00FE0AC7 /* NotificationViewModel.swift in Sources */,
 				4B957A91252F6B4100C12263 /* Extensions.swift in Sources */,
 				4B2DA359253A093700A3182F /* PostHeader.swift in Sources */,
+				4BF16A13255EE715000251B1 /* Stats.swift in Sources */,
 				4B2DA355253A058800A3182F /* PostController.swift in Sources */,
 				4BE5A3B42535BCB900A381A8 /* ProfileController.swift in Sources */,
 				4B95DA5425370C0B00FF4A2B /* ProfileHeader.swift in Sources */,

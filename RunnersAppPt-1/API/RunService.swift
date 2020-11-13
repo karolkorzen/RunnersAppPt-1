@@ -10,16 +10,27 @@ import Firebase
 
 struct RunService {
     static let shared = RunService()
-    typealias trainingsList = [String: [Location]]
-    typealias dateTrainingList = [String: trainingsList]
+    typealias TrainingsList = [String: Stats]
     
     
     
-    func uploadRunSession(withRunSession runTable: [Location] ) {
+    
+    /// func uploads run session after reading from [Location] runTable
+    /// - Parameter runTable: [Location]
+    func uploadRunSession(withRunSession runTable: [Location] , withStats stats: Stats) {
         guard let currentUid = Auth.auth().currentUser?.uid else {return}
-        let monthYear = monthYearTimestamp(withDate: runTable[0].timestamp)
+//        let monthYear = monthYearTimestamp(withDate: runTable[0].timestamp)
         
-        let ref = REF_USER_RUNS.child(currentUid).child(monthYear).childByAutoId()
+        var ref = REF_USER_RUNS.child(currentUid).childByAutoId()
+        ref.updateChildValues(["time" : stats.timestampStart])
+        ref.updateChildValues(["timestampStart" : stats.timestampStart])
+        ref.updateChildValues(["timestampStop" : stats.timestampStop])
+        ref.updateChildValues(["distance" : stats.distance])
+        ref.updateChildValues(["avgSpeed" : stats.avgSpeed])
+        ref.updateChildValues(["maxSpeed" : stats.maxSpeed])
+        ref.updateChildValues(["altitudeMin" : stats.altitudeMin])
+        ref.updateChildValues(["altitudeMax" : stats.altitudeMax])
+        ref = ref.child("locations")
         for index in runTable {
             let ref_num = ref.child("\(index.readNumber)")
             ref_num.updateChildValues(["latitude" : index.latitude])
@@ -31,81 +42,43 @@ struct RunService {
         }
     }
     
-    private func monthYearTimestamp (withDate date: Date) -> String {
-        let format = DateFormatter()
-        format.dateFormat = "MMMM yyyy"
-        return format.string(from: date)
-    }
-    
-//    func fetchRunningSessions(completion : @escaping( (dateTrainingList) -> Void)) {
-//        var dict = dateTrainingList()
-//        guard let currentUid = Auth.auth().currentUser?.uid else {return}
-//        let db_ref = REF_USER_RUNS.child(currentUid)
-//        REF_USER_RUNS.child(currentUid).child(currentUid).observe(.childAdded) { (dateMonthDict) in
-//            print("111111111")
-//            print("DATEMONTJ : \(dateMonthDict)")
-//            let dateMonth = dateMonthDict.key
-//            print("111111111")
-//            print("DATEMONTJ : \(dateMonthDict)")
-//            let ref2 = db_ref.child(currentUid).child(dateMonth)
-//
-//            ref2.observe(.childAdded) { (snapshot) in
-//                print("222222222")
-//                guard let trainingValues = snapshot.value as? NSArray else {return}
-//                print("33333333")
-//                var dict1 = trainingsList ()
-//                let trainingUid = snapshot.key
-//                let training = createTrainingFromDictionary(withNSArray: trainingValues)
-//
-//                dict1[trainingUid] = training
-//                dict[dateMonth] = dict1
-//                print("DEBUG: dict -> \(dict)")
-//                completion(dict)
-//            }
-//        }
-//    }
-    
-    func fetchRuns(completion: @escaping((dateTrainingList) -> Void)) {
-        var dictionary = dateTrainingList()
+    /// func fetches runs for curr user from firebase
+    /// - Parameter completion: dateTrainingsList
+    func fetchRuns(completion: @escaping((TrainingsList) -> Void)) {
+        var dictionary = TrainingsList()
         guard let currentUID = Auth.auth().currentUser?.uid else {return}
         
         REF_USER_RUNS.child(currentUID).observe(.childAdded) { (snapshot) in
-            let monthYear = snapshot.key
-            let trainings = snapshot.value as! [String : AnyObject]
-            var tmp = trainingsList()
-            for (index, value) in trainings.enumerated() {
-                let trainingID = Array(trainings)[index].key
-                let array = Array(trainings)[index].value
-                tmp[trainingID]  = createTrainingFromDictionary(withArray: array as! Array<Any>)
-                dictionary[monthYear] = tmp
-                completion(dictionary)
-            }
-//            REF_USER_RUNS.child(currentUID).observe(snapshot) { (snapshot) in
-//                let postID = snapshot.key
-//
-//                self.fetchPost(forPostID: postID) { (post) in
-//                    posts.append(post)
-//                    completion(posts)
-//                }
-//            }
+            let trainingID = snapshot.key
+            let training = snapshot.value as! [String : AnyObject]
+//            createStatsFromDictionary(training: training)
+            let stats = createStatsFromDictionary(training: training)
+            dictionary[trainingID] = stats
+            completion(dictionary)
         }
     }
     
-//    func fetchRunningSessions(completion : @escaping( (trainingsList) -> Void)) {
-//        var dict = trainingsList()
-//        guard let currentUid = Auth.auth().currentUser?.uid else {return}
-//        let ref = REF_USER_RUNS.child(currentUid)
-//        ref.observe(.childAdded) { (snapshot) in
-//            guard let trainingValues = snapshot.value as? NSArray else {return}
-//
-//            let trainingUid = snapshot.key
-//            let training = createTrainingFromDictionary(withNSArray: trainingValues)
-//
-//            dict[trainingUid] = training
-//            completion(dict)
-//        }
-//    }
-//
+    
+    
+    func createStatsFromDictionary(training: [String : AnyObject]) -> Stats {
+        let trainingLocations = createTrainingFromDictionary(withArray: training["locations"] as? Array<Any> ?? Array())
+        let time = training["time"] as? Double ?? 0.0
+        let timestampStart = training["timestampStart"] as? Double ?? 0.0
+        let timestampStop = training["timestampStop"] as? Double ?? 0.0
+        let distance = training["distance"] as? Double ?? 0.0
+        let avgSpeed = training["avgSpeed"] as? Double ?? 0.0
+        let maxSpeed = training["maxSpeed"] as? Double ?? 0.0
+        let altitudeMin = training["altitudeMin"] as? Double ?? 0.0
+        let altitudeMax = training["altitudeMax"] as? Double ?? 0.0
+        
+        let ret = Stats(time: time, timestampStart: timestampStart, timestampStop: timestampStop, distance: distance, avgSpeed: avgSpeed, maxSpeed: maxSpeed, altitudeMin: altitudeMin, altitudeMax: altitudeMax, training: trainingLocations)
+
+        return ret
+    }
+    
+    /// func creates Training from dictionary
+    /// - Parameter array: trainings
+    /// - Returns: array [Location] filled with locations
     private func createTrainingFromDictionary(withArray array: Array<Any>) -> [Location] {
         var training = [Location]()
         for (index, value) in array.enumerated() {

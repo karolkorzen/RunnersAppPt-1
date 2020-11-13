@@ -101,7 +101,7 @@ class PostCell: UICollectionViewCell{
     override init(frame: CGRect) {
         super.init(frame:  frame)
         
-        backgroundColor = UIColor(red: 0.93, green: 0.94, blue: 0.95, alpha: 1.00)
+        backgroundColor = .cellBackground
         layer.cornerRadius = 30
         
         let captionStack = UIStackView(arrangedSubviews: [infoLabel, captionLabel])

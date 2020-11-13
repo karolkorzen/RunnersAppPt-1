@@ -13,9 +13,11 @@ private let reuseIdentifier = "Training cell"
 class StatsController: UICollectionViewController {
     // MARK: - Lifecycle
     
-    var viewModel: TrainingListViewModel? {
+    var viewModel = TrainingListViewModel() {
         didSet {
-            self.collectionView.reloadData()
+            DispatchQueue.main.async {
+                self.collectionView.reloadData()
+            }
         }
     }
     
@@ -23,13 +25,12 @@ class StatsController: UICollectionViewController {
         super.viewDidLoad()
         DispatchQueue.main.async {
             self.configureUI()
-            self.fetchTrainings()
         }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         DispatchQueue.main.async {
-            self.collectionView.reloadData()
+            self.fetchTrainings()
         }
         super.viewWillAppear(animated)
         navigationController?.navigationBar.barStyle = .default
@@ -40,28 +41,29 @@ class StatsController: UICollectionViewController {
     
     func fetchTrainings(){
         RunService.shared.fetchRuns { (dictionary) in
-            let vm = TrainingListViewModel(dict: dictionary)
-            self.viewModel = TrainingListViewModel(dict: dictionary)
+            print("DEBUG: fetched in statsController")
+            print(dictionary)
         }
     }
     
     //MARK: - Helpers
     
     func configureUI(){
-        collectionView.backgroundColor = .green
+        collectionView.backgroundColor = .white
+        collectionView.register(TrainingMonthCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        collectionView.reloadData()
     }
 }
 
-//MARK: - UICollectionViewDelegate/DataSource
-
+////MARK: - UICollectionViewDelegate/DataSource
+//
 //extension StatsController {
-//    override func numberOfSections(in collectionView: UICollectionView) -> Int {
-//        return viewModel?.numberOfTrainings ?? 9
+//    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+//        return 4
 //    }
 //
 //    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) //as! MonthCell
-//        cell.backgroundColor = .init(red: 80, green: 0, blue: 0, alpha: 0.6)
+//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! TrainingMonthCell
 //        return cell
 //    }
 //

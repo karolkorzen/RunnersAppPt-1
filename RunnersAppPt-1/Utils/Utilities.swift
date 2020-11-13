@@ -14,8 +14,6 @@ class Utilities {
     /// object that allow us to take funcs from class without constructing its object
     static let shared = Utilities()
     
-    
-    
     /// function returs input view with image and textfield right next to it with white divider of height = 0.75 and white colour with paddings = 8
     /// - Parameters:
     ///   - image: image
@@ -94,14 +92,25 @@ class Utilities {
         button.tintColor = .white
         button.backgroundColor = color
         let runIconConfig = UIImage.SymbolConfiguration(pointSize: 25, weight: .bold, scale: .default)
-        let img = UIImage(systemName: "pencil.and.outline", withConfiguration: runIconConfig)
+        let img = UIImage(systemName: systemName, withConfiguration: runIconConfig)
         button.setImage(img, for: .normal)
-        
         
         return button
     }
     
-    /// func creates label for speed and distance in run controller
+    /// func returns SF icon
+    /// - Parameters:
+    ///   - systemName: image name
+    ///   - color: color (by default .mainAppColor)
+    /// - Returns: UIImageView
+    func monthIconRunList(withColor color: UIColor = .mainAppColor) -> UIImageView {
+        let iv = UIImageView()
+        iv.backgroundColor = color
+        iv.layer.cornerRadius = 10
+        return iv
+    }
+    
+    /// func creates big label for speed and distance in run controller
     /// - Returns: UILabel
     func infoRunLabel() -> UILabel {
         let label = UILabel()
@@ -112,5 +121,16 @@ class Utilities {
         label.layer.masksToBounds = true
         return label
     }
+    
+    /// func creates label with bold color of default size 14
+    /// - Parameter size: text
+    /// - Returns: UILabel
+    func boldLabel(withSize size: CGFloat = 14) -> UILabel {
+        let label = UILabel()
+        label.font = UIFont.boldSystemFont(ofSize: 14)
+        label.tintColor = .appTintColor
+        return label
+    }
+
 }
 
