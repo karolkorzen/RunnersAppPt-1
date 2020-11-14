@@ -9,16 +9,20 @@
 import Foundation
 
 struct TrainingListViewModel {
-    typealias dateTrainingList = RunService
+    typealias TrainingList = RunService.TrainingsList
     
-    var dict: dateTrainingList
+    var dict: TrainingList
     
-    init(dict: dateTrainingList) {
+    init(dict: TrainingList) {
         self.dict = dict
     }
     
     init(){
-        self.dict = dateTrainingList()
+        self.dict = TrainingList()
+    }
+    
+    var numberOfTrainings: Int {
+        return dict.count
     }
 }
 

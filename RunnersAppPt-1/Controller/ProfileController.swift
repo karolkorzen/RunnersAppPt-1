@@ -168,11 +168,11 @@ extension ProfileController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let viewModel = PostViewModel(post: currentDataSource[indexPath.row])
-        var height = viewModel.size(forWidth: view.frame.width).height + 72
+        var height = viewModel.size(forWidth: view.frame.width).height + 100
         if currentDataSource[indexPath.row].isReply {
             height += 20
         }
-        return CGSize(width: view.frame.width, height: height)
+        return CGSize(width: view.frame.width-12, height: height)
     }
 }
 

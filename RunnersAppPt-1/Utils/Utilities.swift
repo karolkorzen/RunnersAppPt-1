@@ -127,7 +127,19 @@ class Utilities {
     /// - Returns: UILabel
     func boldLabel(withSize size: CGFloat = 14) -> UILabel {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 14)
+        label.font = UIFont.boldSystemFont(ofSize: size)
+        label.tintColor = .appTintColor
+        return label
+    }
+    
+    /// func creates  standar label of default size 14 and default weight .back
+    /// - Parameters:
+    ///   - size: font size
+    ///   - weight: weight
+    /// - Returns: UILabel
+    func standardLabel(withSize size: CGFloat = 14, withWeight weight: UIFont.Weight = .black) -> UILabel {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: size, weight: weight)
         label.tintColor = .appTintColor
         return label
     }

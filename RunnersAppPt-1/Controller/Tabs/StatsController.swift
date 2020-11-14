@@ -2,80 +2,52 @@
 //  StatsController.swift
 //  RunnersAppPt-1
 //
-//  Created by Karol Korzeń on 06/11/2020.
+//  Created by Karol Korzeń on 14/11/2020.
 //  Copyright © 2020 Karol Korzeń. All rights reserved.
 //
 
 import UIKit
+import FloatingPanel
 
-private let reuseIdentifier = "Training cell"
-
-class StatsController: UICollectionViewController {
-    // MARK: - Lifecycle
+class StatsController: UIViewController {
+    //MARK: - Properties
     
-    var viewModel = TrainingListViewModel() {
-        didSet {
-            DispatchQueue.main.async {
-                self.collectionView.reloadData()
-            }
-        }
+
+    
+    //MARK: - Lifecycle
+    
+    init(){
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        DispatchQueue.main.async {
-            self.configureUI()
-        }
+        setFloatingPanel()
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        DispatchQueue.main.async {
-            self.fetchTrainings()
-        }
         super.viewWillAppear(animated)
-        navigationController?.navigationBar.barStyle = .default
-        navigationController?.navigationBar.isHidden = false
-    }
-    
-    //MARK: - API
-    
-    func fetchTrainings(){
-        RunService.shared.fetchRuns { (dictionary) in
-            print("DEBUG: fetched in statsController")
-            print(dictionary)
-        }
     }
     
     //MARK: - Helpers
     
-    func configureUI(){
-        collectionView.backgroundColor = .white
-        collectionView.register(TrainingMonthCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-        collectionView.reloadData()
+    func setFloatingPanel() {
+        let fpc = FloatingPanelController()
+        fpc.delegate = self
+        let trainingListController = TrainingsListController(collectionViewLayout: UICollectionViewFlowLayout())
+        fpc.set(contentViewController: trainingListController)
+        fpc.track(scrollView: trainingListController.collectionView)
+        fpc.addPanel(toParent: self)
+        
+        
+        
     }
 }
 
-////MARK: - UICollectionViewDelegate/DataSource
-//
-//extension StatsController {
-//    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        return 4
-//    }
-//
-//    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! TrainingMonthCell
-//        return cell
-//    }
-//
-//    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        print("DEBUG: expand month!")
-//    }
-//}
-//
-////MARK: - UICollectionViewDelegateFlowLayout
-//
-//extension StatsController: UICollectionViewDelegateFlowLayout {
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        return CGSize(width: view.frame.width-12, height: view.frame.height/10)
-//    }
-//}
+extension StatsController: FloatingPanelControllerDelegate {
+    
+}

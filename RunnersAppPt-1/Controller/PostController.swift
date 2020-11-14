@@ -108,7 +108,9 @@ extension PostController: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.frame.width, height: 120)
+        let viewModel = PostViewModel(post: post)
+        let height = viewModel.size(forWidth: view.frame.width).height
+        return CGSize(width: view.frame.width - 12, height: height + 100 + 20)
     }
 }
 

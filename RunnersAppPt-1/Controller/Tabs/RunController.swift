@@ -10,6 +10,7 @@ import UIKit
 import MapKit
 import CoreLocation
 import Charts
+import FloatingPanel
 
 //FIXME: - Whole charts are dumb
 
@@ -17,6 +18,7 @@ class RunController: UIViewController {
     
     //MARK: - Properties
     private let viewModel = RunViewModel()
+    let fpc = FloatingPanelController()
     
     private var runTable: [Location] = []
     private var isRunning: Bool = false
@@ -46,7 +48,6 @@ class RunController: UIViewController {
         button.tintColor = .white
         button.layer.cornerRadius = 10
         button.backgroundColor = .mainAppColor
-        button.titleLabel?.text = "START"
         button.setTitle("START", for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
         button.addTarget(self, action: #selector(toggleRunButton), for: .touchUpInside)
@@ -113,6 +114,7 @@ class RunController: UIViewController {
     //MARK: - Helpers
     
     func startTraining() {
+        fpc.dismiss(animated: true, completion: nil)
         UIView.animate(withDuration: 0.5) {
             self.runButton.setTitle("STOP", for: .normal)
             self.runButton.backgroundColor = UIColor(red: 0.13, green: 0.19, blue: 0.25, alpha: 1.00)
@@ -188,11 +190,14 @@ class RunController: UIViewController {
         if decision {
             RunService.shared.uploadRunSession(withRunSession: self.runTable, withStats: viewModel.createStats(runTable: runTable, distance: distance))
             let summary = RunSummaryController(tabBarHeight: self.tabBarHeight, runTable: self.runTable, speedChartTable: self.speedChartTable, distance: self.distance)
-            self.present(summary, animated: true, completion: nil)
+            fpc.set(contentViewController: summary)
+            fpc.isRemovalInteractionEnabled = true
+            self.present(fpc, animated: true, completion: nil)
         }
         self.isRunning.toggle()
         self.runTable.removeAll()
         self.distance = 0.0
+        self.distanceLabel.text = viewModel.distanceLabelText(withDistance: self.distance)
         self.speedChartTable.removeAll()
         self.polylineTable.removeAll()
         
@@ -346,7 +351,6 @@ extension RunController: MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
         guard let location = locationManager.location else {return}
-        
         if !mapViewZoomed {
             let mapCamera = MKMapCamera(lookingAtCenter: CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude), fromDistance: 100, pitch: 60, heading: location.course)
             self.mapView.setCamera(mapCamera, animated: true)

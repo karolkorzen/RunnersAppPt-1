@@ -109,7 +109,7 @@ class MainTabController: UITabBarController {
         let run = RunController(tabBarHeight: self.tabBar.frame.size.height)
         let navR = templateNavigationController(image: UIImage(systemName: "hare.fill")!, rootViewController: run)
         
-        let stats = StatsController(collectionViewLayout: UICollectionViewFlowLayout())
+        let stats = StatsController()
         let navS = templateNavigationController(image: UIImage(systemName: "chart.pie.fill")!, rootViewController: stats)
     
         let notifications = NotificationsController(collectionViewLayout: UICollectionViewFlowLayout())
