@@ -12,7 +12,7 @@ struct RunViewModel {
     
     func speedLabelText(withSpeed speed: Double) -> String{
         if speed > 0.0 {
-            return "\(Int(speed*3.6)) km/h"
+            return "\((speed*3.6)) km/h"
         }
         return "0 km/h"
     }
@@ -21,7 +21,7 @@ struct RunViewModel {
             if distance >= 1000 {
                 return "\(round(distance)/100) km"
             } else {
-                return "\(Int(distance)) m"
+                return "\((distance)) m"
             }
         } else {
             return "0 m"

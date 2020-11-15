@@ -123,8 +123,12 @@ class RunController: UIViewController {
     }
     
     func stopTraining(){
+        if runTable.count > 1 {
             let alert = configAlert()
             self.present(alert, animated: true, completion: nil)
+        } else {
+            finishTraining(withSavingDecision: false)
+        }
     }
     
     func restoreMapView(withLocation location: CLLocation){
@@ -135,8 +139,9 @@ class RunController: UIViewController {
         self.mapView.isRotateEnabled = false
         self.mapView.isPitchEnabled = false
         self.mapView.isScrollEnabled = false
-        let mapCamera = MKMapCamera(lookingAtCenter: CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude), fromDistance: 100, pitch: 60, heading: location.course)
-        self.mapView.setCamera(mapCamera, animated: true)
+        self.mapView.setUserTrackingMode(.followWithHeading, animated: true)
+//        let mapCamera = MKMapCamera(lookingAtCenter: CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude), fromDistance: 100, pitch: 0, heading: location.course)
+//        self.mapView.setCamera(mapCamera, animated: false)
     }
     
     func zoomMapView(withLocation location: CLLocation){
@@ -148,7 +153,9 @@ class RunController: UIViewController {
         self.mapView.isRotateEnabled = true
         self.mapView.isPitchEnabled = true
         self.mapView.isScrollEnabled = true
-        let mapCamera = MKMapCamera(lookingAtCenter: CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude), fromDistance: 400, pitch: 0, heading: 0)
+        self.mapView.setUserTrackingMode(.none, animated: true)
+        let dist = self.distance > 50 ? self.distance : 400
+        let mapCamera = MKMapCamera(lookingAtCenter: CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude), fromDistance: dist, pitch: 0, heading: 0)
         self.mapView.setCamera(mapCamera, animated: true)
     }
     
@@ -166,6 +173,8 @@ class RunController: UIViewController {
         mapView.isZoomEnabled = false
         mapView.isRotateEnabled = false
         mapView.addGestureRecognizer(tap)
+        
+        mapView.setUserTrackingMode(.followWithHeading, animated: true)
         
         view.addSubview(mapView)
         
@@ -186,11 +195,12 @@ class RunController: UIViewController {
     }
     
     func finishTraining(withSavingDecision decision: Bool){
-        
+
         if decision {
             RunService.shared.uploadRunSession(withRunSession: self.runTable, withStats: viewModel.createStats(runTable: runTable, distance: distance))
             let summary = RunSummaryController(tabBarHeight: self.tabBarHeight, runTable: self.runTable, speedChartTable: self.speedChartTable, distance: self.distance)
             fpc.set(contentViewController: summary)
+            fpc.layout = MyRunFloatingPanelLayout()
             fpc.isRemovalInteractionEnabled = true
             self.present(fpc, animated: true, completion: nil)
         }
@@ -232,6 +242,9 @@ class RunController: UIViewController {
         distanceLabel.text = "0 m"
         distanceLabel.textAlignment = .center
         
+        
+        //FIXME: - MAKE A STACK WITH TIME WHEN USER IS RUNNING
+        //FIXME: - DIVIDE SCREEN TO 5 BLOCKS
         view.addSubview(runButton)
         runButton.anchor(top: distanceLabel.bottomAnchor, left: view.leftAnchor, paddingTop: 10, paddingLeft: 10)
         
@@ -244,7 +257,6 @@ class RunController: UIViewController {
     func configureLocationManager(){
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.activityType = .fitness
         locationManager.distanceFilter = 10
         locationManager.allowsBackgroundLocationUpdates = true
     }
@@ -265,6 +277,7 @@ class RunController: UIViewController {
             locationManager.requestAlwaysAuthorization()
             mapView.showsUserLocation = true
             locationManager.startUpdatingLocation()
+            locationManager.startUpdatingHeading()
             break
         case .denied:
             locationManager.requestWhenInUseAuthorization()
@@ -277,6 +290,7 @@ class RunController: UIViewController {
         case .authorizedAlways:
             mapView.showsUserLocation = true
             locationManager.startUpdatingLocation()
+            locationManager.startUpdatingHeading()
             break
         @unknown default:
             break
@@ -350,11 +364,11 @@ extension RunController: MKMapViewDelegate {
     }
     
     func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
-        guard let location = locationManager.location else {return}
-        if !mapViewZoomed {
-            let mapCamera = MKMapCamera(lookingAtCenter: CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude), fromDistance: 100, pitch: 60, heading: location.course)
-            self.mapView.setCamera(mapCamera, animated: true)
-        }
+//        guard let location = locationManager.location else {return}
+//        if !mapViewZoomed {
+//            let mapCamera = MKMapCamera(lookingAtCenter: CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude), fromDistance: 100, pitch: 60, heading: location.course)
+//            self.mapView.setCamera(mapCamera, animated: true)
+//        }
         if isRunning {
             let polyline = MKPolyline(coordinates: viewModel.retRunTablesCLLocationCoordinates2D(withTable: runTable), count: runTable.count)
             addPolyline(withPolyline: polyline)
@@ -365,6 +379,15 @@ extension RunController: MKMapViewDelegate {
 //MARK: - CLLocationManagerDelegate
 
 extension RunController: CLLocationManagerDelegate {
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
+        print("DEBUG: new heading -> \(newHeading)")
+        guard let location = locationManager.location else {return}
+        if !mapViewZoomed {
+//            let mapCamera = MKMapCamera(lookingAtCenter: CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude), fromDistance: 100, pitch: 0, heading: newHeading.trueHeading)
+//            self.mapView.setCamera(mapCamera, animated: false)
+        }
+    }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         mapView.showsUserLocation = true
@@ -396,4 +419,16 @@ extension RunController: CLLocationManagerDelegate {
 
 extension RunController: ChartViewDelegate {
 
+}
+
+//MARK: - FloatingPanelLayout
+
+class MyRunFloatingPanelLayout: FloatingPanelLayout {
+    let position: FloatingPanelPosition = .bottom
+    let initialState: FloatingPanelState = .full
+    var anchors: [FloatingPanelState: FloatingPanelLayoutAnchoring] {
+        return [
+            .full: FloatingPanelLayoutAnchor(absoluteInset: 5.0, edge: .top, referenceGuide: .safeArea),
+        ]
+    }
 }
