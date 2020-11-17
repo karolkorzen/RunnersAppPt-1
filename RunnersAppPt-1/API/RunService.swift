@@ -51,15 +51,31 @@ struct RunService {
         REF_USER_RUNS.child(currentUID).observe(.childAdded) { (snapshot) in
             let trainingID = snapshot.key
             let training = snapshot.value as! [String : AnyObject]
-//            createStatsFromDictionary(training: training)
             let stats = createStatsFromDictionary(training: training)
             dictionary[trainingID] = stats
             completion(dictionary)
         }
     }
     
+    /// func fetches stats from runs
+    /// - Parameter completion: [Stats]
+    func fetchStats(completion: @escaping([Stats]) -> Void) {
+        var statsArray: [Stats] = []
+        guard let currentUID = Auth.auth().currentUser?.uid else {return}
+        
+        REF_USER_RUNS.child(currentUID).observe(.childAdded) { (snapshot) in
+            let training = snapshot.value as! [String : AnyObject]
+            let stats = createStatsFromDictionary(training: training)
+            statsArray.append(stats)
+            completion(statsArray)
+        }
+    }
     
     
+    
+    /// func creates Stats object from training dictionary
+    /// - Parameter training: dictionary containing training stats with locations
+    /// - Returns: Stats
     func createStatsFromDictionary(training: [String : AnyObject]) -> Stats {
         let trainingLocations = createTrainingFromDictionary(withArray: training["locations"] as? Array<Any> ?? Array())
         let time = training["time"] as? Double ?? 0.0

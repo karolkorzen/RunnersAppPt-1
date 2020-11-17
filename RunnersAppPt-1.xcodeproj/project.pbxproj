@@ -27,6 +27,7 @@
 		4B60979C2546E05900E2437A /* EditProfileHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B60979B2546E05900E2437A /* EditProfileHeader.swift */; };
 		4B60979F254722E800E2437A /* EditProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B60979E254722E800E2437A /* EditProfileViewModel.swift */; };
 		4B6097A22547233600E2437A /* EditProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B6097A12547233600E2437A /* EditProfileCell.swift */; };
+		4B627849256428F100070BEB /* StatsSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B627848256428F100070BEB /* StatsSummary.swift */; };
 		4B643E50254AD99600049ECE /* RunController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B643E4F254AD99600049ECE /* RunController.swift */; };
 		4B643E53254ADFD400049ECE /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B643E52254ADFD300049ECE /* Location.swift */; };
 		4B6625E22541C85C00FE0AC7 /* NotificationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B6625E12541C85C00FE0AC7 /* NotificationViewModel.swift */; };
@@ -54,7 +55,7 @@
 		4BD6FAF925416B1100143E99 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD6FAF825416B1000143E99 /* NotificationService.swift */; };
 		4BD9C8F9253EABB00086A450 /* ActionSheetLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD9C8F8253EABB00086A450 /* ActionSheetLauncher.swift */; };
 		4BD9C8FC253EB7180086A450 /* ActionSheetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD9C8FB253EB7180086A450 /* ActionSheetCell.swift */; };
-		4BE3A44025615CF0004890D4 /* StatsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BE3A43F25615CF0004890D4 /* StatsViewModel.swift */; };
+		4BE3A44025615CF0004890D4 /* StatsSummaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BE3A43F25615CF0004890D4 /* StatsSummaryViewModel.swift */; };
 		4BE5A3B12535B52900A381A8 /* PostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BE5A3B02535B52900A381A8 /* PostViewModel.swift */; };
 		4BE5A3B42535BCB900A381A8 /* ProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BE5A3B32535BCB900A381A8 /* ProfileController.swift */; };
 		4BED470E253ED14900F39250 /* ActionSheetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BED470D253ED14900F39250 /* ActionSheetViewModel.swift */; };
@@ -92,6 +93,7 @@
 		4B60979B2546E05900E2437A /* EditProfileHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileHeader.swift; sourceTree = "<group>"; };
 		4B60979E254722E800E2437A /* EditProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewModel.swift; sourceTree = "<group>"; };
 		4B6097A12547233600E2437A /* EditProfileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileCell.swift; sourceTree = "<group>"; };
+		4B627848256428F100070BEB /* StatsSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsSummary.swift; sourceTree = "<group>"; };
 		4B643E4F254AD99600049ECE /* RunController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunController.swift; sourceTree = "<group>"; };
 		4B643E52254ADFD300049ECE /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		4B6625E12541C85C00FE0AC7 /* NotificationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewModel.swift; sourceTree = "<group>"; };
@@ -119,7 +121,7 @@
 		4BD6FAF825416B1000143E99 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		4BD9C8F8253EABB00086A450 /* ActionSheetLauncher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionSheetLauncher.swift; sourceTree = "<group>"; };
 		4BD9C8FB253EB7180086A450 /* ActionSheetCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionSheetCell.swift; sourceTree = "<group>"; };
-		4BE3A43F25615CF0004890D4 /* StatsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsViewModel.swift; sourceTree = "<group>"; };
+		4BE3A43F25615CF0004890D4 /* StatsSummaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsSummaryViewModel.swift; sourceTree = "<group>"; };
 		4BE5A3B02535B52900A381A8 /* PostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewModel.swift; sourceTree = "<group>"; };
 		4BE5A3B32535BCB900A381A8 /* ProfileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileController.swift; sourceTree = "<group>"; };
 		4BED470D253ED14900F39250 /* ActionSheetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionSheetViewModel.swift; sourceTree = "<group>"; };
@@ -206,7 +208,7 @@
 			isa = PBXGroup;
 			children = (
 				4B6B62C0255C1C090017952C /* TrainingListViewModel.swift */,
-				4BE3A43F25615CF0004890D4 /* StatsViewModel.swift */,
+				4BE3A43F25615CF0004890D4 /* StatsSummaryViewModel.swift */,
 				4B7B0F8D25601E90003E6D4B /* TrainingViewModel.swift */,
 			);
 			path = training;
@@ -258,6 +260,7 @@
 				4BD6FAF5254168D700143E99 /* Notification.swift */,
 				4B643E52254ADFD300049ECE /* Location.swift */,
 				4BF16A12255EE715000251B1 /* Stats.swift */,
+				4B627848256428F100070BEB /* StatsSummary.swift */,
 			);
 			name = Model;
 			path = "New Group1/Model";
@@ -453,10 +456,11 @@
 			files = (
 				4B3BF2B025321B8400F38822 /* UserService.swift in Sources */,
 				4B125F70252F02F100E31C2B /* NotificationsController.swift in Sources */,
+				4B627849256428F100070BEB /* StatsSummary.swift in Sources */,
 				4BA6B92E2549899600FAB906 /* NewMessageController.swift in Sources */,
 				4BD214E525349FA100FEE09E /* InputTextView.swift in Sources */,
 				4B384CAE253831D6003CECD2 /* ProfileFilterCell.swift in Sources */,
-				4BE3A44025615CF0004890D4 /* StatsViewModel.swift in Sources */,
+				4BE3A44025615CF0004890D4 /* StatsSummaryViewModel.swift in Sources */,
 				4B125F72252F030800E31C2B /* ConversationsController.swift in Sources */,
 				4B94BB292559550200E158BC /* RunViewModel.swift in Sources */,
 				4B7B0F91256038AC003E6D4B /* StatsController.swift in Sources */,

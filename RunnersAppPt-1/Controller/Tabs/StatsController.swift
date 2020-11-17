@@ -12,7 +12,8 @@ import FloatingPanel
 class StatsController: UIViewController {
     //MARK: - Properties
     
-
+    private let viewModel = StatsSummaryViewModel()
+    private let statsLabel = Utilities.shared.infoRunLabel()
     
     //MARK: - Lifecycle
     
@@ -50,11 +51,17 @@ class StatsController: UIViewController {
     
     func configureUI(){
         view.backgroundColor = .white
+        
+        view.addSubview(statsLabel)
+        statsLabel.layer.zPosition = CGFloat(-(Float.greatestFiniteMagnitude))
+        statsLabel.text = viewModel.testLabel
+        statsLabel.setDimensions(width: view.frame.width - 20, height: 300)
+        statsLabel.font = UIFont.italicSystemFont(ofSize: 10)
+        statsLabel.center(inView: self.view)
     }
 }
 
 extension StatsController: FloatingPanelControllerDelegate {
-    
 }
 
 class MyStatsFloatingPanelLayout: FloatingPanelLayout {
@@ -63,7 +70,6 @@ class MyStatsFloatingPanelLayout: FloatingPanelLayout {
     var anchors: [FloatingPanelState: FloatingPanelLayoutAnchoring] {
         return [
             .full: FloatingPanelLayoutAnchor(absoluteInset: 16.0, edge: .top, referenceGuide: .safeArea),
-            //.half: FloatingPanelLayoutAnchor(fractionalInset: 0.5, edge: .bottom, referenceGuide: .safeArea),
             .tip: FloatingPanelLayoutAnchor(absoluteInset: 44.0, edge: .bottom, referenceGuide: .safeArea),
         ]
     }

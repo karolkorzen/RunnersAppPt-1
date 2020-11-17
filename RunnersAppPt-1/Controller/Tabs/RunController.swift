@@ -380,15 +380,6 @@ extension RunController: MKMapViewDelegate {
 
 extension RunController: CLLocationManagerDelegate {
     
-    func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
-        print("DEBUG: new heading -> \(newHeading)")
-        guard let location = locationManager.location else {return}
-        if !mapViewZoomed {
-//            let mapCamera = MKMapCamera(lookingAtCenter: CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude), fromDistance: 100, pitch: 0, heading: newHeading.trueHeading)
-//            self.mapView.setCamera(mapCamera, animated: false)
-        }
-    }
-    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         mapView.showsUserLocation = true
 

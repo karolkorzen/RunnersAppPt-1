@@ -110,7 +110,7 @@ class Utilities {
         return iv
     }
     
-    /// func creates big label for speed and distance in run controller
+    /// func creates big label (applied for speed and distance in run controller)
     /// - Returns: UILabel
     func infoRunLabel() -> UILabel {
         let label = UILabel()
