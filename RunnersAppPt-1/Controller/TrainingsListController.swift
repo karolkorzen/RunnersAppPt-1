@@ -8,7 +8,8 @@
 
 import UIKit
 
-private let reuseIdentifier = "Training cell"
+private let reuseIdentifier = "TrainingCell"
+private let headerIdentifier = "HeaderCell"
 
 class TrainingsListController: UICollectionViewController {
     // MARK: - Lifecycle
@@ -23,9 +24,7 @@ class TrainingsListController: UICollectionViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        DispatchQueue.main.async {
-            self.configureUI()
-        }
+        self.configureUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -50,6 +49,7 @@ class TrainingsListController: UICollectionViewController {
     func configureUI(){
         collectionView.backgroundColor = .white
         collectionView.register(TrainingListCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        collectionView.register(TrainingListHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerIdentifier)
         collectionView.isUserInteractionEnabled = true
         collectionView.reloadData()
     }
@@ -58,6 +58,7 @@ class TrainingsListController: UICollectionViewController {
 //MARK: - UICollectionViewDelegate
 
 extension TrainingsListController {
+    
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel.numberOfTrainings
     }
@@ -76,12 +77,9 @@ extension TrainingsListController {
 //MARK: - UICollectionViewDelegateFlowLayout
 
 extension TrainingsListController: UICollectionViewDelegateFlowLayout {
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-//        return UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
-//    }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: view.frame.width, height: 20)
+        return CGSize(width: view.frame.width, height: 50)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -91,4 +89,10 @@ extension TrainingsListController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 10.0
     }
+    
+    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerIdentifier, for: indexPath) as! TrainingListHeader
+        return header
+    }
+    
 }

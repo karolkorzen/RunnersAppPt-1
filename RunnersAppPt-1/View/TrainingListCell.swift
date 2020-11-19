@@ -20,7 +20,7 @@ class TrainingListCell: UICollectionViewCell{
     
     private lazy var dateLabel = Utilities.shared.standardLabel(withSize: 14, withWeight: .heavy)
     private lazy var hourLabel = Utilities.shared.standardLabel(withSize: 10, withWeight: .light)
-    private lazy var distanceLabel = Utilities.shared.standardLabel(withSize: 30, withWeight: .bold)
+    private lazy var distanceLabel = Utilities.shared.standardLabel(withSize: 25, withWeight: .bold)
     
     //MARK: - Lifecycle
     

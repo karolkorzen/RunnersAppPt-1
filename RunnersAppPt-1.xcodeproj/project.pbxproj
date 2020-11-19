@@ -12,6 +12,7 @@
 		4B125F70252F02F100E31C2B /* NotificationsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B125F6F252F02F100E31C2B /* NotificationsController.swift */; };
 		4B125F72252F030800E31C2B /* ConversationsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B125F71252F030800E31C2B /* ConversationsController.swift */; };
 		4B151FD6253CC765003F46E6 /* UploadPostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B151FD5253CC765003F46E6 /* UploadPostViewModel.swift */; };
+		4B2076B02567094A00637F1D /* TrainingListHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2076AF2567094A00637F1D /* TrainingListHeader.swift */; };
 		4B2D49002554AB2200BD6CC9 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B2D48FF2554AB2200BD6CC9 /* MapKit.framework */; };
 		4B2DA3522538A4E500A3182F /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2DA3512538A4E500A3182F /* UserCell.swift */; };
 		4B2DA355253A058800A3182F /* PostController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2DA354253A058800A3182F /* PostController.swift */; };
@@ -78,6 +79,7 @@
 		4B125F6F252F02F100E31C2B /* NotificationsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsController.swift; sourceTree = "<group>"; };
 		4B125F71252F030800E31C2B /* ConversationsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationsController.swift; sourceTree = "<group>"; };
 		4B151FD5253CC765003F46E6 /* UploadPostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadPostViewModel.swift; sourceTree = "<group>"; };
+		4B2076AF2567094A00637F1D /* TrainingListHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingListHeader.swift; sourceTree = "<group>"; };
 		4B2D48FF2554AB2200BD6CC9 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		4B2DA3512538A4E500A3182F /* UserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
 		4B2DA354253A058800A3182F /* PostController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostController.swift; sourceTree = "<group>"; };
@@ -185,6 +187,7 @@
 				4B2DA3512538A4E500A3182F /* UserCell.swift */,
 				4BB69EDA2541809700259D9A /* NotificationCell.swift */,
 				4B2DA358253A093700A3182F /* PostHeader.swift */,
+				4B2076AF2567094A00637F1D /* TrainingListHeader.swift */,
 				4BD9C8FB253EB7180086A450 /* ActionSheetCell.swift */,
 			);
 			path = View;
@@ -480,6 +483,7 @@
 				4B95DA5425370C0B00FF4A2B /* ProfileHeader.swift in Sources */,
 				4B6097A22547233600E2437A /* EditProfileCell.swift in Sources */,
 				4BFECF852555B67F00C6FEC3 /* TrainingsListController.swift in Sources */,
+				4B2076B02567094A00637F1D /* TrainingListHeader.swift in Sources */,
 				4BD214E92534A44E00FEE09E /* PostService.swift in Sources */,
 				4B91F47E252F94B6002458CA /* LoginController.swift in Sources */,
 				4BD6FAF6254168D700143E99 /* Notification.swift in Sources */,

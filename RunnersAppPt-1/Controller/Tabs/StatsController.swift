@@ -16,10 +16,20 @@ class StatsController: UIViewController {
     private let statsLabel = Utilities.shared.infoRunLabel()
     private var sceneTitle = UILabel()
     private var settingsIcon = Utilities.shared.actionButton(withSystemName: "gear")
+    private var goal: Double = 10000.0 //FIXME: put vm here
     
     
     private let targetRect = UIView.init()
     private let currentRect = UIView.init()
+    
+    private let targetLine = UIView.init()
+    private let currentLine = UIView.init()
+
+    private let targetTitleLabel = Utilities.shared.standardLabel(withSize: 12, withWeight: UIFont.Weight.light)
+    private let currentTitleLabel = Utilities.shared.standardLabel(withSize: 12, withWeight: UIFont.Weight.light)
+    
+    private let targetLabel = Utilities.shared.standardLabel(withSize: 12, withWeight: UIFont.Weight.light)
+    private let currentLabel = Utilities.shared.standardLabel(withSize: 12, withWeight: UIFont.Weight.light)
     
     let fpc = FloatingPanelController()
     
@@ -66,22 +76,24 @@ class StatsController: UIViewController {
         
         view.addSubview(sceneTitle)
         sceneTitle.text = "Your scores"
-        sceneTitle.font = UIFont.boldSystemFont(ofSize: 26)
+        sceneTitle.font = UIFont.boldSystemFont(ofSize: 33)
         sceneTitle.textColor = .appTintColor
-        sceneTitle.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, paddingTop: 30, paddingLeft: 30)
-        sceneTitle.setDimensions(width: view.frame.width/2-20, height: 50)
+        sceneTitle.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, paddingTop: 0, paddingLeft: 20)
+        sceneTitle.setDimensions(width: view.frame.width-100, height: 50)
+        sceneTitle.layer.zPosition = -1
         
         view.addSubview(settingsIcon)
-        settingsIcon.anchor(top: view.safeAreaLayoutGuide.topAnchor, right: view.rightAnchor, paddingTop: 30, paddingRight: 30)
+        settingsIcon.anchor(top: view.safeAreaLayoutGuide.topAnchor, right: view.rightAnchor, paddingTop: 0, paddingRight: 20)
         settingsIcon.backgroundColor = .white
         settingsIcon.tintColor = .appTintColor
         settingsIcon.setDimensions(width: 50, height: 50)
+        settingsIcon.layer.zPosition = -1
     }
     
     func initialStats() {
         view.addSubview(targetRect)
         targetRect.layer.zPosition = -2
-        targetRect.backgroundColor = .lightGray
+        targetRect.backgroundColor = .mainAppColor
         let initialHeight = view.frame.height/30
         targetRect.frame = CGRect(x: view.frame.width/4, y: view.frame.height/2-initialHeight, width: view.frame.width/5, height: initialHeight)
         targetRect.layer.cornerRadius = 10
@@ -93,22 +105,85 @@ class StatsController: UIViewController {
         currentRect.frame = CGRect(x: view.frame.width/4, y: view.frame.height/2-initialHeight, width: view.frame.width/5, height: initialHeight)
         currentRect.layer.cornerRadius = 10
         currentRect.alpha = 0.8
+        
+        view.addSubview(targetLine)
+        targetLine.layer.zPosition = -1
+        targetLine.backgroundColor = .appTintColor
+        targetLine.frame = CGRect(x: view.frame.width*10/20, y: view.frame.height/6, width: 1, height: 2)
+        targetLine.layer.cornerRadius = 2
+        targetLine.alpha = 0.0
+        
+        view.addSubview(currentLine)
+        currentLine.layer.zPosition = -1
+        currentLine.backgroundColor = .appTintColor
+        let targetHeight = self.view.frame.height/3
+        let currentHeight = CGFloat((self.viewModel.statsSummary.wholeDistance / goal))*targetHeight
+        currentLine.frame = CGRect(x: view.frame.width*10/20, y: self.view.frame.height/2-currentHeight, width: 1, height: 2)
+        currentLine.layer.cornerRadius = 2
+        currentLine.alpha = 0.0
+        
+        view.addSubview(targetLabel)
+        targetLabel.layer.zPosition = -1
+        targetLabel.text = "\(Int(goal)) m"
+        targetLabel.textAlignment = .right
+        targetLabel.frame = CGRect(x: view.frame.width*10/20, y: view.frame.height/6, width: view.frame.width/3, height: 30) //FIXME: - WTF?????
+        targetLabel.alpha = 0.0
+        
+        view.addSubview(currentLabel)
+        currentLabel.layer.zPosition = -1
+        currentLabel.text = "\(Int(viewModel.statsSummary.wholeDistance)) m" //FIXME: - set goal's vm here
+        currentLabel.textAlignment = .right
+        currentLabel.frame = CGRect(x: view.frame.width*10/20, y: view.frame.height/2-currentHeight, width: view.frame.width/3, height: 30)
+        currentLabel.alpha = 0.0
+        
+        view.addSubview(targetTitleLabel)
+        targetTitleLabel.layer.zPosition = -1
+        targetTitleLabel.text = "Your Goal:"
+        targetTitleLabel.textAlignment = .right
+        targetTitleLabel.frame = CGRect(x: view.frame.width*10/20, y: view.frame.height/6-30, width: view.frame.width/3, height: 30)
+        targetTitleLabel.alpha = 0.0
+        
+        view.addSubview(currentTitleLabel)
+        currentTitleLabel.layer.zPosition = -1
+        currentTitleLabel.text = "You've Run:"
+        currentTitleLabel.textAlignment = .right
+        currentTitleLabel.frame = CGRect(x: view.frame.width*10/20, y: view.frame.height/2-currentHeight-30, width: view.frame.width/3, height: 30)
+        currentTitleLabel.alpha = 0.0
     }
     
     func introAnimate() {
-        UIView.animate(withDuration: 0.5, delay: 0.2, options: .curveEaseInOut) {
+        UIView.animate(withDuration: 0.3, delay: 0.2, options: .curveEaseInOut) {
             let targetHeight = self.view.frame.height/3
             self.targetRect.frame = CGRect(x: self.view.frame.width/4, y: self.view.frame.height/2-targetHeight, width: self.view.frame.width/5, height: targetHeight)
             self.targetRect.layer.cornerRadius = 10
             self.targetRect.alpha = 0.8
             
-            let currentHeight = CGFloat((self.viewModel.statsSummary.wholeDistance / 1000.0))*self.view.frame.height/30 //FIXME: - TARGET DISTANCE HEREs
+            let currentHeight = CGFloat((self.viewModel.statsSummary.wholeDistance / self.goal))*targetHeight //FIXME: - TARGET DISTANCE HEREs
             self.currentRect.frame = CGRect(x: self.view.frame.width/4, y: self.view.frame.height/2-currentHeight, width: self.view.frame.width/5, height: currentHeight)
             self.currentRect.layer.cornerRadius = 10
             self.currentRect.alpha = 1.0
             
         } completion: { (bool) in
-            print("done")
+            UIView.animate(withDuration: 0.3, delay: 0.0, options: .curveLinear) {
+                self.targetLine.frame = CGRect(x: self.view.frame.width*10/20, y: self.view.frame.height/6, width: self.view.frame.width/3, height: 2)
+                self.targetLine.layer.cornerRadius = 2
+                self.targetLine.alpha = 1.0
+                
+                let targetHeight = self.view.frame.height/3
+                let currentHeight = CGFloat((self.viewModel.statsSummary.wholeDistance / self.goal))*targetHeight
+                self.currentLine.frame = CGRect(x: self.view.frame.width*10/20, y: self.view.frame.height/2-currentHeight, width: self.view.frame.width/3, height: 2)
+                self.currentLine.layer.cornerRadius = 2
+                self.currentLine.alpha = 1.0
+            }
+                
+            UIView.animate(withDuration: 0.3, delay: 0.1, options: .curveLinear) {
+                self.targetLabel.alpha = 1.0
+                self.currentLabel.alpha = 1.0
+                self.currentTitleLabel.alpha = 1.0
+                self.targetTitleLabel.alpha = 1.0
+            } completion: { (bool) in
+                print("print rest stats!")
+            }
         }
 
     }
