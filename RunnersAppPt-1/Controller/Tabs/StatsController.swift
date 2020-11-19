@@ -16,7 +16,7 @@ class StatsController: UIViewController {
     private let statsLabel = Utilities.shared.infoRunLabel()
     private var sceneTitle = UILabel()
     private var settingsIcon = Utilities.shared.actionButton(withSystemName: "gear")
-    private var goal: Double = 10000.0 //FIXME: put vm here
+    private var goal: Double = 9000.0 //FIXME: put vm here
     
     
     private let targetRect = UIView.init()
@@ -117,7 +117,11 @@ class StatsController: UIViewController {
         currentLine.layer.zPosition = -1
         currentLine.backgroundColor = .appTintColor
         let targetHeight = self.view.frame.height/3
-        let currentHeight = CGFloat((self.viewModel.statsSummary.wholeDistance / goal))*targetHeight
+        //let currentHeight = CGFloat((self.viewModel.statsSummary.wholeDistance / goal))*targetHeight
+        var currentHeight:CGFloat {
+            let tmp = self.viewModel.statsSummary.wholeDistance / self.goal <= 1.0 ? self.viewModel.statsSummary.wholeDistance / self.goal : 1.0
+            return CGFloat(tmp)*targetHeight
+        }
         currentLine.frame = CGRect(x: view.frame.width*10/20, y: self.view.frame.height/2-currentHeight, width: 1, height: 2)
         currentLine.layer.cornerRadius = 2
         currentLine.alpha = 0.0
@@ -158,7 +162,10 @@ class StatsController: UIViewController {
             self.targetRect.layer.cornerRadius = 10
             self.targetRect.alpha = 0.8
             
-            let currentHeight = CGFloat((self.viewModel.statsSummary.wholeDistance / self.goal))*targetHeight //FIXME: - TARGET DISTANCE HEREs
+            var currentHeight:CGFloat {
+                let tmp = self.viewModel.statsSummary.wholeDistance / self.goal <= 1.0 ? self.viewModel.statsSummary.wholeDistance / self.goal : 1.0
+                return CGFloat(tmp)*targetHeight
+            }
             self.currentRect.frame = CGRect(x: self.view.frame.width/4, y: self.view.frame.height/2-currentHeight, width: self.view.frame.width/5, height: currentHeight)
             self.currentRect.layer.cornerRadius = 10
             self.currentRect.alpha = 1.0
@@ -170,7 +177,11 @@ class StatsController: UIViewController {
                 self.targetLine.alpha = 1.0
                 
                 let targetHeight = self.view.frame.height/3
-                let currentHeight = CGFloat((self.viewModel.statsSummary.wholeDistance / self.goal))*targetHeight
+                
+                var currentHeight:CGFloat {
+                    let tmp = self.viewModel.statsSummary.wholeDistance / self.goal <= 1.0 ? self.viewModel.statsSummary.wholeDistance / self.goal : 1.0
+                    return CGFloat(tmp)*targetHeight
+                }
                 self.currentLine.frame = CGRect(x: self.view.frame.width*10/20, y: self.view.frame.height/2-currentHeight, width: self.view.frame.width/3, height: 2)
                 self.currentLine.layer.cornerRadius = 2
                 self.currentLine.alpha = 1.0
