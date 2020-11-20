@@ -9,6 +9,13 @@
 import UIKit
 import FloatingPanel
 
+enum BarFilling {
+    case notfilled
+    case empty
+    case almostfilled
+    case filled
+}
+
 class StatsController: UIViewController {
     //MARK: - Properties
     
@@ -16,7 +23,10 @@ class StatsController: UIViewController {
     private let statsLabel = Utilities.shared.infoRunLabel()
     private var sceneTitle = UILabel()
     private var settingsIcon = Utilities.shared.actionButton(withSystemName: "gear")
-    private var goal: Double = 9000.0 //FIXME: put vm here
+    private var goal: Double = 10000.0 //FIXME: put vm here
+    private var targetHeight: CGFloat = 0.0
+    private var currentHeight: CGFloat = 0.0
+    private var filling: BarFilling = .empty
     
     
     private let targetRect = UIView.init()
@@ -24,12 +34,22 @@ class StatsController: UIViewController {
     
     private let targetLine = UIView.init()
     private let currentLine = UIView.init()
+    private let currentLineExt = UIView.init()
 
     private let targetTitleLabel = Utilities.shared.standardLabel(withSize: 12, withWeight: UIFont.Weight.light)
     private let currentTitleLabel = Utilities.shared.standardLabel(withSize: 12, withWeight: UIFont.Weight.light)
     
     private let targetLabel = Utilities.shared.standardLabel(withSize: 12, withWeight: UIFont.Weight.light)
     private let currentLabel = Utilities.shared.standardLabel(withSize: 12, withWeight: UIFont.Weight.light)
+    
+    private let avgRunTimeLabel = Utilities.shared.standardLabel(withSize: 10, withWeight: .semibold)
+    private let maxRunTimeLabel = Utilities.shared.standardLabel(withSize: 10, withWeight: .semibold)
+    private let avgDistanceLabel = Utilities.shared.standardLabel(withSize: 10, withWeight: .semibold)
+    private let maxDistanceLabel = Utilities.shared.standardLabel(withSize: 10, withWeight: .semibold)
+    private let avgSpeedLabel = Utilities.shared.standardLabel(withSize: 10, withWeight: .semibold)
+    private let maxSpeedLabel = Utilities.shared.standardLabel(withSize: 10, withWeight: .semibold)
+    
+    var stackMain: UIStackView = UIStackView()
     
     let fpc = FloatingPanelController()
     
@@ -45,6 +65,22 @@ class StatsController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        targetHeight = self.view.frame.height/3
+        let ratio = self.viewModel.statsSummary.wholeDistance / self.goal
+        if ( ratio < 1.0 ) {
+            if ( ratio < 0.8) {
+                if (ratio == 0) {
+                    filling = .empty
+                }
+                filling = .notfilled
+            } else {
+                filling = .almostfilled
+            }
+            currentHeight = CGFloat(ratio)*targetHeight
+        } else {
+            filling = .filled
+            currentHeight = targetHeight
+        }
         setFloatingPanel()
         configureUI()
     }
@@ -52,8 +88,9 @@ class StatsController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
-        initialStats()
+        initialStatsBar()
         introAnimate()
+        initialStatsLabels()
     }
     
     override func viewDidLayoutSubviews() {
@@ -90,7 +127,52 @@ class StatsController: UIViewController {
         settingsIcon.layer.zPosition = -1
     }
     
-    func initialStats() {
+    func configStatsLabel (withUILabel label: UILabel) {
+        label.tintColor = .appTintColor
+        label.layer.zPosition = -1
+        label.textAlignment = .center
+        label.layer.cornerRadius = 10
+        label.numberOfLines = 2
+    }
+    
+    func initialStatsLabels () {
+        avgRunTimeLabel.text = viewModel.avgRunTimeLabelText
+        maxRunTimeLabel.text = viewModel.maxRunTimeLabelText
+        avgDistanceLabel.text = viewModel.avgDistanceLabelText
+        maxDistanceLabel.text = viewModel.maxDistanceLabelText
+        avgSpeedLabel.text = viewModel.avgSpeedLabelText
+        maxSpeedLabel.text = viewModel.maxSpeedLabelText
+        
+        configStatsLabel(withUILabel: avgRunTimeLabel)
+        configStatsLabel(withUILabel: maxRunTimeLabel)
+        configStatsLabel(withUILabel: avgDistanceLabel)
+        configStatsLabel(withUILabel: maxDistanceLabel)
+        configStatsLabel(withUILabel: avgSpeedLabel)
+        configStatsLabel(withUILabel: maxSpeedLabel)
+        
+        let stack1 = UIStackView(arrangedSubviews: [avgRunTimeLabel, maxRunTimeLabel])
+        let stack2 = UIStackView(arrangedSubviews: [avgDistanceLabel, maxDistanceLabel])
+        let stack3 = UIStackView(arrangedSubviews: [avgSpeedLabel, maxSpeedLabel])
+        
+        stackMain = UIStackView(arrangedSubviews: [stack1, stack2, stack3])
+        
+        stack1.axis = .horizontal
+        stack2.axis = .horizontal
+        stack3.axis = .horizontal
+        stackMain.axis = .vertical
+        
+        stack1.distribution = .fillEqually
+        stack2.distribution = .fillEqually
+        stack3.distribution = .fillEqually
+        stackMain.distribution = .fillEqually
+        
+        view.addSubview(stackMain)
+        stackMain.layer.zPosition = -1
+        stackMain.anchor(top: currentRect.bottomAnchor, left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor, paddingTop: 30, paddingLeft: 10, paddingBottom: 60, paddingRight: 10)
+        stackMain.alpha = 0.0
+    }
+    
+    func initialStatsBar() {
         view.addSubview(targetRect)
         targetRect.layer.zPosition = -2
         targetRect.backgroundColor = .mainAppColor
@@ -116,13 +198,19 @@ class StatsController: UIViewController {
         view.addSubview(currentLine)
         currentLine.layer.zPosition = -1
         currentLine.backgroundColor = .appTintColor
-        let targetHeight = self.view.frame.height/3
-        //let currentHeight = CGFloat((self.viewModel.statsSummary.wholeDistance / goal))*targetHeight
-        var currentHeight:CGFloat {
-            let tmp = self.viewModel.statsSummary.wholeDistance / self.goal <= 1.0 ? self.viewModel.statsSummary.wholeDistance / self.goal : 1.0
-            return CGFloat(tmp)*targetHeight
+        switch filling {
+        case .notfilled, .empty:
+            currentLine.frame = CGRect(x: view.frame.width*10/20, y: self.view.frame.height/2-currentHeight, width: 1, height: 2)
+        case .almostfilled, .filled:
+            view.addSubview(currentLineExt)
+            currentLineExt.layer.zPosition = -1
+            currentLineExt.backgroundColor = .appTintColor
+            currentLineExt.layer.cornerRadius = 2
+            currentLineExt.alpha = 0.0
+            currentLineExt.frame = CGRect(x: view.frame.width*10/20, y: self.view.frame.height/2-currentHeight, width: 2, height: 1)
+            
+            currentLine.frame = CGRect(x: view.frame.width*10/20, y: self.view.frame.height/4, width: 1, height: 2)
         }
-        currentLine.frame = CGRect(x: view.frame.width*10/20, y: self.view.frame.height/2-currentHeight, width: 1, height: 2)
         currentLine.layer.cornerRadius = 2
         currentLine.alpha = 0.0
         
@@ -130,14 +218,19 @@ class StatsController: UIViewController {
         targetLabel.layer.zPosition = -1
         targetLabel.text = "\(Int(goal)) m"
         targetLabel.textAlignment = .right
-        targetLabel.frame = CGRect(x: view.frame.width*10/20, y: view.frame.height/6, width: view.frame.width/3, height: 30) //FIXME: - WTF?????
+        targetLabel.frame = CGRect(x: view.frame.width*10/20, y: view.frame.height/6, width: view.frame.width/3, height: 30)
         targetLabel.alpha = 0.0
         
         view.addSubview(currentLabel)
         currentLabel.layer.zPosition = -1
         currentLabel.text = "\(Int(viewModel.statsSummary.wholeDistance)) m" //FIXME: - set goal's vm here
         currentLabel.textAlignment = .right
-        currentLabel.frame = CGRect(x: view.frame.width*10/20, y: view.frame.height/2-currentHeight, width: view.frame.width/3, height: 30)
+        switch filling {
+        case .notfilled, .empty:
+            currentLabel.frame = CGRect(x: view.frame.width*10/20, y: view.frame.height/2-currentHeight, width: view.frame.width/3, height: 30)
+        case .almostfilled, .filled:
+            currentLabel.frame = CGRect(x: view.frame.width*10/20, y: view.frame.height/4, width: view.frame.width/3, height: 30)
+        }
         currentLabel.alpha = 0.0
         
         view.addSubview(targetTitleLabel)
@@ -151,52 +244,90 @@ class StatsController: UIViewController {
         currentTitleLabel.layer.zPosition = -1
         currentTitleLabel.text = "You've Run:"
         currentTitleLabel.textAlignment = .right
-        currentTitleLabel.frame = CGRect(x: view.frame.width*10/20, y: view.frame.height/2-currentHeight-30, width: view.frame.width/3, height: 30)
+        switch filling {
+        case .notfilled, .empty:
+            currentTitleLabel.frame = CGRect(x: view.frame.width*10/20, y: view.frame.height/2-currentHeight-30, width: view.frame.width/3, height: 30)
+        case .almostfilled, .filled:
+            currentTitleLabel.frame = CGRect(x: view.frame.width*10/20, y: view.frame.height/4-30, width: view.frame.width/3, height: 30)
+        }
         currentTitleLabel.alpha = 0.0
     }
     
+    func animateBarTarget() {
+        self.targetRect.frame = CGRect(x: self.view.frame.width/4, y: self.view.frame.height/2-self.targetHeight, width: self.view.frame.width/5, height: self.targetHeight)
+        self.targetRect.layer.cornerRadius = 10
+        self.targetRect.alpha = 0.8
+    }
+    
+    func animateBarCurrent() {
+        self.currentRect.frame = CGRect(x: self.view.frame.width/4, y: self.view.frame.height/2-self.currentHeight, width: self.view.frame.width/5, height: self.currentHeight)
+        self.currentRect.layer.cornerRadius = 10
+        self.currentRect.alpha = 1.0
+    }
+    
+    func animateLines() {
+        self.targetLine.frame = CGRect(x: self.view.frame.width*10/20, y: self.view.frame.height/6, width: self.view.frame.width/3, height: 2)
+        self.targetLine.layer.cornerRadius = 2
+        self.targetLine.alpha = 1.0
+
+        switch filling {
+        case .notfilled, .empty:
+            self.currentLine.frame = CGRect(x: self.view.frame.width*10/20, y: self.view.frame.height/2-self.currentHeight, width: self.view.frame.width/3, height: 2)
+            break
+        case .almostfilled, .filled:
+            self.currentLine.frame = CGRect(x: self.view.frame.width*10/20, y: self.view.frame.height/4, width: self.view.frame.width/3, height: 2)
+            break
+        }
+        
+        self.currentLine.layer.cornerRadius = 2
+        self.currentLine.alpha = 1.0
+    }
+    
+    func animateLabels(){
+        self.targetLabel.alpha = 1.0
+        self.currentLabel.alpha = 1.0
+        self.currentTitleLabel.alpha = 1.0
+        self.targetTitleLabel.alpha = 1.0
+    }
+    
+    func animateStatsLabels(){
+        UIView.animate(withDuration: 0.3, delay: 0.0, options: .curveLinear) {
+            self.stackMain.alpha = 1.0
+        }
+    }
+    
     func introAnimate() {
-        UIView.animate(withDuration: 0.3, delay: 0.2, options: .curveEaseInOut) {
-            let targetHeight = self.view.frame.height/3
-            self.targetRect.frame = CGRect(x: self.view.frame.width/4, y: self.view.frame.height/2-targetHeight, width: self.view.frame.width/5, height: targetHeight)
-            self.targetRect.layer.cornerRadius = 10
-            self.targetRect.alpha = 0.8
-            
-            var currentHeight:CGFloat {
-                let tmp = self.viewModel.statsSummary.wholeDistance / self.goal <= 1.0 ? self.viewModel.statsSummary.wholeDistance / self.goal : 1.0
-                return CGFloat(tmp)*targetHeight
-            }
-            self.currentRect.frame = CGRect(x: self.view.frame.width/4, y: self.view.frame.height/2-currentHeight, width: self.view.frame.width/5, height: currentHeight)
-            self.currentRect.layer.cornerRadius = 10
-            self.currentRect.alpha = 1.0
-            
+        UIView.animate(withDuration: 0.4, delay: 0.2, options: .curveEaseInOut) {
+            self.animateBarTarget()
+            self.animateBarCurrent()
         } completion: { (bool) in
-            UIView.animate(withDuration: 0.3, delay: 0.0, options: .curveLinear) {
-                self.targetLine.frame = CGRect(x: self.view.frame.width*10/20, y: self.view.frame.height/6, width: self.view.frame.width/3, height: 2)
-                self.targetLine.layer.cornerRadius = 2
-                self.targetLine.alpha = 1.0
-                
-                let targetHeight = self.view.frame.height/3
-                
-                var currentHeight:CGFloat {
-                    let tmp = self.viewModel.statsSummary.wholeDistance / self.goal <= 1.0 ? self.viewModel.statsSummary.wholeDistance / self.goal : 1.0
-                    return CGFloat(tmp)*targetHeight
-                }
-                self.currentLine.frame = CGRect(x: self.view.frame.width*10/20, y: self.view.frame.height/2-currentHeight, width: self.view.frame.width/3, height: 2)
-                self.currentLine.layer.cornerRadius = 2
-                self.currentLine.alpha = 1.0
-            }
-                
-            UIView.animate(withDuration: 0.3, delay: 0.1, options: .curveLinear) {
-                self.targetLabel.alpha = 1.0
-                self.currentLabel.alpha = 1.0
-                self.currentTitleLabel.alpha = 1.0
-                self.targetTitleLabel.alpha = 1.0
-            } completion: { (bool) in
-                print("print rest stats!")
+            switch self.filling {
+                case .notfilled, .empty:
+                    UIView.animate(withDuration: 0.3, delay: 0.1, options: .curveLinear) {
+                        self.animateLines()
+                    }
+                    UIView.animate(withDuration: 0.3, delay: 0.1, options: .curveLinear) {
+                        self.animateLabels()
+                    } completion: { (bool) in
+                        self.animateStatsLabels()
+                    }
+                case .almostfilled, .filled:
+                    UIView.animate(withDuration: 0.1, delay: 0.1, options: .curveLinear) {
+                        let tmp = self.view.frame.height/2-self.currentHeight
+                        self.currentLineExt.frame = CGRect(x: self.view.frame.width*10/20, y: self.view.frame.height/2-self.currentHeight, width: 2, height: self.currentLine.frame.maxY-tmp)
+                        self.currentLineExt.alpha = 1.0
+                    } completion: { (bool) in
+                        UIView.animate(withDuration: 0.3, delay: 0.1, options: .curveLinear) {
+                            self.animateLines()
+                        }
+                        UIView.animate(withDuration: 0.3, delay: 0.1, options: .curveLinear) {
+                            self.animateLabels()
+                        } completion: { (bool) in
+                            self.animateStatsLabels()
+                        }
+                    }
             }
         }
-
     }
 }
 

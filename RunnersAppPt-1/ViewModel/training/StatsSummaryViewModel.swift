@@ -18,10 +18,31 @@ class StatsSummaryViewModel {
             self.statsSummary = self.computeStats()
         }
     }
-    
-    var testLabel: String {
-        return "max dist = \(statsSummary.maxDistance)"
+
+    var avgRunTimeLabelText: String {
+        return "average running time:\n\(statsSummary.avgRunTime) minutes"
     }
+    
+    var maxRunTimeLabelText: String {
+        return "maximum running time:\n\(statsSummary.maxRunTime) minutes"
+    }
+    
+    var avgDistanceLabelText: String {
+        return "average distance:\n\(Int(statsSummary.avgDistance)) metres"
+    }
+    
+    var maxDistanceLabelText: String {
+        return "maximum distance:\n\(Int(statsSummary.maxDistance)) metres"
+    }
+    
+    var avgSpeedLabelText: String {
+        return "average speed:\n\(round(statsSummary.avgSpeed*3.6*10)/10) km/h"
+    }
+    
+    var maxSpeedLabelText: String {
+        return "max speed:\n\(round(statsSummary.maxSpeed*3.6*10)/10) km/h"
+    }
+    
     
     private func computeStats() -> StatsSummary {
         var avgRunTime: Double = 0.0
