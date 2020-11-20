@@ -131,8 +131,11 @@ class StatsController: UIViewController {
         label.tintColor = .appTintColor
         label.layer.zPosition = -1
         label.textAlignment = .center
-        label.layer.cornerRadius = 10
         label.numberOfLines = 2
+        label.backgroundColor = .mainAppColor
+        label.backgroundColor?.withAlphaComponent(0.8)
+        label.layer.cornerRadius = 10
+        label.clipsToBounds = true
     }
     
     func initialStatsLabels () {
@@ -150,26 +153,37 @@ class StatsController: UIViewController {
         configStatsLabel(withUILabel: avgSpeedLabel)
         configStatsLabel(withUILabel: maxSpeedLabel)
         
-        let stack1 = UIStackView(arrangedSubviews: [avgRunTimeLabel, maxRunTimeLabel])
-        let stack2 = UIStackView(arrangedSubviews: [avgDistanceLabel, maxDistanceLabel])
-        let stack3 = UIStackView(arrangedSubviews: [avgSpeedLabel, maxSpeedLabel])
+        view.addSubview(avgRunTimeLabel)
+        view.addSubview(maxRunTimeLabel)
+//        view.addSubview(avgDistanceLabel)
+//        view.addSubview(maxDistanceLabel)
+//        view.addSubview(avgSpeedLabel)
+//        view.addSubview(maxSpeedLabel)
         
-        stackMain = UIStackView(arrangedSubviews: [stack1, stack2, stack3])
+        avgRunTimeLabel.anchor(top: currentRect.bottomAnchor, left: view.leftAnchor, paddingTop: 20, paddingLeft: 20, width: view.frame.width/2-30, height: 50)
         
-        stack1.axis = .horizontal
-        stack2.axis = .horizontal
-        stack3.axis = .horizontal
-        stackMain.axis = .vertical
+        maxRunTimeLabel.anchor(top: currentRect.bottomAnchor, left: avgRunTimeLabel.rightAnchor, paddingTop: 20, paddingLeft: 20, width: view.frame.width/2-30, height: 50)
         
-        stack1.distribution = .fillEqually
-        stack2.distribution = .fillEqually
-        stack3.distribution = .fillEqually
-        stackMain.distribution = .fillEqually
-        
-        view.addSubview(stackMain)
-        stackMain.layer.zPosition = -1
-        stackMain.anchor(top: currentRect.bottomAnchor, left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor, paddingTop: 30, paddingLeft: 10, paddingBottom: 60, paddingRight: 10)
-        stackMain.alpha = 0.0
+//        let stack1 = UIStackView(arrangedSubviews: [avgRunTimeLabel, maxRunTimeLabel])
+//        let stack2 = UIStackView(arrangedSubviews: [avgDistanceLabel, maxDistanceLabel])
+//        let stack3 = UIStackView(arrangedSubviews: [avgSpeedLabel, maxSpeedLabel])
+//
+//        stackMain = UIStackView(arrangedSubviews: [stack1, stack2, stack3])
+//
+//        stack1.axis = .horizontal
+//        stack2.axis = .horizontal
+//        stack3.axis = .horizontal
+//        stackMain.axis = .vertical
+//
+//        stack1.distribution = .fillEqually
+//        stack2.distribution = .fillEqually
+//        stack3.distribution = .fillEqually
+//        stackMain.distribution = .fillEqually
+//
+//        view.addSubview(stackMain)
+//        stackMain.layer.zPosition = -1
+//        stackMain.anchor(top: currentRect.bottomAnchor, left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor, paddingTop: 30, paddingLeft: 10, paddingBottom: 60, paddingRight: 10)
+//        stackMain.alpha = 0.0
     }
     
     func initialStatsBar() {
