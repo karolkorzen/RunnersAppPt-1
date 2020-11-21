@@ -19,7 +19,7 @@ enum BarFilling {
 class StatsController: UIViewController {
     //MARK: - Properties
     
-    private let viewModel = StatsSummaryViewModel()
+    private var viewModel = StatsSummaryViewModel()
     private let statsLabel = Utilities.shared.infoRunLabel()
     private var sceneTitle = UILabel()
     private var settingsIcon = Utilities.shared.actionButton(withSystemName: "gear")
@@ -89,8 +89,8 @@ class StatsController: UIViewController {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
         initialStatsBar()
-        introAnimate()
         initialStatsLabels()
+        introAnimate()
     }
     
     override func viewDidLayoutSubviews() {

@@ -16,6 +16,7 @@ struct RunViewModel {
         }
         return "0 km/h"
     }
+    
     func distanceLabelText(withDistance distance: Double) -> String {
         if distance>0.0 {
             if distance >= 1000 {
@@ -45,8 +46,7 @@ struct RunViewModel {
         return table.map{$0.retCLLocationCoordinate2D()}
     }
     
-    func createStats(runTable: [Location], distance: Double) -> Stats {
-        let time = runTable.last!.timestamp.distance(to: runTable.first!.timestamp)
+    func createStats(runTable: [Location], distance: Double, time: Double) -> Stats {
         var max = 0.0
         var avg = 0.0
         var altmin = 0.0

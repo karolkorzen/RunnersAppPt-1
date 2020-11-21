@@ -8,9 +8,19 @@
 
 import Foundation
 
+//FIXME: - MAKE DELEGATE HERE TO UPDATE
+
 class StatsSummaryViewModel {
-    var statsArray: [Stats] = []
-    var statsSummary: StatsSummary = StatsSummary()
+    var statsArray: [Stats] = [] {
+        didSet {
+            
+        }
+    }
+    var statsSummary: StatsSummary = StatsSummary() {
+        didSet {
+            
+        }
+    }
     
     init(){
         RunService.shared.fetchStats { (array) in

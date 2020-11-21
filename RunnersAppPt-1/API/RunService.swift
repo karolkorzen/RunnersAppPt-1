@@ -12,9 +12,6 @@ struct RunService {
     static let shared = RunService()
     typealias TrainingsList = [String: Stats]
     
-    
-    
-    
     /// func uploads run session after reading from [Location] runTable
     /// - Parameter runTable: [Location]
     func uploadRunSession(withRunSession runTable: [Location] , withStats stats: Stats) {
@@ -22,7 +19,7 @@ struct RunService {
 //        let monthYear = monthYearTimestamp(withDate: runTable[0].timestamp)
         
         var ref = REF_USER_RUNS.child(currentUid).childByAutoId()
-        ref.updateChildValues(["time" : stats.timestampStart])
+        ref.updateChildValues(["time" : stats.time])
         ref.updateChildValues(["timestampStart" : stats.timestampStart])
         ref.updateChildValues(["timestampStop" : stats.timestampStop])
         ref.updateChildValues(["distance" : stats.distance])

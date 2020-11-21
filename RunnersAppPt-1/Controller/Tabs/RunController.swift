@@ -18,7 +18,8 @@ class RunController: UIViewController {
     
     //MARK: - Properties
     private let viewModel = RunViewModel()
-    let fpc = FloatingPanelController()
+    private let fpc = FloatingPanelController()
+    private var timer = Timer()
     
     private var runTable: [Location] = []
     private var isRunning: Bool = false
@@ -34,6 +35,7 @@ class RunController: UIViewController {
     var mapViewZoomed: Bool = false
     
     private var distance: CLLocationDistance = 0
+    private var time: Int = 0
     private let locationManager = CLLocationManager()
     
     var safeViewHeight: CGFloat?
@@ -42,6 +44,7 @@ class RunController: UIViewController {
     
     private var speedLabel = Utilities.shared.infoRunLabel()
     private var distanceLabel = Utilities.shared.infoRunLabel()
+    private var timeLabel = Utilities.shared.infoRunLabel()
     
     private var runButton: UIButton = {
         let button = UIButton()
@@ -118,8 +121,14 @@ class RunController: UIViewController {
         UIView.animate(withDuration: 0.5) {
             self.runButton.setTitle("STOP", for: .normal)
             self.runButton.backgroundColor = UIColor(red: 0.13, green: 0.19, blue: 0.25, alpha: 1.00)
+            self.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.timerAppend), userInfo: nil, repeats: true)
         }
         self.isRunning.toggle()
+    }
+    
+    @objc func timerAppend() {
+        time+=1
+        timeLabel.text = "\(time) s"
     }
     
     func stopTraining(){
@@ -197,21 +206,24 @@ class RunController: UIViewController {
     func finishTraining(withSavingDecision decision: Bool){
 
         if decision {
-            RunService.shared.uploadRunSession(withRunSession: self.runTable, withStats: viewModel.createStats(runTable: runTable, distance: distance))
+            RunService.shared.uploadRunSession(withRunSession: self.runTable, withStats: viewModel.createStats(runTable: runTable, distance: distance, time: Double(time)))
             let summary = RunSummaryController(tabBarHeight: self.tabBarHeight, runTable: self.runTable, speedChartTable: self.speedChartTable, distance: self.distance)
             fpc.set(contentViewController: summary)
             fpc.layout = MyRunFloatingPanelLayout()
             fpc.isRemovalInteractionEnabled = true
             self.present(fpc, animated: true, completion: nil)
         }
+        self.timer.invalidate()
+        self.time = 0
         self.isRunning.toggle()
         self.runTable.removeAll()
         self.distance = 0.0
-        self.distanceLabel.text = viewModel.distanceLabelText(withDistance: self.distance)
         self.speedChartTable.removeAll()
         self.polylineTable.removeAll()
         
         UIView.animate(withDuration: 0.5) {
+            self.distanceLabel.text = self.viewModel.distanceLabelText(withDistance: self.distance)
+            self.timeLabel.text = "\(self.time) s"
             self.runButton.setTitle("START", for: .normal)
             self.runButton.backgroundColor = .mainAppColor
         }
@@ -242,13 +254,20 @@ class RunController: UIViewController {
         distanceLabel.text = "0 m"
         distanceLabel.textAlignment = .center
         
+        view.addSubview(timeLabel)
+        timeLabel.anchor(top: distanceLabel.bottomAnchor, left: view.leftAnchor, paddingTop: 10, paddingLeft: 10)
+        timeLabel.setDimensions(width: self.view.frame.width/2 - 15, height: self.view.frame.height/8)
+        timeLabel.text = "00:00"
+        timeLabel.textAlignment = .center
+        
+        
         
         //FIXME: - MAKE A STACK WITH TIME WHEN USER IS RUNNING
         //FIXME: - DIVIDE SCREEN TO 5 BLOCKS
         view.addSubview(runButton)
-        runButton.anchor(top: distanceLabel.bottomAnchor, left: view.leftAnchor, paddingTop: 10, paddingLeft: 10)
+        runButton.anchor(top: distanceLabel.bottomAnchor, left: timeLabel.rightAnchor, paddingTop: 10, paddingLeft: 10)
         
-        runButton.setDimensions(width: self.view.frame.width - 20, height: self.view.frame.height/8)
+        runButton.setDimensions(width: self.view.frame.width/2 - 15, height: self.view.frame.height/8)
         
         self.addChartView()
         setChartData()
