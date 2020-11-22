@@ -12,7 +12,8 @@
 //FIXME: - USE DATA FAN OUT (https://firebase.google.com/docs/database/ios/read-and-write?hl=en)
 //FIXME: - USE SET DATA TO EDIT (link above)
 //FIXME: - USE TRANSACTIONS TO LIKE (link also above)
-//FIXME: - SORT DATA (https://firebase.google.com/docs/database/ios/read-and-write?hl=en)
+//FIXME: - (https://firebase.google.com/docs/database/ios/read-and-write?hl=en)
+//FIXME: - (https://firebase.google.com/docs/database/ios/lists-of-data?hl=en) LOOK AT LEFT BAR WRONG LINKS SOMEHOW
 //FIXME: - FILTER DATA FOR FEED CONTROLLER TO FETCH for ex. only 30 posts! (https://firebase.google.com/docs/database/ios/read-and-write?hl=en)
 
 import Firebase
@@ -86,7 +87,8 @@ struct PostService{
                 
                 self.fetchPost(forPostID: postID) { (post) in
                     posts.append(post)
-                    completion(posts)
+                    posts = posts.sorted(by: {$0.timestamp > $1.timestamp})
+                    completion(posts) //FIXME: - commmented 21.11.2020 12:10
                 }
             }
         }
@@ -95,7 +97,8 @@ struct PostService{
             
             self.fetchPost(forPostID: postID) { (post) in
                 posts.append(post)
-                completion(posts)
+                posts = posts.sorted(by: {$0.timestamp > $1.timestamp})
+                completion(posts) //FIXME: - commmented 21.11.2020 12:10
             }
         }
     }

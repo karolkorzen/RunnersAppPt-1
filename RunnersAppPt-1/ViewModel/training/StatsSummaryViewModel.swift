@@ -13,12 +13,12 @@ import Foundation
 class StatsSummaryViewModel {
     var statsArray: [Stats] = [] {
         didSet {
-            
+            //FIXME: CALL DELEGATE HERE
         }
     }
     var statsSummary: StatsSummary = StatsSummary() {
         didSet {
-            
+            //FIXME: CALL DELEGATE HERE
         }
     }
     

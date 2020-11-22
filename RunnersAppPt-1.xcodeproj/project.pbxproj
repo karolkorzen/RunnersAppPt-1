@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4B075F6F256A948C0005089D /* StatsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B075F6E256A948C0005089D /* StatsService.swift */; };
 		4B125F6C252F028A00E31C2B /* FeedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B125F6B252F028A00E31C2B /* FeedController.swift */; };
 		4B125F6E252F02E300E31C2B /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B125F6D252F02E300E31C2B /* SearchController.swift */; };
 		4B125F70252F02F100E31C2B /* NotificationsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B125F6F252F02F100E31C2B /* NotificationsController.swift */; };
@@ -74,6 +75,7 @@
 
 /* Begin PBXFileReference section */
 		3A836F3923D55D869CF46B4A /* Pods-RunnersAppPt-1.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnersAppPt-1.release.xcconfig"; path = "Target Support Files/Pods-RunnersAppPt-1/Pods-RunnersAppPt-1.release.xcconfig"; sourceTree = "<group>"; };
+		4B075F6E256A948C0005089D /* StatsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsService.swift; sourceTree = "<group>"; };
 		4B125F6B252F028A00E31C2B /* FeedController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedController.swift; sourceTree = "<group>"; };
 		4B125F6D252F02E300E31C2B /* SearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
 		4B125F6F252F02F100E31C2B /* NotificationsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsController.swift; sourceTree = "<group>"; };
@@ -316,6 +318,7 @@
 			children = (
 				4B3BF2AC2531D2B700F38822 /* AuthService.swift */,
 				4B3BF2AF25321B8400F38822 /* UserService.swift */,
+				4B075F6E256A948C0005089D /* StatsService.swift */,
 				4BD214E82534A44E00FEE09E /* PostService.swift */,
 				4BD6FAF825416B1000143E99 /* NotificationService.swift */,
 				4B93ECEC2551CEC600BB57FF /* RunService.swift */,
@@ -510,6 +513,7 @@
 				4B384CAB25382E13003CECD2 /* ProfileFilterView.swift in Sources */,
 				4B125F6C252F028A00E31C2B /* FeedController.swift in Sources */,
 				4BC84FEE2531C9F3002B07B3 /* Constants.swift in Sources */,
+				4B075F6F256A948C0005089D /* StatsService.swift in Sources */,
 				4BD9C8F9253EABB00086A450 /* ActionSheetLauncher.swift in Sources */,
 				4B867C752534FA0B0016B94D /* PostCell.swift in Sources */,
 				4B151FD6253CC765003F46E6 /* UploadPostViewModel.swift in Sources */,

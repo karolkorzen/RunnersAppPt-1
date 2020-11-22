@@ -23,9 +23,7 @@ class FeedController: UICollectionViewController {
     
     private var posts = [Post]() {
         didSet {
-            DispatchQueue.main.async {
-                self.collectionView.reloadData()
-            }
+//            self.collectionView.reloadData()
         }
     }
     
@@ -33,24 +31,43 @@ class FeedController: UICollectionViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureUI()
-        fetchPosts()
+        view.backgroundColor = .white
+        fetchPosts(completion: {
+            self.configureUI()
+        })
+        self.checkIfLiked(completion: {
+            print("DEBUG: viewDidLoad reloading")
+            self.collectionView.reloadData()
+        })
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        DispatchQueue.main.async {
-            self.fetchPosts()
-            self.collectionView.reloadData() //FIXME: - too many reloads?
-        }
+        self.fetchPosts(completion: {
+            self.checkIfLiked(completion: {
+                print("DEBUG: viewWillAppear reloading")
+                self.collectionView.reloadData()
+            })
+        })
         super.viewWillAppear(animated)
         navigationController?.navigationBar.barStyle = .default
         navigationController?.navigationBar.isHidden = false
+//        self.collectionView.reloadData()
     }
     
     // MARK: - SELECTORS
     
     @objc func handleRefresh(){
-        fetchPosts() //doesnt work!!!
+        collectionView.refreshControl?.beginRefreshing()
+        fetchPosts(completion: {
+            self.checkIfLiked(completion: {
+                print("DEBUG: handle refresh reloading")
+                self.collectionView.reloadData()
+                Utilities.shared.dispatchDelay(delay: 0.5) {
+                    self.collectionView.refreshControl?.endRefreshing()
+                }
+            })
+            
+        })
     }
     
     @objc func takeToMyProfile(){
@@ -64,33 +81,35 @@ class FeedController: UICollectionViewController {
         navigationController?.pushViewController(explore, animated: true)
     }
     
+    
+    
     // MARK: - API
     
-    func fetchPosts(){
-        collectionView.refreshControl?.beginRefreshing()
+    func fetchPosts(completion: @escaping() -> Void){
         PostService.shared.fetchPosts { posts in
-            //FIXME: - Make it in fetch and
-            //FIXME: - make it for other ones
-            self.posts = posts.sorted(by: {$0.timestamp > $1.timestamp})
-            //            self.posts = posts.sorted(by: { (post1, post2) -> Bool in
-            //                return post1.timestamp > post2.timestamp
-            //            })
-            self.posts.forEach { (post) in
-                PostService.shared.checkIfUserLikedPost(post) { (didLike) in
-                    if didLike {
-                        if let index = self.posts.firstIndex(where: { (postt) -> Bool in
-                            postt.postID == post.postID
-                        }) {
-                            self.posts[index].didLike = true
-                        }
-                    }
-                }
-            }
+            self.posts = posts
+            completion()
         }
-        collectionView.refreshControl?.endRefreshing()
     }
 
     // MARK: - Helpers
+    
+    func checkIfLiked(completion: @escaping() -> Void) {
+        print("DEBUG: posts count \(posts.count)")
+        self.posts.forEach { (post) in
+            PostService.shared.checkIfUserLikedPost(post) { (didLike) in
+                if didLike {
+                    if let index = self.posts.firstIndex(where: { (postt) -> Bool in
+                        postt.postID == post.postID
+                    }) {
+                        self.posts[index].didLike = true
+                    }
+                    
+                }
+                completion()
+            }
+        }
+    }
     
     func configureUI(){
         
@@ -189,7 +208,6 @@ extension FeedController: PostCellDelegate {
         guard let post = cell.post else {return}
         PostService.shared.likePost(post: post) { (err, ref) in
             cell.post?.likes = post.didLike ? post.likes + 1 : post.likes - 1
-            //FIXME: - POST HEADER IS NOT UPLOADING
             if post.didLike {
                 NotificationService.shared.uploadNotification(type: .like, post: post)
             }
