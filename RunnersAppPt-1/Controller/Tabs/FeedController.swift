@@ -32,11 +32,11 @@ class FeedController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        collectionView.backgroundColor = .white
         fetchPosts(completion: {
             self.configureUI()
         })
         self.checkIfLiked(completion: {
-            print("DEBUG: viewDidLoad reloading")
             self.collectionView.reloadData()
         })
     }
@@ -44,7 +44,6 @@ class FeedController: UICollectionViewController {
     override func viewWillAppear(_ animated: Bool) {
         self.fetchPosts(completion: {
             self.checkIfLiked(completion: {
-                print("DEBUG: viewWillAppear reloading")
                 self.collectionView.reloadData()
             })
         })
