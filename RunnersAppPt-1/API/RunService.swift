@@ -61,8 +61,10 @@ struct RunService {
         guard let currentUID = Auth.auth().currentUser?.uid else {return}
         
         REF_USER_RUNS.child(currentUID).observe(.childAdded) { (snapshot) in
-            let training = snapshot.value as! [String : AnyObject]
-            let stats = createStatsFromDictionary(training: training)
+            print("DEBBUG: \(snapshot.value)")
+            let tRaining = snapshot.value as! [String : AnyObject]
+            print("DEBBUG: training!!! \(tRaining)")
+            let stats = createStatsFromDictionary(training: tRaining)
             statsArray.append(stats)
             completion(statsArray)
         }

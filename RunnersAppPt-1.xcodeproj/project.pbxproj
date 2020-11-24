@@ -25,6 +25,7 @@
 		4B3BF2B025321B8400F38822 /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3BF2AF25321B8400F38822 /* UserService.swift */; };
 		4B3BF2B32532222400F38822 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3BF2B22532222400F38822 /* User.swift */; };
 		4B3BF2DB25324F7200F38822 /* UploadPostController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3BF2DA25324F7200F38822 /* UploadPostController.swift */; };
+		4B4CB83D256D51AF00110D10 /* GoalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B4CB83C256D51AF00110D10 /* GoalViewModel.swift */; };
 		4B5C5E652523629100DCFE3E /* MainTabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B5C5E642523629100DCFE3E /* MainTabController.swift */; };
 		4B60979C2546E05900E2437A /* EditProfileHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B60979B2546E05900E2437A /* EditProfileHeader.swift */; };
 		4B60979F254722E800E2437A /* EditProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B60979E254722E800E2437A /* EditProfileViewModel.swift */; };
@@ -93,6 +94,7 @@
 		4B3BF2AF25321B8400F38822 /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		4B3BF2B22532222400F38822 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		4B3BF2DA25324F7200F38822 /* UploadPostController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadPostController.swift; sourceTree = "<group>"; };
+		4B4CB83C256D51AF00110D10 /* GoalViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalViewModel.swift; sourceTree = "<group>"; };
 		4B5C5E642523629100DCFE3E /* MainTabController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabController.swift; sourceTree = "<group>"; };
 		4B60979B2546E05900E2437A /* EditProfileHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileHeader.swift; sourceTree = "<group>"; };
 		4B60979E254722E800E2437A /* EditProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewModel.swift; sourceTree = "<group>"; };
@@ -281,6 +283,7 @@
 				4B151FD5253CC765003F46E6 /* UploadPostViewModel.swift */,
 				4BED470D253ED14900F39250 /* ActionSheetViewModel.swift */,
 				4B60979E254722E800E2437A /* EditProfileViewModel.swift */,
+				4B4CB83C256D51AF00110D10 /* GoalViewModel.swift */,
 				4B94BB282559550200E158BC /* RunViewModel.swift */,
 			);
 			path = ViewModel;
@@ -489,6 +492,7 @@
 				4B2076B02567094A00637F1D /* TrainingListHeader.swift in Sources */,
 				4BD214E92534A44E00FEE09E /* PostService.swift in Sources */,
 				4B91F47E252F94B6002458CA /* LoginController.swift in Sources */,
+				4B4CB83D256D51AF00110D10 /* GoalViewModel.swift in Sources */,
 				4BD6FAF6254168D700143E99 /* Notification.swift in Sources */,
 				4B643E53254ADFD400049ECE /* Location.swift in Sources */,
 				4B3BF2AD2531D2B700F38822 /* AuthService.swift in Sources */,

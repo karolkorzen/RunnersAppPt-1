@@ -9,24 +9,28 @@
 import Foundation
 
 //FIXME: - MAKE DELEGATE HERE TO UPDATE
+protocol StatsSummaryViewModelDelegate: class {
+    func handleUpdate()
+}
 
 class StatsSummaryViewModel {
+    weak var delegate: StatsSummaryViewModelDelegate?
+    
     var statsArray: [Stats] = [] {
         didSet {
-            //FIXME: CALL DELEGATE HERE
+            self.statsSummary = self.computeStats()
         }
     }
-    var statsSummary: StatsSummary = StatsSummary() {
-        didSet {
-            //FIXME: CALL DELEGATE HERE
+    var statsSummary: StatsSummary = StatsSummary()
+    
+    func fetchStats() {
+        RunService.shared.fetchStats { (array) in
+            self.statsArray = array
         }
     }
     
     init(){
-        RunService.shared.fetchStats { (array) in
-            self.statsArray = array
-            self.statsSummary = self.computeStats()
-        }
+        fetchStats()
     }
 
     var avgRunTimeLabelText: String {
@@ -54,7 +58,7 @@ class StatsSummaryViewModel {
     }
     
     
-    private func computeStats() -> StatsSummary {
+    func computeStats() -> StatsSummary {
         var avgRunTime: Double = 0.0
         var altitudeMax: Double = -Double.greatestFiniteMagnitude
         var altitudeMin: Double = Double.greatestFiniteMagnitude

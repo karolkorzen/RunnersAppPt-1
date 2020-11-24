@@ -49,7 +49,7 @@ class StatsController: UIViewController {
     private let avgSpeedLabel = Utilities.shared.standardLabel(withSize: 10, withWeight: .semibold)
     private let maxSpeedLabel = Utilities.shared.standardLabel(withSize: 10, withWeight: .semibold)
     
-    var stackMain: UIStackView = UIStackView()
+    
     
     let fpc = FloatingPanelController()
     
@@ -57,14 +57,14 @@ class StatsController: UIViewController {
     
     init(){
         super.init(nibName: nil, bundle: nil)
+        viewModel.delegate = self
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    func initCheck() {
         targetHeight = self.view.frame.height/3
         let ratio = self.viewModel.statsSummary.wholeDistance / self.goal
         if ( ratio < 1.0 ) {
@@ -81,6 +81,11 @@ class StatsController: UIViewController {
             filling = .filled
             currentHeight = targetHeight
         }
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        initCheck()
         setFloatingPanel()
         configureUI()
     }
@@ -88,14 +93,12 @@ class StatsController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
+        handleUpdate()
         initialStatsBar()
         initialStatsLabels()
         introAnimate()
     }
     
-    override func viewDidLayoutSubviews() {
-        
-    }
     
     //MARK: - Helpers
     
@@ -132,10 +135,10 @@ class StatsController: UIViewController {
         label.layer.zPosition = -1
         label.textAlignment = .center
         label.numberOfLines = 2
-        label.backgroundColor = .mainAppColor
-        label.backgroundColor?.withAlphaComponent(0.8)
+        label.backgroundColor = .cellBackground
         label.layer.cornerRadius = 10
         label.clipsToBounds = true
+        label.alpha = 0.0
     }
     
     func initialStatsLabels () {
@@ -155,35 +158,22 @@ class StatsController: UIViewController {
         
         view.addSubview(avgRunTimeLabel)
         view.addSubview(maxRunTimeLabel)
-//        view.addSubview(avgDistanceLabel)
-//        view.addSubview(maxDistanceLabel)
-//        view.addSubview(avgSpeedLabel)
-//        view.addSubview(maxSpeedLabel)
+        view.addSubview(avgDistanceLabel)
+        view.addSubview(maxDistanceLabel)
+        view.addSubview(avgSpeedLabel)
+        view.addSubview(maxSpeedLabel)
         
-        avgRunTimeLabel.anchor(top: currentRect.bottomAnchor, left: view.leftAnchor, paddingTop: 20, paddingLeft: 20, width: view.frame.width/2-30, height: 50)
+        avgRunTimeLabel.anchor(top: currentRect.bottomAnchor, left: view.leftAnchor, paddingTop: view.frame.height/25, paddingLeft: 20, width: view.frame.width/2-30, height: view.frame.height/15)
         
-        maxRunTimeLabel.anchor(top: currentRect.bottomAnchor, left: avgRunTimeLabel.rightAnchor, paddingTop: 20, paddingLeft: 20, width: view.frame.width/2-30, height: 50)
+        maxRunTimeLabel.anchor(top: currentRect.bottomAnchor, left: avgRunTimeLabel.rightAnchor, paddingTop: view.frame.height/25, paddingLeft: 20, width: view.frame.width/2-30, height: view.frame.height/15)
         
-//        let stack1 = UIStackView(arrangedSubviews: [avgRunTimeLabel, maxRunTimeLabel])
-//        let stack2 = UIStackView(arrangedSubviews: [avgDistanceLabel, maxDistanceLabel])
-//        let stack3 = UIStackView(arrangedSubviews: [avgSpeedLabel, maxSpeedLabel])
-//
-//        stackMain = UIStackView(arrangedSubviews: [stack1, stack2, stack3])
-//
-//        stack1.axis = .horizontal
-//        stack2.axis = .horizontal
-//        stack3.axis = .horizontal
-//        stackMain.axis = .vertical
-//
-//        stack1.distribution = .fillEqually
-//        stack2.distribution = .fillEqually
-//        stack3.distribution = .fillEqually
-//        stackMain.distribution = .fillEqually
-//
-//        view.addSubview(stackMain)
-//        stackMain.layer.zPosition = -1
-//        stackMain.anchor(top: currentRect.bottomAnchor, left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor, paddingTop: 30, paddingLeft: 10, paddingBottom: 60, paddingRight: 10)
-//        stackMain.alpha = 0.0
+        avgDistanceLabel.anchor(top: avgRunTimeLabel.bottomAnchor, left: view.leftAnchor, paddingTop: view.frame.height/25, paddingLeft: 20, width: view.frame.width/2-30, height: view.frame.height/15)
+        
+        maxDistanceLabel.anchor(top: maxRunTimeLabel.bottomAnchor, left: avgRunTimeLabel.rightAnchor, paddingTop: view.frame.height/25, paddingLeft: 20, width: view.frame.width/2-30, height: view.frame.height/15)
+        
+        avgSpeedLabel.anchor(top: maxDistanceLabel.bottomAnchor, left: view.leftAnchor, paddingTop: view.frame.height/25, paddingLeft: 20, width: view.frame.width/2-30, height: view.frame.height/15)
+        
+        maxSpeedLabel.anchor(top: maxDistanceLabel.bottomAnchor, left: avgRunTimeLabel.rightAnchor, paddingTop: view.frame.height/25, paddingLeft: 20, width: view.frame.width/2-30, height: view.frame.height/15)
     }
     
     func initialStatsBar() {
@@ -230,14 +220,14 @@ class StatsController: UIViewController {
         
         view.addSubview(targetLabel)
         targetLabel.layer.zPosition = -1
-        targetLabel.text = "\(Int(goal)) m"
+        targetLabel.text = "\(Int(goal)) m" //FIXME: - set goal's vm here
         targetLabel.textAlignment = .right
         targetLabel.frame = CGRect(x: view.frame.width*10/20, y: view.frame.height/6, width: view.frame.width/3, height: 30)
         targetLabel.alpha = 0.0
         
         view.addSubview(currentLabel)
         currentLabel.layer.zPosition = -1
-        currentLabel.text = "\(Int(viewModel.statsSummary.wholeDistance)) m" //FIXME: - set goal's vm here
+        currentLabel.text = "\(Int(viewModel.statsSummary.wholeDistance)) m"
         currentLabel.textAlignment = .right
         switch filling {
         case .notfilled, .empty:
@@ -306,7 +296,12 @@ class StatsController: UIViewController {
     
     func animateStatsLabels(){
         UIView.animate(withDuration: 0.3, delay: 0.0, options: .curveLinear) {
-            self.stackMain.alpha = 1.0
+            self.avgRunTimeLabel.alpha = 1.0
+            self.maxRunTimeLabel.alpha = 1.0
+            self.avgDistanceLabel.alpha = 1.0
+            self.maxDistanceLabel.alpha = 1.0
+            self.avgSpeedLabel.alpha = 1.0
+            self.maxSpeedLabel.alpha = 1.0
         }
     }
     
@@ -343,6 +338,17 @@ class StatsController: UIViewController {
             }
         }
     }
+    
+    func updateView(){
+        initCheck()
+        currentLabel.text = "\(Int(viewModel.statsSummary.wholeDistance)) m"
+        avgRunTimeLabel.text = viewModel.avgRunTimeLabelText
+        maxRunTimeLabel.text = viewModel.maxRunTimeLabelText
+        avgDistanceLabel.text = viewModel.avgDistanceLabelText
+        maxDistanceLabel.text = viewModel.maxDistanceLabelText
+        avgSpeedLabel.text = viewModel.avgSpeedLabelText
+        maxSpeedLabel.text = viewModel.maxSpeedLabelText
+    }
 }
 
 extension StatsController: FloatingPanelControllerDelegate {
@@ -356,5 +362,20 @@ class MyStatsFloatingPanelLayout: FloatingPanelLayout {
             .full: FloatingPanelLayoutAnchor(absoluteInset: 16.0, edge: .top, referenceGuide: .safeArea),
             .tip: FloatingPanelLayoutAnchor(absoluteInset: 44.0, edge: .bottom, referenceGuide: .safeArea),
         ]
+    }
+}
+
+extension StatsController: StatsSummaryViewModelDelegate {
+    func handleUpdate() {
+        print("DEBUG: //////////////////")
+        RunService.shared.fetchStats { (statsArray) in
+            self.viewModel.statsArray = statsArray
+        }
+        self.updateView()
+        print("DEBUG: viewModel.statsArray.count \(self.viewModel.statsArray.count)")
+        print("DEBUG: viewModel.statsArray.last.distance \(self.viewModel.statsArray.last?.distance)")
+        print("DEBUG: currentLabel.text \(self.currentLabel.text)")
+        print("DEBUG: viewModel.statsSummary.wholeDistance \(self.viewModel.statsSummary.wholeDistance)")
+        print("DEBUG: in extension ProfileController: StatsSummaryViewModelDelegate")
     }
 }

@@ -94,7 +94,6 @@ class FeedController: UICollectionViewController {
     // MARK: - Helpers
     
     func checkIfLiked(completion: @escaping() -> Void) {
-        print("DEBUG: posts count \(posts.count)")
         self.posts.forEach { (post) in
             PostService.shared.checkIfUserLikedPost(post) { (didLike) in
                 if didLike {
