@@ -64,25 +64,6 @@ class StatsController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func initCheck() {
-        targetHeight = self.view.frame.height/3
-        let ratio = self.viewModel.statsSummary.wholeDistance / self.goal
-        if ( ratio < 1.0 ) {
-            if ( ratio < 0.8) {
-                if (ratio == 0) {
-                    filling = .empty
-                }
-                filling = .notfilled
-            } else {
-                filling = .almostfilled
-            }
-            currentHeight = CGFloat(ratio)*targetHeight
-        } else {
-            filling = .filled
-            currentHeight = targetHeight
-        }
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         initCheck()
@@ -101,6 +82,25 @@ class StatsController: UIViewController {
     
     
     //MARK: - Helpers
+    
+    func initCheck() {
+        targetHeight = self.view.frame.height/3
+        let ratio = self.viewModel.statsSummary.wholeDistance / self.goal
+        if ( ratio < 1.0 ) {
+            if ( ratio < 0.8) {
+                if (ratio == 0) {
+                    filling = .empty
+                }
+                filling = .notfilled
+            } else {
+                filling = .almostfilled
+            }
+            currentHeight = CGFloat(ratio)*targetHeight
+        } else {
+            filling = .filled
+            currentHeight = targetHeight
+        }
+    }
     
     func setFloatingPanel() {
         fpc.delegate = self
@@ -372,10 +372,10 @@ extension StatsController: StatsSummaryViewModelDelegate {
             self.viewModel.statsArray = statsArray
         }
         self.updateView()
-        print("DEBUG: viewModel.statsArray.count \(self.viewModel.statsArray.count)")
-        print("DEBUG: viewModel.statsArray.last.distance \(self.viewModel.statsArray.last?.distance)")
-        print("DEBUG: currentLabel.text \(self.currentLabel.text)")
-        print("DEBUG: viewModel.statsSummary.wholeDistance \(self.viewModel.statsSummary.wholeDistance)")
-        print("DEBUG: in extension ProfileController: StatsSummaryViewModelDelegate")
+//        print("DEBUG: viewModel.statsArray.count \(self.viewModel.statsArray.count)")
+//        print("DEBUG: viewModel.statsArray.last.distance \(self.viewModel.statsArray.last?.distance)")
+//        print("DEBUG: currentLabel.text \(self.currentLabel.text)")
+//        print("DEBUG: viewModel.statsSummary.wholeDistance \(self.viewModel.statsSummary.wholeDistance)")
+//        print("DEBUG: in extension ProfileController: StatsSummaryViewModelDelegate")
     }
 }

@@ -8,70 +8,29 @@
 
 import UIKit
 import MapKit
-import CoreLocation
 import Charts
 
 class RunSummaryController: UIViewController {
     
     //MARK: - Properties
     
+    private var viewModel = RunSummaryViewModel()
+    
     private var mapView = MKMapView()
     var mapViewZoomed: Bool = false
-    var statsViewZoomed: Bool = false
     
-        //MARK: - Run Data
-    private var runTable: [Location]
-    private var speedChartTable:[ChartDataEntry]
-    
-    private var distance: CLLocationDistance
-    private let locationManager = CLLocationManager()
-        //
-    
-        //MARK: - Constraints
-    var safeViewHeight: CGFloat?
-    var safeTopBarHeight: CGFloat?
-    var tabBarHeight: CGFloat
-        //
-    
-    private var speedLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .black // FIXME: - make it dynamic // some library?
-        label.font = UIFont.boldSystemFont(ofSize: 12)
-        label.backgroundColor = .lightGray
-        label.layer.cornerRadius = 10
-        label.layer.masksToBounds = true
-        return label
-    }()
-    
-    private var distanceLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .black // FIXME: - make it dynamic // some library?
-        label.font = UIFont.boldSystemFont(ofSize: 30)
-        label.backgroundColor = .lightGray
-        label.layer.masksToBounds = true
-        label.layer.cornerRadius = 10
-        return label
-    }()
-    
-    lazy var lineChartView: LineChartView = {
-        let chartView = LineChartView()
-        chartView.rightAxis.enabled = false
-        chartView.xAxis.enabled = false
-        chartView.leftAxis.setLabelCount(6, force: false)
-        chartView.leftAxis.labelTextColor = .darkGray
-        chartView.leftAxis.axisLineColor = .darkGray
-        chartView.legend.enabled = true
-        
-        return chartView
-    }()
+    private let timeLabel = Utilities.shared.standardLabel(withSize: 15, withWeight: .semibold)
+    private let distanceLabel = Utilities.shared.standardLabel(withSize: 15, withWeight: .semibold)
+    private let minAltitudeLabel = Utilities.shared.standardLabel(withSize: 10, withWeight: .semibold)
+    private let maxAltitudeLabel = Utilities.shared.standardLabel(withSize: 10, withWeight: .semibold)
+    private let avgSpeedLabel = Utilities.shared.standardLabel(withSize: 10, withWeight: .semibold)
+    private let maxSpeedLabel = Utilities.shared.standardLabel(withSize: 10, withWeight: .semibold)
     
     //MARK: - Lifecycle
-    init(tabBarHeight: CGFloat, runTable: [Location], speedChartTable:[ChartDataEntry] , distance: CLLocationDistance) {
-        self.tabBarHeight = tabBarHeight
-        self.runTable = runTable
-        self.speedChartTable = speedChartTable
-        self.distance = distance
+    
+    init(withStats stats: Stats) {
         super.init(nibName: nil, bundle: nil)
+        self.viewModel = RunSummaryViewModel(withStats: stats)
     }
     
     required init?(coder: NSCoder) {
@@ -80,199 +39,128 @@ class RunSummaryController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.safeViewHeight = UIApplication.shared.windows.first!.safeAreaLayoutGuide.layoutFrame.size.height
-        self.safeTopBarHeight = UIApplication.shared.windows.first!.safeAreaInsets.top
-        addMapView()
-        checkLocationServices()
         configureUI()
-        addChartView()
-        setChartData()
-        //addChartView()
+        configureMapView()
+        configureStatsLabels()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationController?.navigationBar.isHidden = true
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        navigationController?.navigationBar.barStyle = .default
+        navigationController?.navigationBar.isHidden = false
     }
-    //MARK: - API
     
     //MARK: - Selectors
     
     @objc func mapViewTapped(){
+        print("DEBUG: tapped")
         if mapViewZoomed {
-            UIView.animate(withDuration: 0.3) {
-                self.mapView.frame = CGRect(x: self.view.frame.width/2 + 5, y: 10, width: self.view.frame.width/2 - 15 , height: self.view.frame.height/3)
-                self.mapView.isZoomEnabled = false
-                self.mapView.isRotateEnabled = false
-                self.mapView.isPitchEnabled = false
-                self.mapView.isScrollEnabled = false
-                
-                let center = CLLocationCoordinate2D(latitude: self.runTable[self.runTable.count/2].latitude, longitude: self.runTable[self.runTable.count/2].longitude)
-                let region = MKCoordinateRegion(center: center, latitudinalMeters: self.distance+100, longitudinalMeters: self.distance+100)
-                self.mapView.setRegion(region, animated: true)
-            }
+            restoreMapView()
         } else {
-            UIView.animate(withDuration: 0.3) { [self] in
-                self.mapView.frame = CGRect(x: 10, y: 10, width: self.view.frame.width-20, height: self.safeViewHeight! - self.tabBarHeight - 20)
-                self.view.bringSubviewToFront(self.mapView)
-                
-                self.mapView.isZoomEnabled = true
-                self.mapView.isRotateEnabled = true
-                self.mapView.isPitchEnabled = true
-                self.mapView.isScrollEnabled = true
-                
-                let center = CLLocationCoordinate2D(latitude: self.runTable[self.runTable.count/2].latitude, longitude: self.runTable[self.runTable.count/2].longitude)
-                let region = MKCoordinateRegion(center: center, latitudinalMeters: self.distance+100, longitudinalMeters: self.distance+100)
-                mapView.setRegion(region, animated: true)
-            }
+            zoomMapView()
         }
         mapViewZoomed.toggle()
     }
     
     //MARK: - Helpers
     
-    func addMapView(){
+    func configureUI() {
+        view.backgroundColor = .white
+        let formatter = DateFormatter()
+        formatter.dateFormat = "d MMM yyyy HH:mm"
+        navigationItem.title = formatter.string(from: Date(timeIntervalSince1970: viewModel.stats.timestampStart))
+    }
+    
+    func configStatsLabel(withUILabel label: UILabel) {
+        label.tintColor = .appTintColor
+        label.layer.zPosition = -1
+        label.textAlignment = .center
+        label.numberOfLines = 2
+        label.backgroundColor = .cellBackground
+        label.layer.cornerRadius = 5
+        label.clipsToBounds = true
+        label.alpha = 1.0
+    }
+    
+    func configureStatsLabels() {
+        timeLabel.text = viewModel.timeLabelText
+        distanceLabel.text = viewModel.distanceLabelText
+        maxAltitudeLabel.text = viewModel.minAltitudeLabelText
+        maxAltitudeLabel.text = viewModel.maxAltitudeLabelText
+        avgSpeedLabel.text = viewModel.avgSpeedLabelText
+        maxSpeedLabel.text = viewModel.maxSpeedLabelText
+        
+        configStatsLabel(withUILabel: timeLabel)
+        configStatsLabel(withUILabel: distanceLabel)
+        configStatsLabel(withUILabel: minAltitudeLabel)
+        configStatsLabel(withUILabel: maxAltitudeLabel)
+        configStatsLabel(withUILabel: avgSpeedLabel)
+        configStatsLabel(withUILabel: maxSpeedLabel)
+        
+        view.addSubview(timeLabel)
+        view.addSubview(distanceLabel)
+        view.addSubview(maxAltitudeLabel)
+        view.addSubview(maxAltitudeLabel)
+        view.addSubview(avgSpeedLabel)
+        view.addSubview(maxSpeedLabel)
+        
+        timeLabel.frame = CGRect(x: 10, y: navigationController?.navigationBar.layer.frame.maxY ?? 30 + 20 + self.view.frame.height/4 + 10, width: self.view.frame.width - 20, height: self.view.frame.height/10)
+        distanceLabel.anchor(top: timeLabel.topAnchor, left: self.view.leftAnchor, paddingTop: 10, paddingLeft: 10, width: self.view.frame.width - 20, height: self.view.frame.height/10)
+        minAltitudeLabel.anchor(top: timeLabel.bottomAnchor, left: view.leftAnchor, paddingTop: 10, paddingLeft: 10, width: view.frame.width/2-30, height: view.frame.height/20)
+        maxAltitudeLabel.anchor(top: timeLabel.bottomAnchor, left: minAltitudeLabel.rightAnchor, paddingTop: 10, paddingLeft: 10, width: view.frame.width/2-30, height: view.frame.height/20)
+        avgSpeedLabel.anchor(top: minAltitudeLabel.bottomAnchor, left: view.leftAnchor, paddingTop: 10, paddingLeft: 10, width: view.frame.width/2-30, height: view.frame.height/20)
+        maxSpeedLabel.anchor(top: maxAltitudeLabel.bottomAnchor, left: avgSpeedLabel.rightAnchor, paddingTop: 10, paddingLeft: 10, width: view.frame.width/2-30, height: view.frame.height/20)
+    }
+    
+    
+        
+    func configureMapView(){
         let tap = UITapGestureRecognizer(target: self, action: #selector(mapViewTapped))
         
-        let frame = CGRect(x: self.view.frame.width/2 + 5, y: 10, width: self.view.frame.width/2 - 15, height: self.view.frame.height/3)
+        let frame = CGRect(x: 10, y: navigationController?.navigationBar.layer.frame.maxY ?? 30 + 20, width: self.view.frame.width - 20, height: self.view.frame.height/4)
         mapView = MKMapView(frame: frame)
         mapView.layer.cornerRadius = 10
         mapView.layer.borderWidth = 4
         mapView.layer.borderColor = UIColor.darkGray.cgColor
         mapView.layer.masksToBounds = true
         
-        view.addSubview(mapView)
         mapView.delegate = self
         mapView.isZoomEnabled = false
         mapView.isRotateEnabled = false
         mapView.addGestureRecognizer(tap)
-    }
-    
-    func addChartView(){
-        view.addSubview(lineChartView)
-        lineChartView.anchor(left: view.leftAnchor, bottom: self.view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor, paddingLeft: 10, paddingBottom: 10, paddingRight: 10, height: self.view.frame.height/2)
-        lineChartView.layer.cornerRadius = 10
-        lineChartView.layer.borderWidth = 4
-        lineChartView.layer.borderColor = UIColor.darkGray.cgColor
-        lineChartView.layer.masksToBounds = true
-        self.view.bringSubviewToFront(mapView)
-    }
-    
-    func configureUI(){
-        view.backgroundColor = .white
+        mapView.setRegion(.init(center: self.viewModel.centerLocation, latitudinalMeters: viewModel.stats.distance*2, longitudinalMeters: viewModel.stats.distance*2), animated: false)
         
-        view.addSubview(speedLabel)
-        speedLabel.anchor(top: mapView.topAnchor, left: view.leftAnchor, paddingTop: 0, paddingLeft: 10)
-        let avgSpeed = runTable.reduce(0) { (result, location) in
-            (result + location.speed) / 2
+        mapView.mapType = .mutedStandard
+        
+        mapView.addOverlays(viewModel.polylines)
+        print("DEBUG: viewModel.polylines \(viewModel.polylines.count)")
+        
+        view.addSubview(mapView)
+    }
+    
+    func zoomMapView(){
+        mapView.layer.zPosition = 2
+        UIView.animate(withDuration: 0.3) {
+            let frame = CGRect(x:10, y: self.navigationController?.navigationBar.layer.frame.maxY ?? 30 + 20, width: self.view.frame.width - 20, height: self.view.frame.height/1.2)
+            UIView.animate(withDuration: 0.3) {
+                self.mapView.frame = frame
+            }
         }
-        speedLabel.text = "average speed: \((avgSpeed*3.6).rounded()) km/h"
-        speedLabel.textAlignment = .center
-        speedLabel.setDimensions(width: self.view.frame.width/2 - 15, height: self.mapView.frame.height/2-5)
         
-        view.addSubview(distanceLabel)
-        distanceLabel.anchor(top: speedLabel.bottomAnchor, left: view.leftAnchor, paddingTop: 10, paddingLeft: 10)
-        distanceLabel.setDimensions(width: self.view.frame.width/2 - 15, height: self.mapView.frame.height/2-5)
-        
-        if distance.rounded()/1000 < 1 {
-            self.distanceLabel.text = "\(self.distance.rounded()) m"
-        } else {
-            self.distanceLabel.text = "\(self.distance.rounded()/1000) km"
+    }
+    
+    func restoreMapView(){
+        mapView.setRegion(.init(center: self.viewModel.centerLocation, latitudinalMeters: viewModel.stats.distance, longitudinalMeters: viewModel.stats.distance), animated: false)
+        let frame = CGRect(x:10, y: navigationController?.navigationBar.layer.frame.maxY ?? 30 + 20, width: self.view.frame.width - 20, height: self.view.frame.height/4)
+        UIView.animate(withDuration: 0.3) {
+            self.mapView.frame = frame
         }
-        distanceLabel.textAlignment = .center
         
-        let start = MKPointAnnotation()
-        start.title = "Start"
-        guard let coord_start = runTable.first?.retCLLocationCoordinate2D() else {return}
-        start.coordinate = CLLocationCoordinate2D(latitude: coord_start.latitude, longitude: coord_start.longitude)
-        mapView.addAnnotation(start)
-        
-        let stop = MKPointAnnotation()
-        stop.title = "Stop"
-        guard let coord_stop = runTable.first?.retCLLocationCoordinate2D() else {return}
-        stop.coordinate = CLLocationCoordinate2D(latitude: coord_stop.latitude, longitude: coord_stop.longitude)
-        mapView.addAnnotation(stop)
-        
-        
-        let center = CLLocationCoordinate2D(latitude: runTable[runTable.count/2].latitude, longitude: runTable[runTable.count/2].longitude)
-        let region = MKCoordinateRegion(center: center, latitudinalMeters: self.distance+100, longitudinalMeters: self.distance+100)
-        mapView.setRegion(region, animated: true)
-        
-        let polylineTable = runTable.map{$0.retCLLocationCoordinate2D()}
-        let polyline = MKPolyline(coordinates: polylineTable, count: polylineTable.count)
-        self.mapView.addOverlay(polyline)
-    }
-    
-    func configureLocationManager(){
-        locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-    }
-    
-    func checkLocationServices(){
-        if CLLocationManager.locationServicesEnabled(){
-            configureLocationManager()
-            checkLocationAuthorization()
-        } else {
-            //FIXME: - ALERT -> ENABLE LOCATION SERVICES
-        }
-    }
-    
-    func checkLocationAuthorization(){
-        switch CLLocationManager.authorizationStatus() {
-        case .authorizedWhenInUse:
-            //FIXME: - ALERT: TO PROPERLY USE APP SET ALWAYS IN SETTINGS
-            locationManager.requestAlwaysAuthorization()
-            mapView.showsUserLocation = true
-            locationManager.startUpdatingLocation()
-            break
-        case .denied:
-            locationManager.requestWhenInUseAuthorization()
-            break
-        case .notDetermined:
-            locationManager.requestWhenInUseAuthorization()
-            break
-        case .restricted:
-            // not permitted by parent
-            break
-        case .authorizedAlways:
-            mapView.showsUserLocation = true
-            locationManager.startUpdatingLocation()
-            break
-        @unknown default:
-            break
-        }
-    }
-    
-    
-    func appendDistance(coord: CLLocation){
-        if let last = runTable.last {
-            distance += coord.distance(from: last.retFullCLLocation())
-            //print("DEBUG: added \(coord.distance(from: last.coordinate)) to distance")
-        }
-    }
-    
-    func setChartData(){
-        let set1 = LineChartDataSet(entries: speedChartTable, label: "Speed")
-        set1.drawCirclesEnabled = false
-        set1.mode = .cubicBezier
-        set1.lineWidth = 3
-        set1.setColor(.mainAppColor)
-        set1.fill = Fill(color: .mainAppColor)
-        set1.fillAlpha = 0.6
-        set1.drawFilledEnabled = true
-        set1.drawHorizontalHighlightIndicatorEnabled = false
-        set1.highlightColor = .black
-        
-        
-        let data = LineChartData(dataSet: set1)
-        data.setDrawValues(false)
-        lineChartView.data = data
     }
     
 }
 
 extension RunSummaryController: MKMapViewDelegate {
-    
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         if overlay is MKPolyline {
             let polylineRenderer = MKPolylineRenderer(overlay: overlay)
@@ -284,14 +172,5 @@ extension RunSummaryController: MKMapViewDelegate {
         polylineRenderer.strokeColor = UIColor.red
         polylineRenderer.lineWidth = 10
         return polylineRenderer
-    }
-}
-
-extension RunSummaryController: CLLocationManagerDelegate {
-}
-
-extension RunSummaryController: ChartViewDelegate {
-    func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
-        print("DEBUG: entry : \(entry)")
     }
 }

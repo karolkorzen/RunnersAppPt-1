@@ -8,7 +8,7 @@
 
 import CoreLocation
 
-struct RunViewModel {
+class RunViewModel {
     
     func speedLabelText(withSpeed speed: Double) -> String{
         if speed > 0.0 {
@@ -64,6 +64,8 @@ struct RunViewModel {
             }
         }
         avg/=Double(runTable.count)
-        return Stats(time: time, timestampStart: runTable.first!.timestamp.timeIntervalSince1970, timestampStop: runTable.last!.timestamp.timeIntervalSince1970, distance: distance, avgSpeed: avg, maxSpeed: max, altitudeMin: altmin, altitudeMax: altmax)
+        return Stats(time: time, timestampStart: runTable.first!.timestamp.timeIntervalSince1970, timestampStop: runTable.last!.timestamp.timeIntervalSince1970, distance: distance, avgSpeed: avg, maxSpeed: max, altitudeMin: altmin, altitudeMax: altmax, training: runTable)
     }
+    
+    
 }

@@ -17,16 +17,25 @@ struct RunService {
     func uploadRunSession(withRunSession runTable: [Location] , withStats stats: Stats) {
         guard let currentUid = Auth.auth().currentUser?.uid else {return}
 //        let monthYear = monthYearTimestamp(withDate: runTable[0].timestamp)
+        var values = ["time" : stats.time,
+                      "timestampStart" : stats.timestampStart,
+                      "timestampStop" : stats.timestampStop,
+                      "avgSpeed" : stats.avgSpeed,
+                      "maxSpeed" : stats.maxSpeed,
+                      "altitudeMin" : stats.altitudeMin,
+                      "altitudeMax" : stats.altitudeMax
+                      ]
         
         var ref = REF_USER_RUNS.child(currentUid).childByAutoId()
-        ref.updateChildValues(["time" : stats.time])
-        ref.updateChildValues(["timestampStart" : stats.timestampStart])
-        ref.updateChildValues(["timestampStop" : stats.timestampStop])
-        ref.updateChildValues(["distance" : stats.distance])
-        ref.updateChildValues(["avgSpeed" : stats.avgSpeed])
-        ref.updateChildValues(["maxSpeed" : stats.maxSpeed])
-        ref.updateChildValues(["altitudeMin" : stats.altitudeMin])
-        ref.updateChildValues(["altitudeMax" : stats.altitudeMax])
+        ref.updateChildValues(values)
+//        ref.updateChildValues(["time" : stats.time])
+//        ref.updateChildValues(["timestampStart" : stats.timestampStart])
+//        ref.updateChildValues(["timestampStop" : stats.timestampStop])
+//        ref.updateChildValues(["distance" : stats.distance])
+//        ref.updateChildValues(["avgSpeed" : stats.avgSpeed])
+//        ref.updateChildValues(["maxSpeed" : stats.maxSpeed])
+//        ref.updateChildValues(["altitudeMin" : stats.altitudeMin])
+//        ref.updateChildValues(["altitudeMax" : stats.altitudeMax])
         ref = ref.child("locations")
         for index in runTable {
             let ref_num = ref.child("\(index.readNumber)")

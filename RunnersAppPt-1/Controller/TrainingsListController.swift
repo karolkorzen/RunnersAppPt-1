@@ -70,6 +70,9 @@ extension TrainingsListController {
     }
 
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let controller = RunSummaryController(withStats: Array(viewModel.dict)[indexPath.row].value)
+        let nav = UINavigationController(rootViewController: controller)
+        present(nav, animated: true, completion: nil)
         print("Show training details for \(Array(viewModel.dict)[indexPath.row].key)")
     }
 }

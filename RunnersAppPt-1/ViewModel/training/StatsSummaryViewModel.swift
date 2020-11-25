@@ -34,7 +34,7 @@ class StatsSummaryViewModel {
     }
 
     var avgRunTimeLabelText: String {
-        return "average running time:\n\(statsSummary.avgRunTime) minutes"
+        return "average running time:\n\(round(statsSummary.avgRunTime*10)/10) minutes"
     }
     
     var maxRunTimeLabelText: String {

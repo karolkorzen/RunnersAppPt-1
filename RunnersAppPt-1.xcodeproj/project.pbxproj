@@ -26,6 +26,7 @@
 		4B3BF2B32532222400F38822 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3BF2B22532222400F38822 /* User.swift */; };
 		4B3BF2DB25324F7200F38822 /* UploadPostController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3BF2DA25324F7200F38822 /* UploadPostController.swift */; };
 		4B4CB83D256D51AF00110D10 /* GoalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B4CB83C256D51AF00110D10 /* GoalViewModel.swift */; };
+		4B4DD5A1256E840A005F3884 /* RunSummaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B4DD5A0256E840A005F3884 /* RunSummaryViewModel.swift */; };
 		4B5C5E652523629100DCFE3E /* MainTabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B5C5E642523629100DCFE3E /* MainTabController.swift */; };
 		4B60979C2546E05900E2437A /* EditProfileHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B60979B2546E05900E2437A /* EditProfileHeader.swift */; };
 		4B60979F254722E800E2437A /* EditProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B60979E254722E800E2437A /* EditProfileViewModel.swift */; };
@@ -95,6 +96,7 @@
 		4B3BF2B22532222400F38822 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		4B3BF2DA25324F7200F38822 /* UploadPostController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadPostController.swift; sourceTree = "<group>"; };
 		4B4CB83C256D51AF00110D10 /* GoalViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalViewModel.swift; sourceTree = "<group>"; };
+		4B4DD5A0256E840A005F3884 /* RunSummaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunSummaryViewModel.swift; sourceTree = "<group>"; };
 		4B5C5E642523629100DCFE3E /* MainTabController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabController.swift; sourceTree = "<group>"; };
 		4B60979B2546E05900E2437A /* EditProfileHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileHeader.swift; sourceTree = "<group>"; };
 		4B60979E254722E800E2437A /* EditProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewModel.swift; sourceTree = "<group>"; };
@@ -215,8 +217,11 @@
 			isa = PBXGroup;
 			children = (
 				4B6B62C0255C1C090017952C /* TrainingListViewModel.swift */,
+				4B4CB83C256D51AF00110D10 /* GoalViewModel.swift */,
 				4BE3A43F25615CF0004890D4 /* StatsSummaryViewModel.swift */,
+				4B94BB282559550200E158BC /* RunViewModel.swift */,
 				4B7B0F8D25601E90003E6D4B /* TrainingViewModel.swift */,
+				4B4DD5A0256E840A005F3884 /* RunSummaryViewModel.swift */,
 			);
 			path = training;
 			sourceTree = "<group>";
@@ -283,8 +288,6 @@
 				4B151FD5253CC765003F46E6 /* UploadPostViewModel.swift */,
 				4BED470D253ED14900F39250 /* ActionSheetViewModel.swift */,
 				4B60979E254722E800E2437A /* EditProfileViewModel.swift */,
-				4B4CB83C256D51AF00110D10 /* GoalViewModel.swift */,
-				4B94BB282559550200E158BC /* RunViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -518,6 +521,7 @@
 				4B125F6C252F028A00E31C2B /* FeedController.swift in Sources */,
 				4BC84FEE2531C9F3002B07B3 /* Constants.swift in Sources */,
 				4B075F6F256A948C0005089D /* StatsService.swift in Sources */,
+				4B4DD5A1256E840A005F3884 /* RunSummaryViewModel.swift in Sources */,
 				4BD9C8F9253EABB00086A450 /* ActionSheetLauncher.swift in Sources */,
 				4B867C752534FA0B0016B94D /* PostCell.swift in Sources */,
 				4B151FD6253CC765003F46E6 /* UploadPostViewModel.swift in Sources */,

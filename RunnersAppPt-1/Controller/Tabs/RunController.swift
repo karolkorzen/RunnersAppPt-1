@@ -18,7 +18,6 @@ class RunController: UIViewController {
     
     //MARK: - Properties
     private let viewModel = RunViewModel()
-    private let fpc = FloatingPanelController()
     private var timer = Timer()
     
     private var runTable: [Location] = []
@@ -117,7 +116,6 @@ class RunController: UIViewController {
     //MARK: - Helpers
     
     func startTraining() {
-        fpc.dismiss(animated: true, completion: nil)
         UIView.animate(withDuration: 0.5) {
             self.runButton.setTitle("STOP", for: .normal)
             self.runButton.backgroundColor = UIColor(red: 0.13, green: 0.19, blue: 0.25, alpha: 1.00)
@@ -206,12 +204,11 @@ class RunController: UIViewController {
     func finishTraining(withSavingDecision decision: Bool){
 
         if decision {
-            RunService.shared.uploadRunSession(withRunSession: self.runTable, withStats: viewModel.createStats(runTable: runTable, distance: distance, time: Double(time)))
-            let summary = RunSummaryController(tabBarHeight: self.tabBarHeight, runTable: self.runTable, speedChartTable: self.speedChartTable, distance: self.distance)
-            fpc.set(contentViewController: summary)
-            fpc.layout = MyRunFloatingPanelLayout()
-            fpc.isRemovalInteractionEnabled = true
-            self.present(fpc, animated: true, completion: nil)
+            let stats = viewModel.createStats(runTable: runTable, distance: distance, time: Double(time))
+            RunService.shared.uploadRunSession(withRunSession: self.runTable, withStats: stats)
+            let controller = RunSummaryController(withStats: stats)
+            let nav = UINavigationController(rootViewController: controller)
+            present(nav, animated: true, completion: nil)
         }
         self.timer.invalidate()
         self.time = 0
@@ -423,22 +420,4 @@ extension RunController: CLLocationManagerDelegate {
         self.mapView.addOverlay(polyline)
     }
     
-}
-
-//MARK: - ChartViewDelegate
-
-extension RunController: ChartViewDelegate {
-
-}
-
-//MARK: - FloatingPanelLayout
-
-class MyRunFloatingPanelLayout: FloatingPanelLayout {
-    let position: FloatingPanelPosition = .bottom
-    let initialState: FloatingPanelState = .full
-    var anchors: [FloatingPanelState: FloatingPanelLayoutAnchoring] {
-        return [
-            .full: FloatingPanelLayoutAnchor(absoluteInset: 5.0, edge: .top, referenceGuide: .safeArea),
-        ]
-    }
 }
