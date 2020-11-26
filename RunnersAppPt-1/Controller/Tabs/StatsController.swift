@@ -23,7 +23,7 @@ class StatsController: UIViewController {
     private let statsLabel = Utilities.shared.infoRunLabel()
     private var sceneTitle = UILabel()
     private var settingsIcon = Utilities.shared.actionButton(withSystemName: "gear")
-    private var goal: Double = 10000.0 //FIXME: put vm here
+    private var goal: Double = 0.0
     private var targetHeight: CGFloat = 0.0
     private var currentHeight: CGFloat = 0.0
     private var filling: BarFilling = .empty
@@ -66,6 +66,7 @@ class StatsController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.goal = viewModel.goal
         initCheck()
         setFloatingPanel()
         configureUI()
@@ -78,6 +79,29 @@ class StatsController: UIViewController {
         initialStatsBar()
         initialStatsLabels()
         introAnimate()
+    }
+    
+    //MARK: - Selectors
+    
+    @objc func setgoal(){
+        let alert = UIAlertController(title: "Set goal", message: "Enter distance you want to run", preferredStyle: .alert)
+        
+        alert.addTextField { (textfield) in
+            textfield.text = String(self.viewModel.goal)
+            textfield.keyboardType = UIKeyboardType.decimalPad
+        }
+        alert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { (action) in
+            let goal = NSString(string: alert.textFields!.first!.text!).doubleValue
+            if goal != self.viewModel.goal {
+                print("DEBUG: settings goal -> \(goal)")
+                StatsService.shared.uploadGoal(withGoal: goal) {
+//                    dismiss(animated: true, completion: nil)
+                }
+            }
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
+        present(alert, animated: true, completion: nil)
     }
     
     
@@ -128,6 +152,7 @@ class StatsController: UIViewController {
         settingsIcon.tintColor = .appTintColor
         settingsIcon.setDimensions(width: 50, height: 50)
         settingsIcon.layer.zPosition = -1
+        settingsIcon.addTarget(self, action: #selector(setgoal), for: .touchUpInside)
     }
     
     func configStatsLabel (withUILabel label: UILabel) {

@@ -9,6 +9,7 @@
 import Firebase
 
 struct StatsService {
+    static let shared = StatsService()
     
     func uploadGoal(withGoal goal: Double, completion: @escaping() -> Void) {
         guard let uid = Auth.auth().currentUser?.uid else {return}
@@ -18,12 +19,12 @@ struct StatsService {
         }
     }
     
-    func fetchGoal(completion: @escaping() -> Double) {
+    func fetchGoal(completion: @escaping(Double) -> Void) {
         guard let uid = Auth.auth().currentUser?.uid else {return}
         let ref = REF_USER_GOAL.child(uid)
         ref.observeSingleEvent(of: .childAdded) { (snapshot, string) in
             print("DEBUG: in fetch goal -> \(snapshot.value)")
+            completion(snapshot.value as! Double)
         }
     }
-    
 }

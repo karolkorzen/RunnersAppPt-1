@@ -17,14 +17,15 @@ struct RunService {
     func uploadRunSession(withRunSession runTable: [Location] , withStats stats: Stats) {
         guard let currentUid = Auth.auth().currentUser?.uid else {return}
 //        let monthYear = monthYearTimestamp(withDate: runTable[0].timestamp)
-        var values = ["time" : stats.time,
+        let values = ["time" : stats.time,
+                      "distance": stats.distance,
                       "timestampStart" : stats.timestampStart,
                       "timestampStop" : stats.timestampStop,
                       "avgSpeed" : stats.avgSpeed,
                       "maxSpeed" : stats.maxSpeed,
-                      "altitudeMin" : stats.altitudeMin,
-                      "altitudeMax" : stats.altitudeMax
-                      ]
+                      "altitudeMin" : stats.altitudeMin.description,
+                      "altitudeMax" : stats.altitudeMax.description
+        ] as [String : Any]
         
         var ref = REF_USER_RUNS.child(currentUid).childByAutoId()
         ref.updateChildValues(values)

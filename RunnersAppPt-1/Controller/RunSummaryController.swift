@@ -26,6 +26,18 @@ class RunSummaryController: UIViewController {
     private let avgSpeedLabel = Utilities.shared.standardLabel(withSize: 10, withWeight: .semibold)
     private let maxSpeedLabel = Utilities.shared.standardLabel(withSize: 10, withWeight: .semibold)
     
+    lazy var lineChartView: LineChartView = {
+        let chartView = LineChartView()
+        chartView.rightAxis.enabled = false
+        chartView.xAxis.enabled = false
+        chartView.leftAxis.setLabelCount(6, force: false)
+        chartView.leftAxis.labelTextColor = .darkGray
+        chartView.leftAxis.axisLineColor = .darkGray
+        chartView.legend.enabled = true
+        
+        return chartView
+    }()
+    
     //MARK: - Lifecycle
     
     init(withStats stats: Stats) {
@@ -42,6 +54,7 @@ class RunSummaryController: UIViewController {
         configureUI()
         configureMapView()
         configureStatsLabels()
+        addChartView()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -85,7 +98,7 @@ class RunSummaryController: UIViewController {
     func configureStatsLabels() {
         timeLabel.text = viewModel.timeLabelText
         distanceLabel.text = viewModel.distanceLabelText
-        maxAltitudeLabel.text = viewModel.minAltitudeLabelText
+        minAltitudeLabel.text = viewModel.minAltitudeLabelText
         maxAltitudeLabel.text = viewModel.maxAltitudeLabelText
         avgSpeedLabel.text = viewModel.avgSpeedLabelText
         maxSpeedLabel.text = viewModel.maxSpeedLabelText
@@ -99,21 +112,47 @@ class RunSummaryController: UIViewController {
         
         view.addSubview(timeLabel)
         view.addSubview(distanceLabel)
-        view.addSubview(maxAltitudeLabel)
+        view.addSubview(minAltitudeLabel)
         view.addSubview(maxAltitudeLabel)
         view.addSubview(avgSpeedLabel)
         view.addSubview(maxSpeedLabel)
         
-        timeLabel.frame = CGRect(x: 10, y: navigationController?.navigationBar.layer.frame.maxY ?? 30 + 20 + self.view.frame.height/4 + 10, width: self.view.frame.width - 20, height: self.view.frame.height/10)
-        distanceLabel.anchor(top: timeLabel.topAnchor, left: self.view.leftAnchor, paddingTop: 10, paddingLeft: 10, width: self.view.frame.width - 20, height: self.view.frame.height/10)
-        minAltitudeLabel.anchor(top: timeLabel.bottomAnchor, left: view.leftAnchor, paddingTop: 10, paddingLeft: 10, width: view.frame.width/2-30, height: view.frame.height/20)
-        maxAltitudeLabel.anchor(top: timeLabel.bottomAnchor, left: minAltitudeLabel.rightAnchor, paddingTop: 10, paddingLeft: 10, width: view.frame.width/2-30, height: view.frame.height/20)
-        avgSpeedLabel.anchor(top: minAltitudeLabel.bottomAnchor, left: view.leftAnchor, paddingTop: 10, paddingLeft: 10, width: view.frame.width/2-30, height: view.frame.height/20)
-        maxSpeedLabel.anchor(top: maxAltitudeLabel.bottomAnchor, left: avgSpeedLabel.rightAnchor, paddingTop: 10, paddingLeft: 10, width: view.frame.width/2-30, height: view.frame.height/20)
+        timeLabel.anchor(top: view.topAnchor, left: view.leftAnchor, paddingTop: view.frame.height/4+10+(navigationController?.navigationBar.frame.height)!, paddingLeft: 10, width: view.frame.width - 20, height: view.frame.height/15)
+        distanceLabel.anchor(top: timeLabel.bottomAnchor, left: view.leftAnchor, paddingTop: 10, paddingLeft: 10, width: view.frame.width - 20, height: view.frame.height/15)
+        minAltitudeLabel.anchor(top: distanceLabel.bottomAnchor, left: view.leftAnchor, paddingTop: 10, paddingLeft: 10, width: view.frame.width/2-15, height: view.frame.height/20)
+        maxAltitudeLabel.anchor(top: distanceLabel.bottomAnchor, left: minAltitudeLabel.rightAnchor, paddingTop: 10, paddingLeft: 10, width: view.frame.width/2-15, height: view.frame.height/20)
+        avgSpeedLabel.anchor(top: minAltitudeLabel.bottomAnchor, left: view.leftAnchor, paddingTop: 10, paddingLeft: 10, width: view.frame.width/2-15, height: view.frame.height/20)
+        maxSpeedLabel.anchor(top: maxAltitudeLabel.bottomAnchor, left: avgSpeedLabel.rightAnchor, paddingTop: 10, paddingLeft: 10, width: view.frame.width/2-15, height: view.frame.height/20)
     }
     
-    
+    func addChartView(){
+        view.addSubview(lineChartView)
+        lineChartView.anchor(top: maxSpeedLabel.bottomAnchor, left: view.leftAnchor, bottom: self.view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor, paddingTop: 10, paddingLeft: 10, paddingBottom: 10, paddingRight: 10)
+        lineChartView.layer.cornerRadius = 10
+        lineChartView.layer.borderWidth = 4
+        lineChartView.layer.borderColor = UIColor.darkGray.cgColor
+        lineChartView.layer.masksToBounds = true
         
+        setChartData()
+    }
+    
+    func setChartData(){
+        let set1 = LineChartDataSet(entries: viewModel.speedChartTable, label: "Speed")
+        set1.drawCirclesEnabled = false
+        set1.mode = .cubicBezier
+        set1.lineWidth = 3
+        set1.setColor(.mainAppColor)
+        set1.fill = Fill(color: .mainAppColor)
+        set1.fillAlpha = 0.6
+        set1.drawFilledEnabled = true
+        set1.drawHorizontalHighlightIndicatorEnabled = false
+        set1.highlightColor = .black
+
+        let data = LineChartData(dataSet: set1)
+        data.setDrawValues(false)
+        lineChartView.data = data
+    }
+    
     func configureMapView(){
         let tap = UITapGestureRecognizer(target: self, action: #selector(mapViewTapped))
         
@@ -125,8 +164,8 @@ class RunSummaryController: UIViewController {
         mapView.layer.masksToBounds = true
         
         mapView.delegate = self
-        mapView.isZoomEnabled = false
-        mapView.isRotateEnabled = false
+        mapView.isZoomEnabled = true
+        mapView.isRotateEnabled = true
         mapView.addGestureRecognizer(tap)
         mapView.setRegion(.init(center: self.viewModel.centerLocation, latitudinalMeters: viewModel.stats.distance*2, longitudinalMeters: viewModel.stats.distance*2), animated: false)
         

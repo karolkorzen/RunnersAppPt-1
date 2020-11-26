@@ -9,6 +9,7 @@
 import Foundation
 import MapKit
 import CoreLocation
+import Charts
 
 class RunSummaryViewModel {
     
@@ -42,7 +43,7 @@ class RunSummaryViewModel {
     }
     
     var distanceLabelText: String {
-        return "Distance:\n\(stats.distance) m"
+        return "Distance:\n\(round(stats.distance)) m"
     }
     
     var minAltitudeLabelText: String {
@@ -59,5 +60,13 @@ class RunSummaryViewModel {
     
     var maxSpeedLabelText: String {
         return "max speed:\n\(round(stats.maxSpeed*3.6*10)/10) km/h"
+    }
+    
+    var speedChartTable: [ChartDataEntry] {
+        var table: [ChartDataEntry] = []
+        for index in stats.training!.enumerated() {
+            table.append(ChartDataEntry(x: Double(index.offset), y: index.element.speed))
+        }
+        return table
     }
 }

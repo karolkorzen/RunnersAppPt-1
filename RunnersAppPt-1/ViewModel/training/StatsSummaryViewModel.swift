@@ -16,6 +16,8 @@ protocol StatsSummaryViewModelDelegate: class {
 class StatsSummaryViewModel {
     weak var delegate: StatsSummaryViewModelDelegate?
     
+    var goal: Double = 0.0
+    
     var statsArray: [Stats] = [] {
         didSet {
             self.statsSummary = self.computeStats()
@@ -29,7 +31,14 @@ class StatsSummaryViewModel {
         }
     }
     
+    func fetchGoal() {
+        StatsService.shared.fetchGoal { (goal) in
+            self.goal = goal
+        }
+    }
+    
     init(){
+        
         fetchStats()
     }
 
