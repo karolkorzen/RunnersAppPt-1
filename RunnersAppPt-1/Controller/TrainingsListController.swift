@@ -70,7 +70,8 @@ extension TrainingsListController {
     }
 
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let controller = RunSummaryController(withStats: Array(viewModel.dict)[indexPath.row].value)
+        let controller = RunSummaryController(withStats: Array(viewModel.dict)[indexPath.row].value, withDeleteEnabled: true, withTrainingUID: Array(viewModel.dict)[indexPath.row].key)
+        controller.delegate = self
         let nav = UINavigationController(rootViewController: controller)
         present(nav, animated: true, completion: nil)
     }
@@ -97,4 +98,14 @@ extension TrainingsListController: UICollectionViewDelegateFlowLayout {
         return header
     }
     
+}
+
+extension TrainingsListController: RunSummaryControllerDelegate {
+    func deleteTraining(withTrainingUID id: String) {
+        RunService.shared.deleteRun(withTrainingID: id)
+        self.fetchTrainings()
+        print("DEBUG: deleted training")
+    }
+    
+
 }

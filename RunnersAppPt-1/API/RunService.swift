@@ -16,7 +16,6 @@ struct RunService {
     /// - Parameter runTable: [Location]
     func uploadRunSession(withRunSession runTable: [Location] , withStats stats: Stats) {
         guard let currentUid = Auth.auth().currentUser?.uid else {return}
-//        let monthYear = monthYearTimestamp(withDate: runTable[0].timestamp)
         let values = ["time" : stats.time,
                       "distance": stats.distance,
                       "timestampStart" : stats.timestampStart,
@@ -29,14 +28,6 @@ struct RunService {
         
         var ref = REF_USER_RUNS.child(currentUid).childByAutoId()
         ref.updateChildValues(values)
-//        ref.updateChildValues(["time" : stats.time])
-//        ref.updateChildValues(["timestampStart" : stats.timestampStart])
-//        ref.updateChildValues(["timestampStop" : stats.timestampStop])
-//        ref.updateChildValues(["distance" : stats.distance])
-//        ref.updateChildValues(["avgSpeed" : stats.avgSpeed])
-//        ref.updateChildValues(["maxSpeed" : stats.maxSpeed])
-//        ref.updateChildValues(["altitudeMin" : stats.altitudeMin])
-//        ref.updateChildValues(["altitudeMax" : stats.altitudeMax])
         ref = ref.child("locations")
         for index in runTable {
             let ref_num = ref.child("\(index.readNumber)")
@@ -62,6 +53,12 @@ struct RunService {
             dictionary[trainingID] = stats
             completion(dictionary)
         }
+    }
+    
+    func deleteRun(withTrainingID id: String) {
+        guard let currentUID = Auth.auth().currentUser?.uid else {return}
+        
+        REF_USER_RUNS.child(currentUID).child(id).removeValue()
     }
     
     /// func fetches stats from runs

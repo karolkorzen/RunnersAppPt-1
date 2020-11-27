@@ -88,14 +88,17 @@ class StatsController: UIViewController {
         
         alert.addTextField { (textfield) in
             textfield.text = String(self.viewModel.goal)
-            textfield.keyboardType = UIKeyboardType.decimalPad
+            textfield.keyboardType = UIKeyboardType.numberPad
         }
         alert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { (action) in
             let goal = NSString(string: alert.textFields!.first!.text!).doubleValue
             if goal != self.viewModel.goal {
                 print("DEBUG: settings goal -> \(goal)")
                 StatsService.shared.uploadGoal(withGoal: goal) {
-//                    dismiss(animated: true, completion: nil)
+                    self.self.goal = goal
+                    self.initCheck()
+                    self.initialStatsBar()
+                    self.introAnimate()
                 }
             }
         }))
@@ -280,6 +283,8 @@ class StatsController: UIViewController {
             currentTitleLabel.frame = CGRect(x: view.frame.width*10/20, y: view.frame.height/4-30, width: view.frame.width/3, height: 30)
         }
         currentTitleLabel.alpha = 0.0
+        
+        currentLineExt.alpha = 0.0
     }
     
     func animateBarTarget() {

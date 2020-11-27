@@ -20,7 +20,7 @@ class RunViewModel {
     func distanceLabelText(withDistance distance: Double) -> String {
         if distance>0.0 {
             if distance >= 1000 {
-                return "\(round(distance)/100) km"
+                return "\(round(distance)/1000) km"
             } else {
                 return "\(round(distance)) m"
             }

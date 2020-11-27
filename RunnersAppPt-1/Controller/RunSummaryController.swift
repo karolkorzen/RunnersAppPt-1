@@ -10,14 +10,21 @@ import UIKit
 import MapKit
 import Charts
 
+protocol RunSummaryControllerDelegate: class {
+    func deleteTraining(withTrainingUID id: String)
+}
+
 class RunSummaryController: UIViewController {
     
     //MARK: - Properties
     
     private var viewModel = RunSummaryViewModel()
+    weak var delegate: RunSummaryControllerDelegate?
+    private var id: String = ""
     
     private var mapView = MKMapView()
     var mapViewZoomed: Bool = false
+    var deleteEnable: Bool = false
     
     private let timeLabel = Utilities.shared.standardLabel(withSize: 15, withWeight: .semibold)
     private let distanceLabel = Utilities.shared.standardLabel(withSize: 15, withWeight: .semibold)
@@ -40,9 +47,11 @@ class RunSummaryController: UIViewController {
     
     //MARK: - Lifecycle
     
-    init(withStats stats: Stats) {
+    init(withStats stats: Stats, withDeleteEnabled enabled: Bool = false, withTrainingUID id: String = "") {
         super.init(nibName: nil, bundle: nil)
         self.viewModel = RunSummaryViewModel(withStats: stats)
+        self.deleteEnable = enabled
+        self.id = id
     }
     
     required init?(coder: NSCoder) {
@@ -75,6 +84,19 @@ class RunSummaryController: UIViewController {
         mapViewZoomed.toggle()
     }
     
+    @objc func deleteTraining(){
+        let alert = UIAlertController(title: "Confirm deleting training", message: nil, preferredStyle: .actionSheet)
+    
+        alert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { (UIAlertAction) in
+            self.delegate?.deleteTraining(withTrainingUID: self.id)
+            self.dismiss(animated: true, completion: nil)
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .destructive, handler: { (UIAlertAction) in
+            
+        }))
+        present(alert, animated: true, completion: nil)
+    }
+    
     //MARK: - Helpers
     
     func configureUI() {
@@ -82,6 +104,11 @@ class RunSummaryController: UIViewController {
         let formatter = DateFormatter()
         formatter.dateFormat = "d MMM yyyy HH:mm"
         navigationItem.title = formatter.string(from: Date(timeIntervalSince1970: viewModel.stats.timestampStart))
+        
+        if deleteEnable {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "delete", style: .plain, target: self, action: #selector(deleteTraining))
+        }
+        
     }
     
     func configStatsLabel(withUILabel label: UILabel) {
@@ -180,7 +207,10 @@ class RunSummaryController: UIViewController {
     func zoomMapView(){
         mapView.layer.zPosition = 2
         UIView.animate(withDuration: 0.3) {
-            let frame = CGRect(x:10, y: self.navigationController?.navigationBar.layer.frame.maxY ?? 30 + 20, width: self.view.frame.width - 20, height: self.view.frame.height/1.2)
+            let frame = CGRect(x:10, y: self.navigationController?.navigationBar.layer.frame.maxY ?? 30 + 20, width: self.view.frame.width - 20, height:
+                                self.lineChartView.frame.maxY - (self.navigationController?.navigationBar.layer.frame.height ?? 30))
+                               //self.view.frame.height-(self.navigationController?.navigationBar.layer.frame.height ?? 30)-20)
+                
             UIView.animate(withDuration: 0.3) {
                 self.mapView.frame = frame
             }

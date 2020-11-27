@@ -206,7 +206,7 @@ class RunController: UIViewController {
         if decision {
             let stats = viewModel.createStats(runTable: runTable, distance: distance, time: Double(time))
             RunService.shared.uploadRunSession(withRunSession: self.runTable, withStats: stats)
-            let controller = RunSummaryController(withStats: stats)
+            let controller = RunSummaryController(withStats: stats, withDeleteEnabled: false)
             let nav = UINavigationController(rootViewController: controller)
             present(nav, animated: true, completion: nil)
         }

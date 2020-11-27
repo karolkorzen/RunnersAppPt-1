@@ -38,7 +38,7 @@ class StatsSummaryViewModel {
     }
     
     init(){
-        
+        fetchGoal()
         fetchStats()
     }
 
