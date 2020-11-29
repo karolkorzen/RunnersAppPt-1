@@ -39,7 +39,7 @@ class TrainingsListController: UICollectionViewController {
     //MARK: - API
     
     func fetchTrainings(){
-        RunService.shared.fetchRuns { (dictionary) in
+        RunService.shared.fetchRuns { (dictionary)  in
             self.viewModel = TrainingListViewModel(dict: dictionary)
         }
     }
@@ -60,6 +60,7 @@ class TrainingsListController: UICollectionViewController {
 extension TrainingsListController {
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        print("DEBUG: setting numberOfItemsInSection with number \(viewModel.numberOfTrainings)")
         return viewModel.numberOfTrainings
     }
 
@@ -102,9 +103,14 @@ extension TrainingsListController: UICollectionViewDelegateFlowLayout {
 
 extension TrainingsListController: RunSummaryControllerDelegate {
     func deleteTraining(withTrainingUID id: String) {
-        RunService.shared.deleteRun(withTrainingID: id)
-        self.fetchTrainings()
-        print("DEBUG: deleted training")
+        if (viewModel.numberOfTrainings == 1) {
+            print("DEBUG: almost there")
+            //FIXME: - if i can :(
+        }
+        RunService.shared.deleteRun(withTrainingID: id, completion: {
+            self.fetchTrainings()
+        })
+        
     }
     
 

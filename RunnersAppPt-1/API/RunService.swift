@@ -45,7 +45,6 @@ struct RunService {
     func fetchRuns(completion: @escaping((TrainingsList) -> Void)) {
         var dictionary = TrainingsList()
         guard let currentUID = Auth.auth().currentUser?.uid else {return}
-        
         REF_USER_RUNS.child(currentUID).observe(.childAdded) { (snapshot) in
             let trainingID = snapshot.key
             let training = snapshot.value as! [String : AnyObject]
@@ -55,10 +54,12 @@ struct RunService {
         }
     }
     
-    func deleteRun(withTrainingID id: String) {
+    func deleteRun(withTrainingID id: String, completion: @escaping(()->Void)) {
         guard let currentUID = Auth.auth().currentUser?.uid else {return}
         
-        REF_USER_RUNS.child(currentUID).child(id).removeValue()
+        REF_USER_RUNS.child(currentUID).child(id).removeValue { (error, ref) in
+            completion()
+        }
     }
     
     /// func fetches stats from runs
@@ -74,6 +75,18 @@ struct RunService {
             let stats = createStatsFromDictionary(training: tRaining)
             statsArray.append(stats)
             completion(statsArray)
+        }
+    }
+    
+    func checkIfRunsAreEmpty(completion: @escaping((Bool) -> Void)){
+        guard let currentUID = Auth.auth().currentUser?.uid else {return}
+        
+        REF_USER_RUNS.child(currentUID).observe(.childAdded) { (snapshot) in
+            if (snapshot.exists()){
+                completion(false)
+            } else {
+                completion(true)
+            }
         }
     }
     

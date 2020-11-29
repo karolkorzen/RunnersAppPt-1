@@ -64,6 +64,7 @@ class RunController: UIViewController {
         chartView.leftAxis.labelTextColor = .darkGray
         chartView.leftAxis.axisLineColor = .darkGray
         chartView.legend.enabled = true
+        chartView.isUserInteractionEnabled = false
         
         return chartView
     }()

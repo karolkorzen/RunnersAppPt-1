@@ -41,6 +41,7 @@ class RunSummaryController: UIViewController {
         chartView.leftAxis.labelTextColor = .darkGray
         chartView.leftAxis.axisLineColor = .darkGray
         chartView.legend.enabled = true
+        chartView.isUserInteractionEnabled = false
         
         return chartView
     }()
@@ -209,7 +210,6 @@ class RunSummaryController: UIViewController {
         UIView.animate(withDuration: 0.3) {
             let frame = CGRect(x:10, y: self.navigationController?.navigationBar.layer.frame.maxY ?? 30 + 20, width: self.view.frame.width - 20, height:
                                 self.lineChartView.frame.maxY - (self.navigationController?.navigationBar.layer.frame.height ?? 30))
-                               //self.view.frame.height-(self.navigationController?.navigationBar.layer.frame.height ?? 30)-20)
                 
             UIView.animate(withDuration: 0.3) {
                 self.mapView.frame = frame
