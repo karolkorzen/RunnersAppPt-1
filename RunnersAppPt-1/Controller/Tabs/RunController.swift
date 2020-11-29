@@ -119,7 +119,7 @@ class RunController: UIViewController {
     func startTraining() {
         UIView.animate(withDuration: 0.5) {
             self.runButton.setTitle("STOP", for: .normal)
-            self.runButton.backgroundColor = UIColor(red: 0.13, green: 0.19, blue: 0.25, alpha: 1.00)
+            self.runButton.backgroundColor = .runButtonBackgroundColor
             self.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.timerAppend), userInfo: nil, repeats: true)
         }
         self.isRunning.toggle()

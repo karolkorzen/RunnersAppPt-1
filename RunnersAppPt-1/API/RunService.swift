@@ -22,8 +22,8 @@ struct RunService {
                       "timestampStop" : stats.timestampStop,
                       "avgSpeed" : stats.avgSpeed,
                       "maxSpeed" : stats.maxSpeed,
-                      "altitudeMin" : stats.altitudeMin.description,
-                      "altitudeMax" : stats.altitudeMax.description
+                      "altitudeMin" : Double(stats.altitudeMin.description),
+                      "altitudeMax" : Double(stats.altitudeMin.description)
         ] as [String : Any]
         
         var ref = REF_USER_RUNS.child(currentUid).childByAutoId()

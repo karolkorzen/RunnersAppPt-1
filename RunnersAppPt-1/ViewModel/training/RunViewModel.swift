@@ -49,14 +49,14 @@ class RunViewModel {
     func createStats(runTable: [Location], distance: Double, time: Double) -> Stats {
         var max = 0.0
         var avg = 0.0
-        var altmin = 0.0
+        var altmin = Double.infinity
         var altmax = 0.0
         for index in runTable {
             avg+=index.speed
             if index.speed>max {
                 max = index.speed
             }
-            if index.altitude > altmin {
+            if index.altitude < altmin {
                 altmin = index.altitude
             }
             if index.altitude > altmax {

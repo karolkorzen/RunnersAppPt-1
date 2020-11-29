@@ -192,8 +192,10 @@ class RunSummaryController: UIViewController {
         mapView.layer.masksToBounds = true
         
         mapView.delegate = self
-        mapView.isZoomEnabled = true
-        mapView.isRotateEnabled = true
+        mapView.isZoomEnabled = false
+        mapView.isRotateEnabled = false
+        mapView.isPitchEnabled = false
+        mapView.isScrollEnabled = false
         mapView.addGestureRecognizer(tap)
         mapView.setRegion(.init(center: self.viewModel.centerLocation, latitudinalMeters: viewModel.stats.distance*2, longitudinalMeters: viewModel.stats.distance*2), animated: false)
         
@@ -210,7 +212,10 @@ class RunSummaryController: UIViewController {
         UIView.animate(withDuration: 0.3) {
             let frame = CGRect(x:10, y: self.navigationController?.navigationBar.layer.frame.maxY ?? 30 + 20, width: self.view.frame.width - 20, height:
                                 self.lineChartView.frame.maxY - (self.navigationController?.navigationBar.layer.frame.height ?? 30))
-                
+            self.mapView.isZoomEnabled = true
+            self.mapView.isRotateEnabled = true
+            self.mapView.isPitchEnabled = true
+            self.mapView.isScrollEnabled = true
             UIView.animate(withDuration: 0.3) {
                 self.mapView.frame = frame
             }
@@ -221,6 +226,10 @@ class RunSummaryController: UIViewController {
     func restoreMapView(){
         mapView.setRegion(.init(center: self.viewModel.centerLocation, latitudinalMeters: viewModel.stats.distance, longitudinalMeters: viewModel.stats.distance), animated: false)
         let frame = CGRect(x:10, y: navigationController?.navigationBar.layer.frame.maxY ?? 30 + 20, width: self.view.frame.width - 20, height: self.view.frame.height/4)
+        mapView.isZoomEnabled = false
+        mapView.isRotateEnabled = false
+        mapView.isPitchEnabled = false
+        mapView.isScrollEnabled = false
         UIView.animate(withDuration: 0.3) {
             self.mapView.frame = frame
         }

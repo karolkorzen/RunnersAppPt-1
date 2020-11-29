@@ -103,10 +103,6 @@ extension TrainingsListController: UICollectionViewDelegateFlowLayout {
 
 extension TrainingsListController: RunSummaryControllerDelegate {
     func deleteTraining(withTrainingUID id: String) {
-        if (viewModel.numberOfTrainings == 1) {
-            print("DEBUG: almost there")
-            //FIXME: - if i can :(
-        }
         RunService.shared.deleteRun(withTrainingID: id, completion: {
             self.fetchTrainings()
         })

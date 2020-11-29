@@ -147,7 +147,7 @@ extension UIColor {
     static let appTintColor = UIColor.darkGray
     static let secondaryAppColor = pinkish
     static let cellBackground = UIColor(red: 0.150, green: 0.250, blue: 0.300, alpha: 0.1)
-    
+    static let runButtonBackgroundColor = UIColor(red: 0.13, green: 0.19, blue: 0.25, alpha: 1.00)
     
     static let previousCellBackground = UIColor(red: 0.93, green: 0.94, blue: 0.95, alpha: 1.00)
     static let pinkish = UIColor(red: 0.95, green: 0.66, blue: 0.63, alpha: 1.00)

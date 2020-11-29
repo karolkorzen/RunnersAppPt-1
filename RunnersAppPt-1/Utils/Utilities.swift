@@ -73,6 +73,22 @@ class Utilities {
         return button
     }
     
+    /// function returns a standard button with text as normal string with font size by default 16, text color .white and cell background .mainAppColor
+    /// - Parameters:
+    ///   - text: text inside button
+    ///   - textSize: CGFloat size of button
+    ///   - textColor: text color
+    ///   - backgroundColor: background color of button
+    /// - Returns: UIButton
+    func standardButton(withString text: String, withTextSize textSize: CGFloat = 16, withTextColour textColor: UIColor = UIColor.white, withBackGroundColor backgroundColor: UIColor = UIColor.mainAppColor) -> UIButton {
+        let button = UIButton(type: .system)
+        
+        button.setTitle(text, for: .normal)
+        button.setTitleColor(textColor, for: .normal)
+        button.backgroundColor = backgroundColor
+        return button
+    }
+    
     /// function waits for exact delay and executes closure of caller's site
     /// - Parameters:
     ///   - delay: seconds of delay in Double

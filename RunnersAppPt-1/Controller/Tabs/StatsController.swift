@@ -49,7 +49,7 @@ class StatsController: UIViewController {
     private let avgSpeedLabel = Utilities.shared.standardLabel(withSize: 10, withWeight: .semibold)
     private let maxSpeedLabel = Utilities.shared.standardLabel(withSize: 10, withWeight: .semibold)
     
-    
+    private let competitionsButton = Utilities.shared.standardButton(withString: "My competitions", withTextColour: .black)
     
     let fpc = FloatingPanelController()
     
@@ -93,7 +93,6 @@ class StatsController: UIViewController {
         alert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { (action) in
             let goal = NSString(string: alert.textFields!.first!.text!).doubleValue
             if goal != self.viewModel.goal {
-                print("DEBUG: settings goal -> \(goal)")
                 StatsService.shared.uploadGoal(withGoal: goal) {
                     self.self.goal = goal
                     self.initCheck()
@@ -105,6 +104,10 @@ class StatsController: UIViewController {
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         
         present(alert, animated: true, completion: nil)
+    }
+    
+    @objc func compButtonClicked(){
+        //FIXME: - Take to completitions scene from there
     }
     
     
@@ -169,6 +172,17 @@ class StatsController: UIViewController {
         label.alpha = 0.0
     }
     
+    func configButton (withUIButton button: UIButton) {
+        button.layer.zPosition = -1
+        button.backgroundColor = .mainAppColor
+        button.layer.cornerRadius = 10
+        button.clipsToBounds = true
+        button.alpha = 0.0
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 17)
+        button.addTarget(self, action: #selector(compButtonClicked), for: .touchUpInside)
+    }
+    
+    
     func initialStatsLabels () {
         avgRunTimeLabel.text = viewModel.avgRunTimeLabelText
         maxRunTimeLabel.text = viewModel.maxRunTimeLabelText
@@ -183,6 +197,7 @@ class StatsController: UIViewController {
         configStatsLabel(withUILabel: maxDistanceLabel)
         configStatsLabel(withUILabel: avgSpeedLabel)
         configStatsLabel(withUILabel: maxSpeedLabel)
+        configButton(withUIButton: competitionsButton)
         
         view.addSubview(avgRunTimeLabel)
         view.addSubview(maxRunTimeLabel)
@@ -190,18 +205,21 @@ class StatsController: UIViewController {
         view.addSubview(maxDistanceLabel)
         view.addSubview(avgSpeedLabel)
         view.addSubview(maxSpeedLabel)
+        view.addSubview(competitionsButton)
         
         avgRunTimeLabel.anchor(top: currentRect.bottomAnchor, left: view.leftAnchor, paddingTop: view.frame.height/25, paddingLeft: 20, width: view.frame.width/2-30, height: view.frame.height/15)
         
         maxRunTimeLabel.anchor(top: currentRect.bottomAnchor, left: avgRunTimeLabel.rightAnchor, paddingTop: view.frame.height/25, paddingLeft: 20, width: view.frame.width/2-30, height: view.frame.height/15)
         
-        avgDistanceLabel.anchor(top: avgRunTimeLabel.bottomAnchor, left: view.leftAnchor, paddingTop: view.frame.height/25, paddingLeft: 20, width: view.frame.width/2-30, height: view.frame.height/15)
+        avgDistanceLabel.anchor(top: avgRunTimeLabel.bottomAnchor, left: view.leftAnchor, paddingTop: 10, paddingLeft: 20, width: view.frame.width/2-30, height: view.frame.height/15)
         
-        maxDistanceLabel.anchor(top: maxRunTimeLabel.bottomAnchor, left: avgRunTimeLabel.rightAnchor, paddingTop: view.frame.height/25, paddingLeft: 20, width: view.frame.width/2-30, height: view.frame.height/15)
+        maxDistanceLabel.anchor(top: maxRunTimeLabel.bottomAnchor, left: avgRunTimeLabel.rightAnchor, paddingTop: 10, paddingLeft: 20, width: view.frame.width/2-30, height: view.frame.height/15)
         
-        avgSpeedLabel.anchor(top: maxDistanceLabel.bottomAnchor, left: view.leftAnchor, paddingTop: view.frame.height/25, paddingLeft: 20, width: view.frame.width/2-30, height: view.frame.height/15)
+        avgSpeedLabel.anchor(top: maxDistanceLabel.bottomAnchor, left: view.leftAnchor, paddingTop: 10, paddingLeft: 20, width: view.frame.width/2-30, height: view.frame.height/15)
         
-        maxSpeedLabel.anchor(top: maxDistanceLabel.bottomAnchor, left: avgRunTimeLabel.rightAnchor, paddingTop: view.frame.height/25, paddingLeft: 20, width: view.frame.width/2-30, height: view.frame.height/15)
+        maxSpeedLabel.anchor(top: maxDistanceLabel.bottomAnchor, left: avgRunTimeLabel.rightAnchor, paddingTop: 10, paddingLeft: 20, width: view.frame.width/2-30, height: view.frame.height/15)
+        
+        competitionsButton.anchor(top: maxSpeedLabel.bottomAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 10, paddingLeft: 20, paddingBottom: 100, paddingRight: 20)
     }
     
     func initialStatsBar() {
@@ -332,6 +350,7 @@ class StatsController: UIViewController {
             self.maxDistanceLabel.alpha = 1.0
             self.avgSpeedLabel.alpha = 1.0
             self.maxSpeedLabel.alpha = 1.0
+            self.competitionsButton.alpha = 1.0
         }
     }
     
@@ -397,15 +416,9 @@ class MyStatsFloatingPanelLayout: FloatingPanelLayout {
 
 extension StatsController: StatsSummaryViewModelDelegate {
     func handleUpdate() {
-        print("DEBUG: //////////////////")
         RunService.shared.fetchStats { (statsArray) in
             self.viewModel.statsArray = statsArray
         }
         self.updateView()
-//        print("DEBUG: viewModel.statsArray.count \(self.viewModel.statsArray.count)")
-//        print("DEBUG: viewModel.statsArray.last.distance \(self.viewModel.statsArray.last?.distance)")
-//        print("DEBUG: currentLabel.text \(self.currentLabel.text)")
-//        print("DEBUG: viewModel.statsSummary.wholeDistance \(self.viewModel.statsSummary.wholeDistance)")
-//        print("DEBUG: in extension ProfileController: StatsSummaryViewModelDelegate")
     }
 }
