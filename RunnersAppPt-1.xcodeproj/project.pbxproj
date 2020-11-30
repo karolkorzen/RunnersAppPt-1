@@ -27,6 +27,7 @@
 		4B3BF2DB25324F7200F38822 /* UploadPostController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3BF2DA25324F7200F38822 /* UploadPostController.swift */; };
 		4B4DD5A1256E840A005F3884 /* RunSummaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B4DD5A0256E840A005F3884 /* RunSummaryViewModel.swift */; };
 		4B5C5E652523629100DCFE3E /* MainTabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B5C5E642523629100DCFE3E /* MainTabController.swift */; };
+		4B606C302574FEDA00707DB8 /* CompletitionsListHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B606C2F2574FEDA00707DB8 /* CompletitionsListHeader.swift */; };
 		4B60979C2546E05900E2437A /* EditProfileHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B60979B2546E05900E2437A /* EditProfileHeader.swift */; };
 		4B60979F254722E800E2437A /* EditProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B60979E254722E800E2437A /* EditProfileViewModel.swift */; };
 		4B6097A22547233600E2437A /* EditProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B6097A12547233600E2437A /* EditProfileCell.swift */; };
@@ -47,6 +48,7 @@
 		4B94BB292559550200E158BC /* RunViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B94BB282559550200E158BC /* RunViewModel.swift */; };
 		4B957A91252F6B4100C12263 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B957A90252F6B4000C12263 /* Extensions.swift */; };
 		4B95DA5425370C0B00FF4A2B /* ProfileHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B95DA5325370C0B00FF4A2B /* ProfileHeader.swift */; };
+		4BA0354A2574F27E006F1413 /* CompetitionsListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA035492574F27E006F1413 /* CompetitionsListController.swift */; };
 		4BA6B92B25496ECD00FAB906 /* EditProfileFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA6B92A25496ECD00FAB906 /* EditProfileFooterView.swift */; };
 		4BA6B92E2549899600FAB906 /* NewMessageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA6B92D2549899600FAB906 /* NewMessageController.swift */; };
 		4BB69EDB2541809700259D9A /* NotificationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BB69EDA2541809700259D9A /* NotificationCell.swift */; };
@@ -96,6 +98,7 @@
 		4B3BF2DA25324F7200F38822 /* UploadPostController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadPostController.swift; sourceTree = "<group>"; };
 		4B4DD5A0256E840A005F3884 /* RunSummaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunSummaryViewModel.swift; sourceTree = "<group>"; };
 		4B5C5E642523629100DCFE3E /* MainTabController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabController.swift; sourceTree = "<group>"; };
+		4B606C2F2574FEDA00707DB8 /* CompletitionsListHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletitionsListHeader.swift; sourceTree = "<group>"; };
 		4B60979B2546E05900E2437A /* EditProfileHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileHeader.swift; sourceTree = "<group>"; };
 		4B60979E254722E800E2437A /* EditProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewModel.swift; sourceTree = "<group>"; };
 		4B6097A12547233600E2437A /* EditProfileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileCell.swift; sourceTree = "<group>"; };
@@ -116,6 +119,7 @@
 		4B94BB282559550200E158BC /* RunViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunViewModel.swift; sourceTree = "<group>"; };
 		4B957A90252F6B4000C12263 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		4B95DA5325370C0B00FF4A2B /* ProfileHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeader.swift; sourceTree = "<group>"; };
+		4BA035492574F27E006F1413 /* CompetitionsListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompetitionsListController.swift; sourceTree = "<group>"; };
 		4BA6B92A25496ECD00FAB906 /* EditProfileFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileFooterView.swift; sourceTree = "<group>"; };
 		4BA6B92D2549899600FAB906 /* NewMessageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMessageController.swift; sourceTree = "<group>"; };
 		4BB69EDA2541809700259D9A /* NotificationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCell.swift; sourceTree = "<group>"; };
@@ -186,6 +190,7 @@
 			children = (
 				4B6097982546E03A00E2437A /* Profile */,
 				4BD214E425349FA100FEE09E /* InputTextView.swift */,
+				4B606C2F2574FEDA00707DB8 /* CompletitionsListHeader.swift */,
 				4B867C742534FA0B0016B94D /* PostCell.swift */,
 				4B6B62C3255C28EF0017952C /* TrainingListCell.swift */,
 				4B2DA3512538A4E500A3182F /* UserCell.swift */,
@@ -200,9 +205,7 @@
 		4BD6FAFB25416B9A00143E99 /* Tabs */ = {
 			isa = PBXGroup;
 			children = (
-				4B5C5E642523629100DCFE3E /* MainTabController.swift */,
 				4B125F6B252F028A00E31C2B /* FeedController.swift */,
-				4B125F6D252F02E300E31C2B /* SearchController.swift */,
 				4B7B0F90256038AC003E6D4B /* StatsController.swift */,
 				4B643E4F254AD99600049ECE /* RunController.swift */,
 				4B125F6F252F02F100E31C2B /* NotificationsController.swift */,
@@ -292,15 +295,18 @@
 		4BF17ACC25235C0200872619 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				4B5C5E642523629100DCFE3E /* MainTabController.swift */,
 				4BD6FAFB25416B9A00143E99 /* Tabs */,
 				4B91F47B252F947F002458CA /* Authentication */,
 				4B3BF2DA25324F7200F38822 /* UploadPostController.swift */,
+				4B125F6D252F02E300E31C2B /* SearchController.swift */,
 				4BE5A3B32535BCB900A381A8 /* ProfileController.swift */,
 				4B2DA354253A058800A3182F /* PostController.swift */,
 				4BC3909F2546DA1700DF5F1E /* EditProfileController.swift */,
 				4B93ECF22552C75600BB57FF /* RunSummaryController.swift */,
 				4BA6B92D2549899600FAB906 /* NewMessageController.swift */,
 				4BFECF842555B67F00C6FEC3 /* TrainingsListController.swift */,
+				4BA035492574F27E006F1413 /* CompetitionsListController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -467,6 +473,7 @@
 				4B125F70252F02F100E31C2B /* NotificationsController.swift in Sources */,
 				4B627849256428F100070BEB /* StatsSummary.swift in Sources */,
 				4BA6B92E2549899600FAB906 /* NewMessageController.swift in Sources */,
+				4BA0354A2574F27E006F1413 /* CompetitionsListController.swift in Sources */,
 				4BD214E525349FA100FEE09E /* InputTextView.swift in Sources */,
 				4B384CAE253831D6003CECD2 /* ProfileFilterCell.swift in Sources */,
 				4BE3A44025615CF0004890D4 /* StatsSummaryViewModel.swift in Sources */,
@@ -491,6 +498,7 @@
 				4BFECF852555B67F00C6FEC3 /* TrainingsListController.swift in Sources */,
 				4B2076B02567094A00637F1D /* TrainingListHeader.swift in Sources */,
 				4BD214E92534A44E00FEE09E /* PostService.swift in Sources */,
+				4B606C302574FEDA00707DB8 /* CompletitionsListHeader.swift in Sources */,
 				4B91F47E252F94B6002458CA /* LoginController.swift in Sources */,
 				4BD6FAF6254168D700143E99 /* Notification.swift in Sources */,
 				4B643E53254ADFD400049ECE /* Location.swift in Sources */,

@@ -108,6 +108,7 @@ class StatsController: UIViewController {
     
     @objc func compButtonClicked(){
         //FIXME: - Take to completitions scene from there
+        navigationController?.pushViewController(CompetitionsListController(), animated: true)
     }
     
     

@@ -223,7 +223,7 @@ class RunSummaryController: UIViewController {
         
     }
     
-    func restoreMapView(){
+    func restoreMapView(){ 
         mapView.setRegion(.init(center: self.viewModel.centerLocation, latitudinalMeters: viewModel.stats.distance, longitudinalMeters: viewModel.stats.distance), animated: false)
         let frame = CGRect(x:10, y: navigationController?.navigationBar.layer.frame.maxY ?? 30 + 20, width: self.view.frame.width - 20, height: self.view.frame.height/4)
         mapView.isZoomEnabled = false
