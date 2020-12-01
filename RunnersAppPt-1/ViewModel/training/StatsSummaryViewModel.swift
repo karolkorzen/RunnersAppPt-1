@@ -32,7 +32,7 @@ class StatsSummaryViewModel {
     }
     
     func fetchGoal() {
-        StatsService.shared.fetchGoal { (goal) in
+        GoalService.shared.fetchGoal { (goal) in
             self.goal = goal
         }
     }

@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4B075F6F256A948C0005089D /* StatsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B075F6E256A948C0005089D /* StatsService.swift */; };
+		4B075F6F256A948C0005089D /* GoalService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B075F6E256A948C0005089D /* GoalService.swift */; };
 		4B125F6C252F028A00E31C2B /* FeedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B125F6B252F028A00E31C2B /* FeedController.swift */; };
 		4B125F6E252F02E300E31C2B /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B125F6D252F02E300E31C2B /* SearchController.swift */; };
 		4B125F70252F02F100E31C2B /* NotificationsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B125F6F252F02F100E31C2B /* NotificationsController.swift */; };
@@ -37,6 +37,9 @@
 		4B6625E22541C85C00FE0AC7 /* NotificationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B6625E12541C85C00FE0AC7 /* NotificationViewModel.swift */; };
 		4B6B62C1255C1C090017952C /* TrainingListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B6B62C0255C1C090017952C /* TrainingListViewModel.swift */; };
 		4B6B62C4255C28EF0017952C /* TrainingListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B6B62C3255C28EF0017952C /* TrainingListCell.swift */; };
+		4B76F9AE2576999400ACA880 /* CompetitionsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B76F9AD2576999400ACA880 /* CompetitionsService.swift */; };
+		4B76F9B125769CDA00ACA880 /* InviteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B76F9B025769CDA00ACA880 /* InviteController.swift */; };
+		4B76F9B42576A18D00ACA880 /* AddCompetitionsHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B76F9B32576A18D00ACA880 /* AddCompetitionsHeader.swift */; };
 		4B7B0F8E25601E90003E6D4B /* TrainingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7B0F8D25601E90003E6D4B /* TrainingViewModel.swift */; };
 		4B7B0F91256038AC003E6D4B /* StatsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7B0F90256038AC003E6D4B /* StatsController.swift */; };
 		4B867C722534DB6E0016B94D /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B867C712534DB6E0016B94D /* Post.swift */; };
@@ -78,7 +81,7 @@
 
 /* Begin PBXFileReference section */
 		3A836F3923D55D869CF46B4A /* Pods-RunnersAppPt-1.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnersAppPt-1.release.xcconfig"; path = "Target Support Files/Pods-RunnersAppPt-1/Pods-RunnersAppPt-1.release.xcconfig"; sourceTree = "<group>"; };
-		4B075F6E256A948C0005089D /* StatsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsService.swift; sourceTree = "<group>"; };
+		4B075F6E256A948C0005089D /* GoalService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalService.swift; sourceTree = "<group>"; };
 		4B125F6B252F028A00E31C2B /* FeedController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedController.swift; sourceTree = "<group>"; };
 		4B125F6D252F02E300E31C2B /* SearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
 		4B125F6F252F02F100E31C2B /* NotificationsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsController.swift; sourceTree = "<group>"; };
@@ -108,6 +111,9 @@
 		4B6625E12541C85C00FE0AC7 /* NotificationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewModel.swift; sourceTree = "<group>"; };
 		4B6B62C0255C1C090017952C /* TrainingListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingListViewModel.swift; sourceTree = "<group>"; };
 		4B6B62C3255C28EF0017952C /* TrainingListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingListCell.swift; sourceTree = "<group>"; };
+		4B76F9AD2576999400ACA880 /* CompetitionsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompetitionsService.swift; sourceTree = "<group>"; };
+		4B76F9B025769CDA00ACA880 /* InviteController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteController.swift; sourceTree = "<group>"; };
+		4B76F9B32576A18D00ACA880 /* AddCompetitionsHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCompetitionsHeader.swift; sourceTree = "<group>"; };
 		4B7B0F8D25601E90003E6D4B /* TrainingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingViewModel.swift; sourceTree = "<group>"; };
 		4B7B0F90256038AC003E6D4B /* StatsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsController.swift; sourceTree = "<group>"; };
 		4B867C712534DB6E0016B94D /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
@@ -193,6 +199,7 @@
 				4B606C2F2574FEDA00707DB8 /* CompletitionsListHeader.swift */,
 				4B867C742534FA0B0016B94D /* PostCell.swift */,
 				4B6B62C3255C28EF0017952C /* TrainingListCell.swift */,
+				4B76F9B32576A18D00ACA880 /* AddCompetitionsHeader.swift */,
 				4B2DA3512538A4E500A3182F /* UserCell.swift */,
 				4BB69EDA2541809700259D9A /* NotificationCell.swift */,
 				4B2DA358253A093700A3182F /* PostHeader.swift */,
@@ -300,6 +307,7 @@
 				4B91F47B252F947F002458CA /* Authentication */,
 				4B3BF2DA25324F7200F38822 /* UploadPostController.swift */,
 				4B125F6D252F02E300E31C2B /* SearchController.swift */,
+				4B76F9B025769CDA00ACA880 /* InviteController.swift */,
 				4BE5A3B32535BCB900A381A8 /* ProfileController.swift */,
 				4B2DA354253A058800A3182F /* PostController.swift */,
 				4BC3909F2546DA1700DF5F1E /* EditProfileController.swift */,
@@ -327,7 +335,8 @@
 			children = (
 				4B3BF2AC2531D2B700F38822 /* AuthService.swift */,
 				4B3BF2AF25321B8400F38822 /* UserService.swift */,
-				4B075F6E256A948C0005089D /* StatsService.swift */,
+				4B075F6E256A948C0005089D /* GoalService.swift */,
+				4B76F9AD2576999400ACA880 /* CompetitionsService.swift */,
 				4BD214E82534A44E00FEE09E /* PostService.swift */,
 				4BD6FAF825416B1000143E99 /* NotificationService.swift */,
 				4B93ECEC2551CEC600BB57FF /* RunService.swift */,
@@ -475,6 +484,8 @@
 				4BA6B92E2549899600FAB906 /* NewMessageController.swift in Sources */,
 				4BA0354A2574F27E006F1413 /* CompetitionsListController.swift in Sources */,
 				4BD214E525349FA100FEE09E /* InputTextView.swift in Sources */,
+				4B76F9B42576A18D00ACA880 /* AddCompetitionsHeader.swift in Sources */,
+				4B76F9B125769CDA00ACA880 /* InviteController.swift in Sources */,
 				4B384CAE253831D6003CECD2 /* ProfileFilterCell.swift in Sources */,
 				4BE3A44025615CF0004890D4 /* StatsSummaryViewModel.swift in Sources */,
 				4B125F72252F030800E31C2B /* ConversationsController.swift in Sources */,
@@ -520,11 +531,12 @@
 				4BB69EDB2541809700259D9A /* NotificationCell.swift in Sources */,
 				4B60979F254722E800E2437A /* EditProfileViewModel.swift in Sources */,
 				4B867C722534DB6E0016B94D /* Post.swift in Sources */,
+				4B76F9AE2576999400ACA880 /* CompetitionsService.swift in Sources */,
 				4B7B0F8E25601E90003E6D4B /* TrainingViewModel.swift in Sources */,
 				4B384CAB25382E13003CECD2 /* ProfileFilterView.swift in Sources */,
 				4B125F6C252F028A00E31C2B /* FeedController.swift in Sources */,
 				4BC84FEE2531C9F3002B07B3 /* Constants.swift in Sources */,
-				4B075F6F256A948C0005089D /* StatsService.swift in Sources */,
+				4B075F6F256A948C0005089D /* GoalService.swift in Sources */,
 				4B4DD5A1256E840A005F3884 /* RunSummaryViewModel.swift in Sources */,
 				4BD9C8F9253EABB00086A450 /* ActionSheetLauncher.swift in Sources */,
 				4B867C752534FA0B0016B94D /* PostCell.swift in Sources */,

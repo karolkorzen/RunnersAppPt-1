@@ -8,8 +8,8 @@
 
 import Firebase
 
-struct StatsService {
-    static let shared = StatsService()
+struct GoalService {
+    static let shared = GoalService()
     
     func uploadGoal(withGoal goal: Double, completion: @escaping() -> Void) {
         guard let uid = Auth.auth().currentUser?.uid else {return}

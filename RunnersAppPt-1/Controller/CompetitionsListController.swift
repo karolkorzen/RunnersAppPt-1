@@ -14,6 +14,21 @@ class CompetitionsListController: UITableViewController {
     
     //MARK: - Properties
     
+    private lazy var actionButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.backgroundColor = .mainAppColor
+        button.setTitle("New", for: .normal)
+        button.titleLabel?.textAlignment = .center
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+        button.setTitleColor(.white, for: .normal)
+        
+        button.frame = CGRect(x: 0, y:0, width: 64, height: 32)
+        button.layer.cornerRadius = 10
+        
+        button.addTarget(self, action: #selector(addCompetitonsTapped), for: .touchUpInside)
+        return button
+    }()
+    
     //MARK: - Lifecycle
     
     override func viewDidLoad() {
@@ -34,6 +49,9 @@ class CompetitionsListController: UITableViewController {
     
     @objc func addCompetitonsTapped(){
         print("DEBUG: navbarAddCompetitions")
+        let view = InviteController()
+        view.modalPresentationStyle = .formSheet
+        present(view, animated: true, completion: nil)
     }
     
     //MARK: - Helpers
@@ -44,14 +62,14 @@ class CompetitionsListController: UITableViewController {
     }
     
     func configureRightBarButton(){
-        let image = UIImageView(image: UIImage(systemName: "plus.circle.fill"))
-        image.setDimensions(width: 25, height: 25)
-        let tap = UITapGestureRecognizer(target: self, action: #selector(addCompetitonsTapped))
-        image.addGestureRecognizer(tap)
-        image.isUserInteractionEnabled = true
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: image)
-        navigationItem.rightBarButtonItem?.tintColor = .mainAppColor
-        
+//        let image = UIImageView(image: UIImage(systemName: "plus.circle.fill"))
+//        image.setDimensions(width: 25, height: 25)
+//        let tap = UITapGestureRecognizer(target: self, action: #selector(addCompetitonsTapped))
+//        image.addGestureRecognizer(tap)
+//        image.isUserInteractionEnabled = true
+//        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: image)
+//        navigationItem.rightBarButtonItem?.tintColor = .mainAppColor
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: actionButton)
     }
 }
 

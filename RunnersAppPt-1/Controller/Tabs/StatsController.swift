@@ -93,7 +93,7 @@ class StatsController: UIViewController {
         alert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { (action) in
             let goal = NSString(string: alert.textFields!.first!.text!).doubleValue
             if goal != self.viewModel.goal {
-                StatsService.shared.uploadGoal(withGoal: goal) {
+                GoalService.shared.uploadGoal(withGoal: goal) {
                     self.self.goal = goal
                     self.initCheck()
                     self.initialStatsBar()
