@@ -41,7 +41,6 @@ class CompetitionsListController: UITableViewController {
         super.viewDidAppear(animated)
         navigationController?.navigationBar.barStyle = .default
         navigationController?.setNavigationBarHidden(false, animated: true)
-        //navigationController?.title = "Competitions"
         navigationItem.title = "Competitions"
     }
     
@@ -62,13 +61,6 @@ class CompetitionsListController: UITableViewController {
     }
     
     func configureRightBarButton(){
-//        let image = UIImageView(image: UIImage(systemName: "plus.circle.fill"))
-//        image.setDimensions(width: 25, height: 25)
-//        let tap = UITapGestureRecognizer(target: self, action: #selector(addCompetitonsTapped))
-//        image.addGestureRecognizer(tap)
-//        image.isUserInteractionEnabled = true
-//        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: image)
-//        navigationItem.rightBarButtonItem?.tintColor = .mainAppColor
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: actionButton)
     }
 }
@@ -98,11 +90,4 @@ extension CompetitionsListController {
 //
 //    }
     
-    
-}
-
-extension CompetitionsListController: CompetitionsListHeaderDelegate {
-    func addCompetitionHeader() {
-        print("DEBUG: show add competiton view")
-    }
 }
