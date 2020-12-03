@@ -41,6 +41,7 @@
 		4B76F9B42576A18D00ACA880 /* AddCompetitionsHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B76F9B32576A18D00ACA880 /* AddCompetitionsHeader.swift */; };
 		4B7B0F8E25601E90003E6D4B /* TrainingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7B0F8D25601E90003E6D4B /* TrainingViewModel.swift */; };
 		4B7B0F91256038AC003E6D4B /* StatsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7B0F90256038AC003E6D4B /* StatsController.swift */; };
+		4B849FCF2578ED5500DBDBA8 /* CompetitionHeaderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B849FCE2578ED5500DBDBA8 /* CompetitionHeaderModel.swift */; };
 		4B867C722534DB6E0016B94D /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B867C712534DB6E0016B94D /* Post.swift */; };
 		4B867C752534FA0B0016B94D /* PostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B867C742534FA0B0016B94D /* PostCell.swift */; };
 		4B91F47E252F94B6002458CA /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B91F47D252F94B6002458CA /* LoginController.swift */; };
@@ -114,6 +115,7 @@
 		4B76F9B32576A18D00ACA880 /* AddCompetitionsHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCompetitionsHeader.swift; sourceTree = "<group>"; };
 		4B7B0F8D25601E90003E6D4B /* TrainingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingViewModel.swift; sourceTree = "<group>"; };
 		4B7B0F90256038AC003E6D4B /* StatsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsController.swift; sourceTree = "<group>"; };
+		4B849FCE2578ED5500DBDBA8 /* CompetitionHeaderModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompetitionHeaderModel.swift; sourceTree = "<group>"; };
 		4B867C712534DB6E0016B94D /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		4B867C742534FA0B0016B94D /* PostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCell.swift; sourceTree = "<group>"; };
 		4B91F47D252F94B6002458CA /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
@@ -274,6 +276,7 @@
 				4B3BF2B22532222400F38822 /* User.swift */,
 				4B867C712534DB6E0016B94D /* Post.swift */,
 				4BD6FAF5254168D700143E99 /* Notification.swift */,
+				4B849FCE2578ED5500DBDBA8 /* CompetitionHeaderModel.swift */,
 				4B643E52254ADFD300049ECE /* Location.swift */,
 				4BF16A12255EE715000251B1 /* Stats.swift */,
 				4B627848256428F100070BEB /* StatsSummary.swift */,
@@ -535,6 +538,7 @@
 				4B075F6F256A948C0005089D /* GoalService.swift in Sources */,
 				4B4DD5A1256E840A005F3884 /* RunSummaryViewModel.swift in Sources */,
 				4BD9C8F9253EABB00086A450 /* ActionSheetLauncher.swift in Sources */,
+				4B849FCF2578ED5500DBDBA8 /* CompetitionHeaderModel.swift in Sources */,
 				4B867C752534FA0B0016B94D /* PostCell.swift in Sources */,
 				4B151FD6253CC765003F46E6 /* UploadPostViewModel.swift in Sources */,
 				4B6B62C4255C28EF0017952C /* TrainingListCell.swift in Sources */,
