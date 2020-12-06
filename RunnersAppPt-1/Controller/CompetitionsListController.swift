@@ -14,6 +14,17 @@ class CompetitionsListController: UITableViewController {
     
     //MARK: - Properties
     
+    private var competitionsTable:[Competition] = [] {
+        didSet{
+            tableView.reloadData()
+        }
+    }
+    private var invitesTable:[Competition] = []{
+        didSet{
+            tableView.reloadData()
+        }
+    }
+    
     private lazy var actionButton: UIButton = {
         let button = UIButton(type: .system)
         button.backgroundColor = .mainAppColor
@@ -33,6 +44,7 @@ class CompetitionsListController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        fetchData()
         configureView()
         configureRightBarButton()
     }
@@ -42,6 +54,19 @@ class CompetitionsListController: UITableViewController {
         navigationController?.navigationBar.barStyle = .default
         navigationController?.setNavigationBarHidden(false, animated: true)
         navigationItem.title = "Competitions"
+        tableView.reloadData()
+    }
+    
+    // MARK: - API
+    func fetchData() {
+        CompetitionsService.shared.fetchCompetitions { (competitions) -> (Void) in
+//            print("DEBUG: competitions \(competitions)")
+            self.competitionsTable = competitions
+        }
+        CompetitionsService.shared.fetchInvites { (competitions) -> (Void) in
+//            print("DEBUG: competitions \(competitions)")
+            self.invitesTable = competitions
+        }
     }
     
     //MARK: - Selectors
@@ -57,7 +82,10 @@ class CompetitionsListController: UITableViewController {
     
     func configureView(){
         view.backgroundColor = .white
-//        tableView.separatorStyle = .none
+        tableView.separatorStyle = .none
+        
+        tableView.register(CompetitionsListCell.self, forCellReuseIdentifier: tableReuseIdentifier)
+        tableView.rowHeight = 60
     }
     
     func configureRightBarButton(){
@@ -73,21 +101,41 @@ extension CompetitionsListController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         //tableData[section].data
 //        if section == 1 { ... }
-        return 3
+        if section == 0 {
+            return invitesTable.count
+        } else {
+            return competitionsTable.count
+        }
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell()
+        let cell = tableView.dequeueReusableCell(withIdentifier: tableReuseIdentifier) as! CompetitionsListCell
         //tableData[indexPath.section].modelname
-        return cell
+        
+        if indexPath.section == 0 {
+            cell.competition = invitesTable[indexPath.row]
+            cell.isInvitation = true
+            return cell
+        } else {
+            cell.competition = competitionsTable[indexPath.row]
+            return cell
+        }
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return String(section)
+        if section == 0 {
+            return "Invites"
+        } else {
+            return "Your Competitions"
+        }
     }
     
 //    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
 //
 //    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+    }
     
 }

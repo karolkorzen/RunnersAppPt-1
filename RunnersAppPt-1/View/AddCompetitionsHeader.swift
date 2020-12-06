@@ -16,11 +16,11 @@ class AddCompetitionsHeader: UIView {
     
     //MARK: - Properties
     weak var delegate: AddCompetitionsHeaderDelegate?
-    public var createIngredients: CompetitionHeaderModel {
-        return CompetitionHeaderModel(withTitle: nameTextField.text!, withDistance: Double(distanceTextField.text!)!, withStartDate: startDatePicker.date, withStopDate: stopDatePicker.date)
+    public var createIngredients: CompetitionHeader {
+        return CompetitionHeader(withTitle: nameTextField.text!, withDistance: Double(distanceTextField.text!)!, withStartDate: startDatePicker.date, withStopDate: stopDatePicker.date)
     }
     
-    public var selectedUsersCount: Int = 0 {
+    public var selectedUsersCount: Int = 1 {
         didSet {
             selectedUsersLabel.text = "\(selectedUsersCount)"
         }

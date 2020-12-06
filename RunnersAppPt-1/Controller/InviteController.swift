@@ -26,7 +26,7 @@ class InviteController: UITableViewController {
 //        }
 //    }
     
-    private var selectedUsersCount: Int = 0 {
+    private var selectedUsersCount: Int = 1 {
         didSet {
             let header = tableView.tableHeaderView as! AddCompetitionsHeader
             header.selectedUsersCount = selectedUsersCount
@@ -124,7 +124,7 @@ extension InviteController: AddCompetitionsHeaderDelegate {
         let headerIngredients = header.createIngredients
         print("DEBUG: header ingredients -> \(headerIngredients)")
         print("DEBUG: fetching selected users")
-        CompetitionsService.shared.fetchCompetition(withCompetitionHeaderModel: headerIngredients, withUsers: Array(selectedUsers.values) as! Array, completion: {})
+        CompetitionsService.shared.addCompetition(withCompetitionHeaderModel: headerIngredients, withUsers: Array(selectedUsers.values) as! Array, completion: {})
         self.dismiss(animated: true, completion: nil)
     }
 }

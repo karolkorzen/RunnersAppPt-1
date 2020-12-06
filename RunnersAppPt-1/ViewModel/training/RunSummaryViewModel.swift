@@ -39,7 +39,7 @@ class RunSummaryViewModel {
     }
     
     var timeLabelText: String {
-        return "Time:\n\(round(stats.time*10)/10) minutes"
+        return "Time:\n\(Int(stats.time/60)) minutes"
     }
     
     var distanceLabelText: String {
