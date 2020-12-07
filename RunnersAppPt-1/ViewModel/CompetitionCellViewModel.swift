@@ -1,71 +1,40 @@
 //
-//  StatsViewModel.swift
+//  CompetitionViewModel.swift
 //  RunnersAppPt-1
 //
-//  Created by Karol Korzeń on 15/11/2020.
+//  Created by Karol Korzeń on 07/12/2020.
 //  Copyright © 2020 Karol Korzeń. All rights reserved.
 //
 
 import Foundation
 
-//FIXME: - MAKE DELEGATE HERE TO UPDATE
-protocol StatsSummaryViewModelDelegate: class {
-    func handleUpdate()
-}
-
-class StatsSummaryViewModel {
-    weak var delegate: StatsSummaryViewModelDelegate?
+class CompetitionCellViewModel {
     
-    var goal: Double = 0.0
+    var user: User
     
     var statsArray: [Stats] = [] {
         didSet {
             self.statsSummary = self.computeStats()
         }
     }
+    
     var statsSummary: StatsSummary = StatsSummary()
     
     func fetchStats() {
-        RunService.shared.fetchStats { (array) in
+        RunService.shared.fetchStatsForUser(withUID: user.uid) { (array) in
             self.statsArray = array
         }
     }
     
-    func fetchGoal() {
-        GoalService.shared.fetchGoal { (goal) in
-            self.goal = goal
-        }
-    }
-    
-    init(){
-        fetchGoal()
+    init(withUser user: User){
+        self.user = user
         fetchStats()
     }
 
-    var avgRunTimeLabelText: String {
-        return "average running time:\n\(Int(statsSummary.avgRunTime/60)) minutes"
+    var distanceLabelText: String {
+        return "\(Int(statsSummary.wholeDistance)) metres"
     }
-    
-    var maxRunTimeLabelText: String {
-        return "maximum running time:\n\(Int(statsSummary.maxRunTime/60)) minutes"
-    }
-    
-    var avgDistanceLabelText: String {
-        return "average distance:\n\(Int(statsSummary.avgDistance)) metres"
-    }
-    
-    var maxDistanceLabelText: String {
-        return "maximum distance:\n\(Int(statsSummary.maxDistance)) metres"
-    }
-    
-    var avgSpeedLabelText: String {
-        return "average speed:\n\(round(statsSummary.avgSpeed*3.6*10)/10) km/h"
-    }
-    
-    var maxSpeedLabelText: String {
-        return "max speed:\n\(round(statsSummary.maxSpeed*3.6*10)/10) km/h"
-    }
-    
+
     
     func computeStats() -> StatsSummary {
         var avgRunTime: Double = 0.0
@@ -105,4 +74,5 @@ class StatsSummaryViewModel {
         
         return StatsSummary(averageRunTime: avgRunTime, maxRunTime: maxRunTime, wholeDistance: distance, avgDistance: avgDistance, maxDistance: maxDistance, avgSpeed: avgSpeed, maxSpeed: maxSpeed, altitudeMin: altitudeMin, altitudeMax: altitudeMax)
     }
+    
 }

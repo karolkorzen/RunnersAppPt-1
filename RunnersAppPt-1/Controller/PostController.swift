@@ -117,6 +117,21 @@ extension PostController: UICollectionViewDelegateFlowLayout {
 //MARK: - PostHeaderDelegate
 
 extension PostController: PostHeaderDelegate{
+    func handleReplyButtonTapped(_ post: Post) {
+        let controller = UploadPostController(user: post.user, config: .reply(post))
+        let nav = UINavigationController(rootViewController: controller)
+        nav.modalPresentationStyle = .fullScreen
+        present(nav, animated: true, completion: nil)
+    }
+    
+    func handleLikeButtonTapped(_ post: Post) {
+        PostService.shared.likePost(post: post) { (err, ref) in
+            if post.didLike {
+                NotificationService.shared.uploadNotification(type: .like, post: post)
+            }
+        }
+    }
+    
     func handleFetchUser(withUserName username: String) {
         UserService.shared.fetchUser(withUsername: username) { (user) in
             let controller = ProfileController(user: user)

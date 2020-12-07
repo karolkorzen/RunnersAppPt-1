@@ -151,8 +151,6 @@ class PostCell: UICollectionViewCell{
     
     @objc func handleCommentTapped() {
         delegate?.handleReplyButtonTapped(self)
-        print("DEBUG: Delegating from PostCell")
-        //FIXME: not working in post in profile seen from notifications
     }
     
     @objc func handleRepostTapped(){

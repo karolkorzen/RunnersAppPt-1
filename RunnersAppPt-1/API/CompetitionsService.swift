@@ -13,23 +13,42 @@ struct CompetitionsService {
     
     func fetchSingleCompetition(withCompetitionID compID: String, completion: @escaping(Competition) -> Void){
         REF_COMPETITIONS.child(compID).observeSingleEvent(of: .value) { (snapshot) in
+            guard let id = snapshot.key as? String else {return}
             guard let dictionary = snapshot.value as? [String : AnyObject] else {return}
             guard let competitiorsArray = dictionary["competitors"] as? [String : String] else {return}
-            var competitors: [User] = []
             for (index, value) in competitiorsArray {
-                UserService.shared.fetchUser(uid: value) { (user) in
+                var competitors: [User] = []
+                UserService.shared.fetchUser(uid: index) { (user) in
                     competitors.append(user)
+                    guard let distance = dictionary["distance"] as? Double else {return}
+                    guard let name = dictionary["name"] as? String else {return}
+                    guard let owner = dictionary["owner"] as? String else {return}
+                    guard let timestampStart = dictionary["timestampStart"] as? Double else {return}
+                    guard let timestampStop = dictionary["timestampStop"] as? Double else {return}
+                    let dateStart = Date(timeIntervalSince1970: timestampStart)
+                    let dateStop = Date(timeIntervalSince1970: timestampStop)
+                    let competition = Competition(withID: id, withTitle: name, withDistance: distance, withStartDate: dateStart, withStopDate: dateStop, withCompetitors: competitors)
+                    completion(competition)
                 }
+//                guard let distance = dictionary["distance"] as? Double else {return}
+//                guard let name = dictionary["name"] as? String else {return}
+//                guard let owner = dictionary["owner"] as? String else {return}
+//                guard let timestampStart = dictionary["timestampStart"] as? Double else {return}
+//                guard let timestampStop = dictionary["timestampStop"] as? Double else {return}
+//                let dateStart = Date(timeIntervalSince1970: timestampStart)
+//                let dateStop = Date(timeIntervalSince1970: timestampStop)
+//                let competition = Competition(withTitle: name, withDistance: distance, withStartDate: dateStart, withStopDate: dateStop, withCompetitors: competitors)
+//                completion(competition)
             }
-            guard let distance = dictionary["distance"] as? Double else {return}
-            guard let name = dictionary["name"] as? String else {return}
-            guard let owner = dictionary["owner"] as? String else {return}
-            guard let timestampStart = dictionary["timestampStart"] as? Double else {return}
-            guard let timestampStop = dictionary["timestampStop"] as? Double else {return}
-            let dateStart = Date(timeIntervalSince1970: timestampStart)
-            let dateStop = Date(timeIntervalSince1970: timestampStop)
-            let competition = Competition(withTitle: name, withDistance: distance, withStartDate: dateStart, withStopDate: dateStop, withCompetitors: competitors)
-            completion(competition)
+//            guard let distance = dictionary["distance"] as? Double else {return}
+//            guard let name = dictionary["name"] as? String else {return}
+//            guard let owner = dictionary["owner"] as? String else {return}
+//            guard let timestampStart = dictionary["timestampStart"] as? Double else {return}
+//            guard let timestampStop = dictionary["timestampStop"] as? Double else {return}
+//            let dateStart = Date(timeIntervalSince1970: timestampStart)
+//            let dateStop = Date(timeIntervalSince1970: timestampStop)
+//            let competition = Competition(withTitle: name, withDistance: distance, withStartDate: dateStart, withStopDate: dateStop, withCompetitors: competitors)
+//            completion(competition)
         }
     }
     
@@ -75,7 +94,7 @@ struct CompetitionsService {
         guard let refID = ref.key else { return  }
         ref.updateChildValues(values)
         ref.child("competitors").updateChildValues([currentUID : "1"])
-        addUserCompetiton(withCompetitonID: refID, withUserID: currentUID)
+        addUserCompetiton(withCompetitonID: refID, withUserID: currentUID, completion: {})
         let ref_inv = ref.child("invited")
         for index in invited {
             ref_inv.updateChildValues(["\(index)" : "1"])
@@ -95,16 +114,23 @@ struct CompetitionsService {
     /// - Parameters:
     ///   - compId: competitionID
     ///   - userID: userID
-    func deleteUserInvited(withCompetitonID compId: String, withUserID userID: String) {
-        REF_USER_INVITE.child(userID).child(compId).removeValue()
+    func deleteUserInvited(withCompetitonID compId: String, withUserID userID: String, completion: @escaping(()->Void)) {
+        REF_USER_INVITE.child(userID).child(compId).removeValue { (erroe, ref) in
+            completion()
+        }
     }
     
     /// func adds user to competiton
     /// - Parameters:
     ///   - compID: competitonID
     ///   - userID: userID
-    func addUserCompetiton(withCompetitonID compID: String, withUserID userID: String){
-        REF_USER_COMPETITIONS.child(userID).updateChildValues([compID : "1"])
+    func addUserCompetiton(withCompetitonID compID: String, withUserID userID: String, completion: @escaping(()->Void)){
+        deleteUserInvited(withCompetitonID: compID, withUserID: userID) {
+            REF_USER_COMPETITIONS.child(userID).updateChildValues([compID : "1"]) { (errr, ref) in
+                completion()
+            }
+        }
+        
     }
     
     /// func delets user from competiton
@@ -112,6 +138,14 @@ struct CompetitionsService {
     ///   - compId: competition ID
     ///   - userID: user ID
     func deleteUserCompetition(withCompetitonID compId: String, withUserID userID: String) {
+        REF_COMPETITIONS.child(compId).child("competitors").observeSingleEvent(of: .childAdded, with: { (snapshot) in
+            guard let dictionary = snapshot.value as? [String : AnyObject] else {return}
+            guard let competitiorsArray = dictionary["competitors"] as? [String : String] else {return}
+            print("DEBUG: couunt \(competitiorsArray.count)")
+            if competitiorsArray.count <= 1 {
+                deleteCompetition(withCompetitonID: compId)
+            }
+        })
         REF_USER_COMPETITIONS.child(userID).child(compId).removeValue()
     }
     

@@ -8,8 +8,14 @@
 
 import UIKit
 
+protocol CompetitionsListCellDelegate: class {
+    func acceptInvite(withID id:String)
+    func rejectInvite(withID id:String)
+}
+
 class CompetitionsListCell: UITableViewCell {
     
+    weak var delegate: CompetitionsListCellDelegate?
     var competition: Competition? {
         didSet {
             configure()
@@ -61,11 +67,13 @@ class CompetitionsListCell: UITableViewCell {
     // MARK: - Selectors
     
     @objc func handleAccept(){
-        
+        guard let competition = competition else {return}
+        delegate?.acceptInvite(withID: competition.id)
     }
     
     @objc func handleReject(){
-        
+        guard let competition = competition else {return}
+        delegate?.rejectInvite(withID: competition.id)
     }
     
     // MARK: - Helpers

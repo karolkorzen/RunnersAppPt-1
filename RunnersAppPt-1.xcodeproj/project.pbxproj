@@ -26,6 +26,9 @@
 		4B3BF2B32532222400F38822 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3BF2B22532222400F38822 /* User.swift */; };
 		4B3BF2DB25324F7200F38822 /* UploadPostController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3BF2DA25324F7200F38822 /* UploadPostController.swift */; };
 		4B434334257D6AAB003C51B6 /* CompetitionsListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B434333257D6AAB003C51B6 /* CompetitionsListCell.swift */; };
+		4B4A736C257E4C2F0079F417 /* CompetitionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B4A736B257E4C2F0079F417 /* CompetitionController.swift */; };
+		4B4A736F257E4DA40079F417 /* CompetitionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B4A736E257E4DA40079F417 /* CompetitionCell.swift */; };
+		4B4A7372257E4E3C0079F417 /* CompetitionCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B4A7371257E4E3C0079F417 /* CompetitionCellViewModel.swift */; };
 		4B4DD5A1256E840A005F3884 /* RunSummaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B4DD5A0256E840A005F3884 /* RunSummaryViewModel.swift */; };
 		4B551EF6257BC8A4003A0C49 /* Competition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B551EF5257BC8A4003A0C49 /* Competition.swift */; };
 		4B5C5E652523629100DCFE3E /* MainTabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B5C5E642523629100DCFE3E /* MainTabController.swift */; };
@@ -77,6 +80,8 @@
 		4BF17ABD252329CD00872619 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4BF17ABB252329CD00872619 /* LaunchScreen.storyboard */; };
 		4BF75B142530D34A00F94EDF /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BF75B132530D34A00F94EDF /* Utilities.swift */; };
 		4BF75B172530ED8300F94EDF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4BF75B162530ED8200F94EDF /* GoogleService-Info.plist */; };
+		4BFC331C257E529000DC879C /* CompetitionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BFC331B257E528F00DC879C /* CompetitionHeaderView.swift */; };
+		4BFC331F257E68F400DC879C /* CompetitionStatsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BFC331E257E68F400DC879C /* CompetitionStatsViewModel.swift */; };
 		4BFECF852555B67F00C6FEC3 /* TrainingsListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BFECF842555B67F00C6FEC3 /* TrainingsListController.swift */; };
 		64DA71BA1B14BDC55105DA94 /* Pods_RunnersAppPt_1.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C71A36941110D7E19DE84A4 /* Pods_RunnersAppPt_1.framework */; };
 /* End PBXBuildFile section */
@@ -102,6 +107,9 @@
 		4B3BF2B22532222400F38822 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		4B3BF2DA25324F7200F38822 /* UploadPostController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadPostController.swift; sourceTree = "<group>"; };
 		4B434333257D6AAB003C51B6 /* CompetitionsListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompetitionsListCell.swift; sourceTree = "<group>"; };
+		4B4A736B257E4C2F0079F417 /* CompetitionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompetitionController.swift; sourceTree = "<group>"; };
+		4B4A736E257E4DA40079F417 /* CompetitionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompetitionCell.swift; sourceTree = "<group>"; };
+		4B4A7371257E4E3C0079F417 /* CompetitionCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompetitionCellViewModel.swift; sourceTree = "<group>"; };
 		4B4DD5A0256E840A005F3884 /* RunSummaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunSummaryViewModel.swift; sourceTree = "<group>"; };
 		4B551EF5257BC8A4003A0C49 /* Competition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Competition.swift; sourceTree = "<group>"; };
 		4B5C5E642523629100DCFE3E /* MainTabController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabController.swift; sourceTree = "<group>"; };
@@ -155,6 +163,8 @@
 		4BF17ABE252329CD00872619 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4BF75B132530D34A00F94EDF /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		4BF75B162530ED8200F94EDF /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
+		4BFC331B257E528F00DC879C /* CompetitionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompetitionHeaderView.swift; sourceTree = "<group>"; };
+		4BFC331E257E68F400DC879C /* CompetitionStatsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompetitionStatsViewModel.swift; sourceTree = "<group>"; };
 		4BFECF842555B67F00C6FEC3 /* TrainingsListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingsListController.swift; sourceTree = "<group>"; };
 		7E68C4BF3FBFCF3036AF117F /* Pods-RunnersAppPt-1.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnersAppPt-1.debug.xcconfig"; path = "Target Support Files/Pods-RunnersAppPt-1/Pods-RunnersAppPt-1.debug.xcconfig"; sourceTree = "<group>"; };
 		8C71A36941110D7E19DE84A4 /* Pods_RunnersAppPt_1.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RunnersAppPt_1.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -203,9 +213,11 @@
 				4B867C742534FA0B0016B94D /* PostCell.swift */,
 				4B6B62C3255C28EF0017952C /* TrainingListCell.swift */,
 				4B76F9B32576A18D00ACA880 /* AddCompetitionsHeader.swift */,
+				4BFC331B257E528F00DC879C /* CompetitionHeaderView.swift */,
 				4B2DA3512538A4E500A3182F /* UserCell.swift */,
 				4B434333257D6AAB003C51B6 /* CompetitionsListCell.swift */,
 				4BB69EDA2541809700259D9A /* NotificationCell.swift */,
+				4B4A736E257E4DA40079F417 /* CompetitionCell.swift */,
 				4B2DA358253A093700A3182F /* PostHeader.swift */,
 				4B2076AF2567094A00637F1D /* TrainingListHeader.swift */,
 				4BD9C8FB253EB7180086A450 /* ActionSheetCell.swift */,
@@ -296,10 +308,12 @@
 			children = (
 				4BF169F5255E899D000251B1 /* training */,
 				4BE5A3B02535B52900A381A8 /* PostViewModel.swift */,
+				4B4A7371257E4E3C0079F417 /* CompetitionCellViewModel.swift */,
 				4B6625E12541C85C00FE0AC7 /* NotificationViewModel.swift */,
 				4B384CB025383B05003CECD2 /* ProfileHeaderViewModel.swift */,
 				4B151FD5253CC765003F46E6 /* UploadPostViewModel.swift */,
 				4BED470D253ED14900F39250 /* ActionSheetViewModel.swift */,
+				4BFC331E257E68F400DC879C /* CompetitionStatsViewModel.swift */,
 				4B60979E254722E800E2437A /* EditProfileViewModel.swift */,
 			);
 			path = ViewModel;
@@ -321,6 +335,7 @@
 				4BA6B92D2549899600FAB906 /* NewMessageController.swift */,
 				4BFECF842555B67F00C6FEC3 /* TrainingsListController.swift */,
 				4BA035492574F27E006F1413 /* CompetitionsListController.swift */,
+				4B4A736B257E4C2F0079F417 /* CompetitionController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -489,6 +504,7 @@
 				4B627849256428F100070BEB /* StatsSummary.swift in Sources */,
 				4BA6B92E2549899600FAB906 /* NewMessageController.swift in Sources */,
 				4BA0354A2574F27E006F1413 /* CompetitionsListController.swift in Sources */,
+				4BFC331C257E529000DC879C /* CompetitionHeaderView.swift in Sources */,
 				4BD214E525349FA100FEE09E /* InputTextView.swift in Sources */,
 				4B76F9B42576A18D00ACA880 /* AddCompetitionsHeader.swift in Sources */,
 				4B76F9B125769CDA00ACA880 /* InviteController.swift in Sources */,
@@ -501,6 +517,7 @@
 				4BF75B142530D34A00F94EDF /* Utilities.swift in Sources */,
 				4BC390A02546DA1700DF5F1E /* EditProfileController.swift in Sources */,
 				4B6B62C1255C1C090017952C /* TrainingListViewModel.swift in Sources */,
+				4BFC331F257E68F400DC879C /* CompetitionStatsViewModel.swift in Sources */,
 				4BD9C8FC253EB7180086A450 /* ActionSheetCell.swift in Sources */,
 				4BF17AB1252329C300872619 /* AppDelegate.swift in Sources */,
 				4B643E50254AD99600049ECE /* RunController.swift in Sources */,
@@ -511,6 +528,7 @@
 				4B2DA355253A058800A3182F /* PostController.swift in Sources */,
 				4BE5A3B42535BCB900A381A8 /* ProfileController.swift in Sources */,
 				4B95DA5425370C0B00FF4A2B /* ProfileHeader.swift in Sources */,
+				4B4A7372257E4E3C0079F417 /* CompetitionCellViewModel.swift in Sources */,
 				4B6097A22547233600E2437A /* EditProfileCell.swift in Sources */,
 				4BFECF852555B67F00C6FEC3 /* TrainingsListController.swift in Sources */,
 				4B2076B02567094A00637F1D /* TrainingListHeader.swift in Sources */,
@@ -538,10 +556,12 @@
 				4B551EF6257BC8A4003A0C49 /* Competition.swift in Sources */,
 				4B867C722534DB6E0016B94D /* Post.swift in Sources */,
 				4B434334257D6AAB003C51B6 /* CompetitionsListCell.swift in Sources */,
+				4B4A736C257E4C2F0079F417 /* CompetitionController.swift in Sources */,
 				4B76F9AE2576999400ACA880 /* CompetitionsService.swift in Sources */,
 				4B7B0F8E25601E90003E6D4B /* TrainingViewModel.swift in Sources */,
 				4B384CAB25382E13003CECD2 /* ProfileFilterView.swift in Sources */,
 				4B125F6C252F028A00E31C2B /* FeedController.swift in Sources */,
+				4B4A736F257E4DA40079F417 /* CompetitionCell.swift in Sources */,
 				4BC84FEE2531C9F3002B07B3 /* Constants.swift in Sources */,
 				4B075F6F256A948C0005089D /* GoalService.swift in Sources */,
 				4B4DD5A1256E840A005F3884 /* RunSummaryViewModel.swift in Sources */,

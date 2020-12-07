@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 private let tableReuseIdentifier = "tblid"
 
@@ -110,6 +111,7 @@ extension CompetitionsListController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: tableReuseIdentifier) as! CompetitionsListCell
+        cell.delegate = self
         //tableData[indexPath.section].modelname
         
         if indexPath.section == 0 {
@@ -135,7 +137,33 @@ extension CompetitionsListController {
 //    }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+        let controller = CompetitionController(withCompetition: competitionsTable[indexPath.row])
+        navigationController?.pushViewController(controller, animated: true)
     }
     
+}
+
+extension CompetitionsListController: CompetitionsListCellDelegate {
+    func acceptInvite(withID id: String) {
+        guard let currentUID = Auth.auth().currentUser?.uid else {return}
+        CompetitionsService.shared.addUserCompetiton(withCompetitonID: id, withUserID: currentUID, completion: {
+            for (index,value) in self.invitesTable.enumerated() {
+                if value.id == id {
+                    self.invitesTable.remove(at: index)
+                }
+            }
+        })
+    }
+    
+    func rejectInvite(withID id: String) {
+        guard let currentUID = Auth.auth().currentUser?.uid else {return}
+        CompetitionsService.shared.deleteUserInvited(withCompetitonID: id, withUserID: currentUID, completion: {
+            for (index,value) in self.invitesTable.enumerated() {
+                if value.id == id {
+                    self.invitesTable.remove(at: index)
+                }
+            }
+        })
+        
+    }
 }

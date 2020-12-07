@@ -12,6 +12,8 @@ import ActiveLabel
 protocol PostHeaderDelegate: class{
     func showActionSheet()
     func handleFetchUser(withUserName username: String)
+    func handleReplyButtonTapped(_ post: Post)
+    func handleLikeButtonTapped(_ post: Post)
 }
 
 class PostHeader: UICollectionReusableView {
@@ -219,7 +221,7 @@ class PostHeader: UICollectionReusableView {
     }
     
     @objc func handleCommentTapped() {
-        print("DEBUG: Handle comment")
+        delegate?.handleReplyButtonTapped(post)
     }
     
     @objc func handleRepostTapped(){
@@ -227,10 +229,8 @@ class PostHeader: UICollectionReusableView {
     }
     
     @objc func handleLikeTapped() {
-        print("DEBUG: Handle like")
-        
-        //FIXME: - FIX IT
-        
+        post.didLike.toggle()
+        delegate?.handleLikeButtonTapped(post)
     }
     
     @objc func handleShareTapped(){
