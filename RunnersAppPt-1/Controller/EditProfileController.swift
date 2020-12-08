@@ -78,7 +78,7 @@ class EditProfileController: UITableViewController {
     func updateUserData() {
         UserService.shared.saveUserData(user: user) { (err, ref) in
             if let error = err {
-                print("ERROR: \(error)")
+                
             }
             //self.delegate?.controller(self, wantsToUpdate: self.user)
         }

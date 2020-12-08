@@ -79,7 +79,6 @@ struct UserService {
     }
     
     func updateProfileImage(image: UIImage, completion: @escaping((URL?) -> Void)){
-        //FIXME: - DELETE OLD PHOTO
         guard let imageData = image.jpegData(compressionQuality: 0.4) else {return}
         guard let uid = Auth.auth().currentUser?.uid else {return}
         let filename = NSUUID().uuidString
@@ -98,7 +97,6 @@ struct UserService {
     
     func saveUserData(user: User, completion: @escaping(DatabaseCompletion)){
         guard let uid = Auth.auth().currentUser?.uid else {return}
-        //FIXME: - IF BIO IS "" DELETE IT .. OR SHOULD I?
         let values = ["fullname": user.fullname, "username": user.username.lowercased(), "bio": user.bio]
         
         REF_USERS.child(uid).updateChildValues(values as [AnyHashable : Any], withCompletionBlock: completion)

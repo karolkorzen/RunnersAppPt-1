@@ -60,7 +60,7 @@ class TrainingsListController: UICollectionViewController {
 extension TrainingsListController {
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        print("DEBUG: setting numberOfItemsInSection with number \(viewModel.numberOfTrainings)")
+        
         return viewModel.numberOfTrainings
     }
 

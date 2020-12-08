@@ -23,7 +23,7 @@ struct GoalService {
         guard let uid = Auth.auth().currentUser?.uid else {return}
         let ref = REF_USER_GOAL.child(uid)
         ref.observeSingleEvent(of: .childAdded) { (snapshot, string) in
-            print("DEBUG: in fetch goal -> \(snapshot.value)")
+            
             completion(snapshot.value as! Double)
         }
     }

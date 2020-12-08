@@ -137,7 +137,6 @@ extension MainTabController: UITabBarControllerDelegate {
             let imageName = index == 4 ? "message.fill" : "pencil.and.outline"
             self.actionButton.setImage(UIImage(systemName: imageName, withConfiguration: UIImage.SymbolConfiguration(pointSize: 25, weight: .bold, scale: .default)), for: .normal)
             buttonConfig = index == 4 ? .message : .post
-            //FIXME: - fix size
         } else {
             self.actionButton.isHidden=true
         }

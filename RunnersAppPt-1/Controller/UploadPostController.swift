@@ -107,7 +107,6 @@ class UploadPostController: UIViewController {
         case .post:
             print("Post")
         case.reply(let post):
-            //FIXME: Make this view smaller
             print("Replying to \(post.user)")
         }
     }
@@ -145,7 +144,7 @@ class UploadPostController: UIViewController {
             // inject uploadMentionNotificationHere
             //self.dismiss(animated: true, completion: nil)
         }
-        self.dismiss(animated: true, completion: nil)  //FIXME: MAKE EVERYTHING LIKE THAT ESSA BYCZQ I MEAN DISMISS ON INSIDE SERVICE
+        self.dismiss(animated: true, completion: nil)
     }
     // MARK: - API
     
@@ -176,13 +175,10 @@ class UploadPostController: UIViewController {
     // MARK: - Helpers
     
     func configureUI(){
-        //FIXME: - Keyboard on fisplay
         
         view.backgroundColor = .white
         configureNavigationBar()
-        
-        //FIXME: - I CAN DO IT BETTER
-        //profileImageView.sd_setImage(with: user.profileImageUrl, completed: nil)
+
         setCurrentUserProfileImageURL { (url) in
             self.profileImageView.sd_setImage(with: url)
         }
@@ -199,21 +195,6 @@ class UploadPostController: UIViewController {
         
         view.addSubview(stack)
         stack.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 16, paddingLeft: 16, paddingRight: 16)
-
-//        let stackAddPhoto = UIStackView(arrangedSubviews: [selectImageButton, postImage])
-//        stackAddPhoto.axis = .horizontal
-//        stackAddPhoto.spacing = 12
-//        view.addSubview(stackAddPhoto)
-//        postImage.isHidden = true
-//        stackAddPhoto.backgroundColor = .brown
-//
-//        stackAddPhoto.anchor(left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor, paddingLeft: 16, paddingBottom: 16, paddingRight: 16, height: self.view.frame.height/2)
-//        
-//        view.addSubview(selectImageButton)
-//        selectImageButton.anchor(left: view.leftAnchor, right: view.rightAnchor, paddingLeft: 16, paddingBottom: 16, paddingRight: 16, height: 50)
-//
-//        view.addSubview(postImage)
-//        postImage.anchor(left: view.leftAnchor, right: view.rightAnchor, paddingLeft: 16, paddingBottom: 16, paddingRight: 16, height: view.frame.width - 32)
 
         
         actionButton.setTitle(viewModel.actionButtonTitle, for: .normal)
@@ -240,21 +221,4 @@ class UploadPostController: UIViewController {
             
         }
     }
-    
-    /* image picker
-    func configureImagePicker() {
-        imagePicker.delegate = self
-        imagePicker.allowsEditing = true
-    }
-     */
 }
-
-//extension UploadPostController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-//    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-//        print("DEBUG: selected image")
-//        guard let image = info[.editedImage] as? UIImage else {return}
-//        self.selectedImage = image
-//        print("DEBUG: selected image")
-//        dismiss(animated: true, completion: nil)
-//    }
-//}

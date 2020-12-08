@@ -120,8 +120,6 @@ class PostHeader: UICollectionReusableView {
         return view
     }()
     
-    //FIXME: - use CREATE BUTTON lol refactooor
-    
     private lazy var commentButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(named: "comment"), for: .normal)
@@ -213,7 +211,7 @@ class PostHeader: UICollectionReusableView {
     //MARK: - Selectors
     
     @objc func handleProfileImageTapped() {
-        print("DEBUG: Go to usr profile..")
+        
     }
     
     @objc func showActionSheet(){
@@ -225,7 +223,7 @@ class PostHeader: UICollectionReusableView {
     }
     
     @objc func handleRepostTapped(){
-        print("DEBUG: Handle repost")
+        
     }
     
     @objc func handleLikeTapped() {
@@ -234,7 +232,7 @@ class PostHeader: UICollectionReusableView {
     }
     
     @objc func handleShareTapped(){
-        print("DEBUG: Handle share")
+        
     }
     //MARK: - Helpers
     
@@ -258,7 +256,7 @@ class PostHeader: UICollectionReusableView {
         captionLabel.isUserInteractionEnabled = true
     }
     
-    func createButton(withImageName imageName: String) -> UIButton {//FIXME: - USE IT
+    func createButton(withImageName imageName: String) -> UIButton {
         let button = UIButton(type: .system)
         button.setImage(UIImage(named: imageName), for: .normal)
         button.tintColor = .darkGray
@@ -269,7 +267,7 @@ class PostHeader: UICollectionReusableView {
     
     func configureMentionHandler() {
         captionLabel.handleMentionTap { (username) in
-            print("Debug")
+            
             self.delegate?.handleFetchUser(withUserName: username)
         }
     }

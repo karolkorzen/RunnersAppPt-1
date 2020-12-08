@@ -156,25 +156,20 @@ extension PostController: PostHeaderDelegate{
 
 extension PostController: ActionSheetLauncherDelegate {
     func didSelect(option: ActionSheetOptions) {
-        print("Option in Post Controller is \(option.description)")
+        
         switch option{
         case .follow(let user):
             UserService.shared.followUser(uid: user.uid) { (err, ref) in
-                //FIXME: GIMME ANIMATION OR SMTH
             }
         case .unfollow(let user):
             UserService.shared.unfollowUser(uid: user.uid) { (err, ref) in
-                //FIXME: GIMME ANIMATION OR SMTH
             }
         case .report:
-            //FIXME : REPORT
             print("report")
         case .delete:
             print("delete")
-            //FIXME - POPUP
             PostService.shared.deletePost(forPost: post)
             self.navigationController?.popViewController(animated: true)
-            print("deleted xddd")
         }
     }
 }

@@ -76,10 +76,7 @@ class NotificationCell: UICollectionViewCell {
         stack.anchor(left: leftAnchor, right: rightAnchor, paddingLeft: 12, paddingRight: 12)
         stack.alignment = .center
         
-        
-        //FIXME: - MAKE TEXT LIKE ON INSTAGRAM WITH VIEMODEL
         //addSubview(followButton)
-        
         
 //      followButton.centerY(inView: self)
 //      followButton.anchor(right: rightAnchor, paddingRight: 12)

@@ -107,7 +107,6 @@ class StatsController: UIViewController {
     }
     
     @objc func compButtonClicked(){
-        //FIXME: - Take to completitions scene from there
         navigationController?.pushViewController(CompetitionsListController(), animated: true)
     }
     
@@ -220,7 +219,9 @@ class StatsController: UIViewController {
         
         maxSpeedLabel.anchor(top: maxDistanceLabel.bottomAnchor, left: avgRunTimeLabel.rightAnchor, paddingTop: 10, paddingLeft: 20, width: view.frame.width/2-30, height: view.frame.height/15)
         
-        competitionsButton.anchor(top: maxSpeedLabel.bottomAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 10, paddingLeft: 20, paddingBottom: 100, paddingRight: 20)
+        let window = UIApplication.shared.keyWindow
+        guard let bottomPadding = window?.safeAreaInsets.bottom else {return}
+        competitionsButton.anchor(top: maxSpeedLabel.bottomAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 10, paddingLeft: 20, paddingBottom: bottomPadding + 100, paddingRight: 20)
     }
     
     func initialStatsBar() {
@@ -267,7 +268,7 @@ class StatsController: UIViewController {
         
         view.addSubview(targetLabel)
         targetLabel.layer.zPosition = -1
-        targetLabel.text = "\(Int(goal)) m" //FIXME: - set goal's vm here
+        targetLabel.text = "\(Int(goal)) m"
         targetLabel.textAlignment = .right
         targetLabel.frame = CGRect(x: view.frame.width*10/20, y: view.frame.height/6, width: view.frame.width/3, height: 30)
         targetLabel.alpha = 0.0

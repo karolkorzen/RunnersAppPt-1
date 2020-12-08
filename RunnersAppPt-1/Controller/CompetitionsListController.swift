@@ -153,6 +153,7 @@ extension CompetitionsListController: CompetitionsListCellDelegate {
                 }
             }
         })
+        tableView.reloadData()
     }
     
     func rejectInvite(withID id: String) {
@@ -164,6 +165,6 @@ extension CompetitionsListController: CompetitionsListCellDelegate {
                 }
             }
         })
-        
+        tableView.reloadData()
     }
 }

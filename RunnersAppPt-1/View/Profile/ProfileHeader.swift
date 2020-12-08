@@ -160,16 +160,15 @@ class ProfileHeader: UICollectionReusableView {
     }
     
     @objc func handleEditProfileFollow() {
-        //FIXME: - MAKE IT LOOK BETTER
         delegate?.handleEditProfileFollow(self)
     }
     
     @objc func handleFollowersTapped() {
-        
+        //FIXME: Show followers
     }
     
     @objc func handleFollowingTapped() {
-        
+        //FIXME: Show followings
     }
     // MARK: - Helpers
     

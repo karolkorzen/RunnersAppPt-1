@@ -181,7 +181,7 @@ class PostCell: UICollectionViewCell{
         self.likeButton.setImage(viewModel.likeButtonImage, for: .normal)
         
         replyLabel.isHidden = viewModel.shouldHideReplyLabel
-        replyLabel.text = viewModel.replyText //FIXME: - TAKE LINK TO SB'S PROFILE (BETTER POST OR TRAINING)
+        replyLabel.text = viewModel.replyText
         
         captionLabel.isUserInteractionEnabled = true
     }

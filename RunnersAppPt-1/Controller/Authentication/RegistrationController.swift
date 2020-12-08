@@ -138,7 +138,7 @@ class RegistrationController: UIViewController {
                 }))
                 alert.present(self, animated: true, completion: nil)
             }
-            print("DEBUG: Sign up successfull")
+            
             guard let window = UIApplication.shared.windows.first(where: {$0.isKeyWindow}) else {return}
             guard let tab = window.rootViewController as? MainTabController else {return}
             tab.authenticateUserAndConfigureUI()

@@ -12,8 +12,6 @@ import CoreLocation
 import Charts
 import FloatingPanel
 
-//FIXME: - Whole charts are dumb
-
 class RunController: UIViewController {
     
     //MARK: - Properties
@@ -259,9 +257,6 @@ class RunController: UIViewController {
         timeLabel.textAlignment = .center
         
         
-        
-        //FIXME: - MAKE A STACK WITH TIME WHEN USER IS RUNNING
-        //FIXME: - DIVIDE SCREEN TO 5 BLOCKS
         view.addSubview(runButton)
         runButton.anchor(top: distanceLabel.bottomAnchor, left: timeLabel.rightAnchor, paddingTop: 10, paddingLeft: 10)
         
@@ -283,14 +278,12 @@ class RunController: UIViewController {
             configureLocationManager()
             checkLocationAuthorization()
         } else {
-            //FIXME: - ALERT -> ENABLE LOCATION SERVICES
         }
     }
     
     func checkLocationAuthorization(){
         switch CLLocationManager.authorizationStatus() {
         case .authorizedWhenInUse:
-            //FIXME: - ALERT: TO PROPERLY USE APP SET ALWAYS IN SETTINGS
             locationManager.requestAlwaysAuthorization()
             mapView.showsUserLocation = true
             locationManager.startUpdatingLocation()
@@ -402,18 +395,10 @@ extension RunController: CLLocationManagerDelegate {
 
         guard let location = locations.last else {return}
         handleNewLocation(withLocation: location)
-        
-        //FIXME: - IN BACKGROUND MODE
-//            print(polylineTable.count)
-//            if UIApplication.shared.applicationState == .active {
-//                print("DEBUG: inside app: \(polylineTable.count)")
-//            } else {
-//                print("DEBUG: outside app: \(polylineTable.count)")
-//            }
     }
 
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        print("DEBUG: didChangeAuthorization")
+        
         checkLocationAuthorization() //inits after setting allow or not to localize
     }
     

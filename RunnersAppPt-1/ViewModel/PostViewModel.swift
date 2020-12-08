@@ -19,7 +19,7 @@ struct PostViewModel {
         return user.profileImageUrl
     }
     
-    var timestamp: String {  //FIXME: - MAKE IT DYNAMIC
+    var timestamp: String {
         let formatter = DateComponentsFormatter()
         formatter.allowedUnits = [.second, .minute, .hour, .day, .weekOfMonth]
         formatter.maximumUnitCount = 1

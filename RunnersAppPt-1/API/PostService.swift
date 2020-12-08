@@ -6,16 +6,6 @@
 //  Copyright © 2020 Karol Korzeń. All rights reserved.
 //
 
-//FIXME: - FIX SORTING POSTS DUE TO THE FACT THAT COMPLETION WORKS IMMEDIATELY AND THATS WHY I LOOKS AWFUL AFTER REFRESH
-//FIXME: - I MEAN ADD POSTS SORTED SOMEHOW IDK FETCH BY TIME ADDED
-
-//FIXME: - USE DATA FAN OUT (https://firebase.google.com/docs/database/ios/read-and-write?hl=en)
-//FIXME: - USE SET DATA TO EDIT (link above)
-//FIXME: - USE TRANSACTIONS TO LIKE (link also above)
-//FIXME: - (https://firebase.google.com/docs/database/ios/read-and-write?hl=en)
-//FIXME: - (https://firebase.google.com/docs/database/ios/lists-of-data?hl=en) LOOK AT LEFT BAR WRONG LINKS SOMEHOW
-//FIXME: - FILTER DATA FOR FEED CONTROLLER TO FETCH for ex. only 30 posts! (https://firebase.google.com/docs/database/ios/read-and-write?hl=en)
-
 import Firebase
 
 struct PostService{
@@ -35,13 +25,11 @@ struct PostService{
             REF_POSTS.childByAutoId().updateChildValues(values) { (error, ref) in
                 guard let postID = ref.key else {return}
                 REF_USER_POSTS.child(uid).updateChildValues([postID: 1], withCompletionBlock: completion)
-                //FIXME: - why [postID : 1] lol
             }
         case.reply(let post):
             values["replyingTo"] = post.user.username
             REF_POST_REPLIES.child(post.postID).childByAutoId().updateChildValues(values) { (err, ref) in
                 guard let replyKey = ref.key else {return}
-                //FIXME: - fix for bigger number of replies to one post essa
                 REF_USER_REPLIES.child(uid).updateChildValues([post.postID : replyKey], withCompletionBlock: completion)
             }
         }
@@ -88,7 +76,7 @@ struct PostService{
                 self.fetchPost(forPostID: postID) { (post) in
                     posts.append(post)
                     posts = posts.sorted(by: {$0.timestamp > $1.timestamp})
-                    completion(posts) //FIXME: - commmented 21.11.2020 12:10
+                    completion(posts)
                 }
             }
         }
@@ -98,7 +86,7 @@ struct PostService{
             self.fetchPost(forPostID: postID) { (post) in
                 posts.append(post)
                 posts = posts.sorted(by: {$0.timestamp > $1.timestamp})
-                completion(posts) //FIXME: - commmented 21.11.2020 12:10
+                completion(posts)
             }
         }
     }
@@ -182,7 +170,7 @@ struct PostService{
     }
     
     func deletePost(forPost post: Post){
-        print("in Post service should delete")
+        
         REF_POSTS.child(post.postID).removeValue()
     }
 }

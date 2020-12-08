@@ -76,7 +76,7 @@ class RunSummaryController: UIViewController {
     //MARK: - Selectors
     
     @objc func mapViewTapped(){
-        print("DEBUG: tapped")
+        
         if mapViewZoomed {
             restoreMapView()
         } else {
@@ -202,7 +202,7 @@ class RunSummaryController: UIViewController {
         mapView.mapType = .mutedStandard
         
         mapView.addOverlays(viewModel.polylines)
-        print("DEBUG: viewModel.polylines \(viewModel.polylines.count)")
+        
         
         view.addSubview(mapView)
     }

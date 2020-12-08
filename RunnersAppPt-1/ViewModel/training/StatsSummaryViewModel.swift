@@ -8,7 +8,6 @@
 
 import Foundation
 
-//FIXME: - MAKE DELEGATE HERE TO UPDATE
 protocol StatsSummaryViewModelDelegate: class {
     func handleUpdate()
 }

@@ -12,7 +12,6 @@ struct StatsSummary {
     
     let avgRunTime: Double
     let maxRunTime: Double
-    // FIXME: - make let for most attended time of day to run? morning 05-10 mid 10-14 etc
     let wholeDistance: Double
     let avgDistance: Double
     let maxDistance: Double

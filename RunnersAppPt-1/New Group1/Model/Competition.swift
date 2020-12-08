@@ -7,14 +7,15 @@
 //
 
 import Foundation
+import Firebase
 
-struct Competition {
+class Competition {
     let id: String
     let title: String
     let distance: Double
     let startDate: Date
     let stopDate: Date
-    let competitors: [User]
+    var competitors: [User]
     
     init() {
         self.id = ""
@@ -32,5 +33,33 @@ struct Competition {
         self.startDate = startDate
         self.stopDate = stopDate
         self.competitors = competitors
+    }
+    
+    init(withID id: String, withTitle title: String, withDistance distance: Double, withStartDate startDate: Date, withStopDate stopDate: Date, withUIDS uids: [String]){
+        self.id = id
+        self.title = title
+        self.distance = distance
+        self.startDate = startDate
+        self.stopDate = stopDate
+        self.competitors = []
+        fetch(withUIDS: uids)
+    }
+    
+    func fetch(withUIDS uids: [String]){
+        fetchUsers(withUIDS: uids) { (array) in
+            self.competitors=array
+        }
+    }
+    
+    func fetchUsers(withUIDS uids: [String], completion: @escaping(([User]) -> Void)) {
+        var users:[User] = []
+        for value in uids {
+            REF_USERS.child(value).observeSingleEvent(of: .value) { (snapshot) in
+                guard let dictionary = snapshot.value as? [String: AnyObject] else {return}
+                let user = User(uid: value, dictionary: dictionary)
+                users.append(user)
+                completion(users)
+            }
+        }
     }
 }

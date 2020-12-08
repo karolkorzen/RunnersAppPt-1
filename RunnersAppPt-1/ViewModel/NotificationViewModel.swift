@@ -31,7 +31,7 @@ struct NotificationViewModel{
         }
     }
     
-    private var timestampString: String? {  //FIXME: - MAKE IT DYNAMIC
+    private var timestampString: String? {
         let formatter = DateComponentsFormatter()
         formatter.allowedUnits = [.second, .minute, .hour, .day, .weekOfMonth]
         formatter.maximumUnitCount = 1

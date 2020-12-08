@@ -130,7 +130,7 @@ class Utilities {
     /// - Returns: UILabel
     func infoRunLabel() -> UILabel {
         let label = UILabel()
-        label.textColor = .black // FIXME: - make it dynamic // some library?
+        label.textColor = .black
         label.font = UIFont.boldSystemFont(ofSize: 30)
         label.backgroundColor = .lightGray
         label.layer.cornerRadius = 10

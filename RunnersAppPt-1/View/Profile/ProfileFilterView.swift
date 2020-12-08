@@ -66,7 +66,6 @@ extension ProfileFilterView: UICollectionViewDataSource {
         
         let option = ProfileFilterOptions(rawValue: indexPath.row)
         cell.option = option
-        //FIXME: - GESTURE RECOGNIZER?
         
         return cell
     }

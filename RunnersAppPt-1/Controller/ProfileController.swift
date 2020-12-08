@@ -56,7 +56,6 @@ class ProfileController: UICollectionViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //FIXME: - FIX LIKES
         configureCollectionView()
         fetchPosts()
         fetchLikedPosts()
@@ -214,7 +213,6 @@ extension ProfileController: ProfileHeaderDelegate {
     
     func handleDismissal() {
         navigationController?.popViewController(animated: true)
-        //FIXME: - Ugly Animation OH GOOOD
     }
 }
 
@@ -228,7 +226,7 @@ extension ProfileController: EditProfileControllerDelegate {
             nav.modalPresentationStyle = .fullScreen
             self.present(nav, animated: true, completion: nil)
         } catch let error {
-            print("DEBUG: Failed to sign out with error \(error.localizedDescription)" )
+            
         }
     }
     
@@ -241,6 +239,5 @@ extension ProfileController: EditProfileControllerDelegate {
     func controller(_ controller: EditProfileController, wantsToUpdate user: User) {
         controller.dismiss(animated: true, completion: nil)
         self.user = user
-        //FIXME: - fix reloading
     }
 }

@@ -98,12 +98,14 @@ extension CompetitionController {
                 }
             }
             cell.distance = tmp
+            if tmp>self.competition.distance {
+                cell.backgroundColor = .appTintColor
+            }
         }
         return cell
     }
 
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        //FIXME: - delete from training?
     }
 }
 

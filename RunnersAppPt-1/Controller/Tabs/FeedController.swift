@@ -59,7 +59,7 @@ class FeedController: UICollectionViewController {
         collectionView.refreshControl?.beginRefreshing()
         fetchPosts(completion: {
             self.checkIfLiked(completion: {
-                print("DEBUG: handle refresh reloading")
+                
                 self.collectionView.reloadData()
                 Utilities.shared.dispatchDelay(delay: 0.5) {
                     self.collectionView.refreshControl?.endRefreshing()

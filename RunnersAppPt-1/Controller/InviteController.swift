@@ -84,9 +84,6 @@ class InviteController: UITableViewController {
 
 extension InviteController {
     
-    //FIXME: - ADD SERCIOTN FOR SELECTED
-    //FIXME: - MOVE VIEW TO MAKE LABEL INVITE PEOPLE ON TOP
-    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reusableCell) as! UserCell
         //cell.user = users[indexPath.row]
@@ -122,8 +119,8 @@ extension InviteController: AddCompetitionsHeaderDelegate {
     func createCompetition() {
         let header = tableView.tableHeaderView as! AddCompetitionsHeader
         let headerIngredients = header.createIngredients
-        print("DEBUG: header ingredients -> \(headerIngredients)")
-        print("DEBUG: fetching selected users")
+        
+        
         CompetitionsService.shared.addCompetition(withCompetitionHeaderModel: headerIngredients, withUsers: Array(selectedUsers.values) as! Array, completion: {})
         self.dismiss(animated: true, completion: nil)
     }

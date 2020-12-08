@@ -7,15 +7,13 @@
 //
 
 import Foundation
-
-//FIXME: - MAKE IT ALSO A REPLY lol
  
 struct Post{
     let postID: String
     let caption: String
     var likes: Int
     var timestamp: Date!
-    let repostCount: Int //FIXME: - it doesnt take any value
+    let repostCount: Int
     var user: User
     var didLike = false
     var replyingTo: String?

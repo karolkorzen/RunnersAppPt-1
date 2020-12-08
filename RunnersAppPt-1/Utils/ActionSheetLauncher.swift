@@ -138,7 +138,7 @@ extension ActionSheetLauncher: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let option = viewModel.options[indexPath.row]
         
-        print("DEBUG: Curr option is \(option.description)")
+        
         UIView.animate(withDuration: 0.5,animations: {
             self.blackView.alpha = 0
             self.tableView.frame.origin.y += self.tableView.frame.height

@@ -78,8 +78,6 @@ class LoginController: UIViewController {
         guard let password = passwordTextField.text else {return}
         AuthService.shared.logUserIn(withEmail: email.lowercased(), withPassword: password) { (result, error) in
             if let error = error {
-                print("DEBUG: Error loggin in \(error.localizedDescription)")
-                //FIXME: Handle alerts
                 return
             }
             
