@@ -88,6 +88,9 @@ struct CompetitionsService {
     ///   - compId: competitionID
     ///   - userID: userID
     func addUserInvited(withCompetitonID compId: String, withUserID userID: String) {
+        UserService.shared.fetchUser(uid: userID) { (user) in
+            NotificationService.shared.uploadNotification(type: .invite, post: nil, user: user)
+        }
         REF_USER_INVITE.child(userID).updateChildValues([compId : "1"])
     }
     

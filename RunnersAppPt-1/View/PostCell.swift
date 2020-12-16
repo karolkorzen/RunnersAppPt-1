@@ -14,6 +14,7 @@ protocol PostCellDelegate: class {
     func handleReplyButtonTapped(_ cell: PostCell)
     func handleLikeButtonTapped(_ cell: PostCell)
     func handleFetchUser(withUserName username: String)
+    func sharePostText(_ cell: PostCell)
 }
 
 class PostCell: UICollectionViewCell{
@@ -125,7 +126,7 @@ class PostCell: UICollectionViewCell{
         
         infoLabel.font = UIFont.systemFont(ofSize: 14)
         
-        let actionStack = UIStackView(arrangedSubviews: [commentButton, repostButton, likeButton, shareButton])
+        let actionStack = UIStackView(arrangedSubviews: [commentButton, /*repostButton,*/ likeButton, shareButton])
         
         actionStack.axis = .horizontal
         actionStack.spacing = 72
@@ -162,7 +163,7 @@ class PostCell: UICollectionViewCell{
     }
     
     @objc func handleShareTapped(){
-        
+        delegate?.sharePostText(self)
     }
     
     // MARK: - Helpers

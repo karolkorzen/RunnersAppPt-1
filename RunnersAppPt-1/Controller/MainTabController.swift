@@ -36,7 +36,6 @@ class MainTabController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         authenticateUserAndConfigureUI()
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -115,10 +114,7 @@ class MainTabController: UITabBarController {
         let notifications = NotificationsController(collectionViewLayout: UICollectionViewFlowLayout())
         let nav3 = templateNavigationController(image: UIImage(systemName: "lightbulb.fill")!, rootViewController: notifications)
         
-        let conversations = ConversationsController()
-        let nav4 = templateNavigationController(image: UIImage(systemName: "envelope.fill")!, rootViewController: conversations)
-        
-        viewControllers = [nav1, navS, navR, nav3, nav4]
+        viewControllers = [nav1, navS, navR, nav3]
     }
 
     func templateNavigationController(image: UIImage, rootViewController: UIViewController) -> UINavigationController {

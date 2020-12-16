@@ -24,7 +24,7 @@ class CompetitionCell: UICollectionViewCell{
     
     var distance: Double? {
         didSet {
-            distanceLabel.text = "\(Int(distance!)) metres"
+            distanceLabel.text = "\(Int(distance!))m"
         }
     }
     
@@ -40,7 +40,6 @@ class CompetitionCell: UICollectionViewCell{
         iv.backgroundColor = .lightGray
         iv.layer.borderColor = UIColor.white.cgColor
         iv.layer.cornerRadius = 10
-        
         let tap = UITapGestureRecognizer(target: self, action: #selector(handlePopUpImageProfile))
         iv.addGestureRecognizer(tap)
         iv.isUserInteractionEnabled = true
@@ -88,9 +87,12 @@ class CompetitionCell: UICollectionViewCell{
         distanceLabel.numberOfLines = 2
         
         
-        profileImageView.setDimensions(width: frame.width/2-20, height: frame.height/2)
-        profileImageView.centerY(inView: self)
-        userName.anchor(top: topAnchor, left: profileImageView.rightAnchor, right: rightAnchor , paddingTop: 10, paddingLeft: 10, height: frame.height/2-20)
-        distanceLabel.anchor(top: userName.bottomAnchor, left: profileImageView.rightAnchor, paddingLeft: 5, width: frame.width/2-10, height: frame.height/2)
+        profileImageView.setDimensions(width: frame.width/3, height: frame.width/3)
+        profileImageView.anchor(top: topAnchor, left: leftAnchor, paddingTop: 10, paddingLeft: 10)
+        userName.anchor(top: profileImageView.bottomAnchor , paddingTop: 5)
+        userName.centerX(inView: self)
+        distanceLabel.centerY(inView: profileImageView)
+        distanceLabel.anchor(left: profileImageView.rightAnchor, right: rightAnchor, paddingLeft: 5, paddingRight: 5)
+        distanceLabel.textAlignment = .center
     }
 }

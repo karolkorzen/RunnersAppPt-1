@@ -54,5 +54,4 @@ struct Stats {
         self.altitudeMin = altitudeMin
         self.altitudeMax = altitudeMax
     }
-    
 }

@@ -17,17 +17,14 @@ struct NotificationViewModel{
     
     var notificationMessage: String{
         switch type {
-            
         case .follow:
             return " started following you"
         case .like:
             return " liked your post"
         case .reply:
             return " replied to your post"
-        case .repost:
-            return " reposted your post"
-        case .mention:
-            return " mentioned you in a post "
+        case .invite:
+            return " invited you to a competition"
         }
     }
     
@@ -59,7 +56,6 @@ struct NotificationViewModel{
     var followButtonText: String{
         return user.isFollowed ? "Following" : "Follow"
     }
-    
     
     init(notification: Notification) {
         self.notification = notification

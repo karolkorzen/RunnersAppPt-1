@@ -115,14 +115,14 @@ extension NotificationsController {
         if  notifications[indexPath.row].type == .follow {
             let user = notifications[indexPath.row].user
             self.navigationController?.pushViewController(ProfileController(user: user), animated: true)
-        } else  {
+        } else if notifications[indexPath.row].type == .invite {
+            self.navigationController?.pushViewController(CompetitionsListController(), animated: true)
+        } else {
             guard let postID = notifications[indexPath.row].postID else {return}
             PostService.shared.fetchPost(forPostID: postID) { (post) in
                 self.navigationController?.pushViewController(PostController(post: post), animated: true)
             }
         }
-        //
- 
     }
 }
 

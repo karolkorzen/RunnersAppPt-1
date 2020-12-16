@@ -39,7 +39,13 @@ class RunSummaryViewModel {
     }
     
     var timeLabelText: String {
-        return "Time:\n\(Int(stats.time/60)) minutes"
+        let (hours, minutes, seconds) = Utilities.shared.secondsToHoursMinutesSeconds(seconds: Int(stats.time))
+        if hours == 0{
+            return ("Time:\n\(minutes) minutes, \(seconds) s")
+        } else {
+            return ("Time:\n\(hours) hours, \(minutes) minutes, \(seconds) seconds")
+        }
+//        return "Time:\n\(Int(stats.time/60)) minutes"
     }
     
     var distanceLabelText: String {

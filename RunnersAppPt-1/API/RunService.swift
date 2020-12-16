@@ -22,8 +22,8 @@ struct RunService {
                       "timestampStop" : stats.timestampStop,
                       "avgSpeed" : stats.avgSpeed,
                       "maxSpeed" : stats.maxSpeed,
-                      "altitudeMin" : Double(stats.altitudeMin.description),
-                      "altitudeMax" : Double(stats.altitudeMin.description)
+                      "altitudeMin" : stats.altitudeMin,
+                      "altitudeMax" : stats.altitudeMax
         ] as [String : Any]
         
         var ref = REF_USER_RUNS.child(currentUid).childByAutoId()
@@ -34,7 +34,8 @@ struct RunService {
             ref_num.updateChildValues(["latitude" : index.latitude])
             ref_num.updateChildValues(["longitude" : index.longitude])
             ref_num.updateChildValues(["speed" : index.speed])
-            ref_num.updateChildValues(["altitude" : index.altitude])
+            print(index.altitude)
+            ref_num.updateChildValues(["altitude" : Double(index.altitude.description)])
             ref_num.updateChildValues(["timestamp" : index.timestamp.timeIntervalSince1970])
             ref_num.updateChildValues(["course" : index.course])
         }

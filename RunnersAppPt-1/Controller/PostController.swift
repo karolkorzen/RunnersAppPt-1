@@ -117,6 +117,12 @@ extension PostController: UICollectionViewDelegateFlowLayout {
 //MARK: - PostHeaderDelegate
 
 extension PostController: PostHeaderDelegate{
+    func handleProfileImageTapped(_ cell: Post) {
+        let user = cell.user
+        let controller = ProfileController(user: user)
+        navigationController?.pushViewController(controller, animated: true)
+    }
+    
     func handleReplyButtonTapped(_ post: Post) {
         let controller = UploadPostController(user: post.user, config: .reply(post))
         let nav = UINavigationController(rootViewController: controller)
@@ -149,6 +155,12 @@ extension PostController: PostHeaderDelegate{
                 self.showActionSheet(forUser: user)
             }
         }
+    }
+    
+    func sharePostText(_ caption: String) {
+        let postText:String = caption
+        let activityViewController = UIActivityViewController(activityItems : [postText], applicationActivities: nil)
+        present(activityViewController, animated: true, completion: nil)
     }
 }
 

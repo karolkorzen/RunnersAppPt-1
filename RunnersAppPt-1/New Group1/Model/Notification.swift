@@ -12,8 +12,7 @@ enum NotificationType: Int {
     case follow
     case like
     case reply
-    case repost
-    case mention
+    case invite
 }
 
 struct Notification {

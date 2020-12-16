@@ -156,22 +156,6 @@ class UploadPostController: UIViewController {
         }
     }
     
-    func uploadMentionNotification(forCaption caption: String,forPost post: Post) {
-        guard caption.contains("@") else {return}
-        let words = caption.components(separatedBy: .whitespacesAndNewlines)
-        
-        words.forEach { (word) in
-            guard word.hasPrefix("@") else {return}
-            
-            var username = word.trimmingCharacters(in: .symbols)
-            username = username.trimmingCharacters(in: .punctuationCharacters)
-            
-            UserService.shared.fetchUser(uid: username) { (user) in
-                NotificationService.shared.uploadNotification(type: .mention, post: post, user: user)
-            }
-        }
-    }
-    
     // MARK: - Helpers
     
     func configureUI(){

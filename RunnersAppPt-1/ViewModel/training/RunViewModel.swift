@@ -57,10 +57,10 @@ class RunViewModel {
                 max = index.speed
             }
             if index.altitude < altmin {
-                altmin = index.altitude
+                altmin = Double(index.altitude.description)!
             }
             if index.altitude > altmax {
-                altmax = index.altitude
+                altmax = Double(index.altitude.description)!
             }
         }
         avg/=Double(runTable.count)

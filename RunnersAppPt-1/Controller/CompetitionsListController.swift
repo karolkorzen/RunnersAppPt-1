@@ -54,6 +54,7 @@ class CompetitionsListController: UITableViewController {
         super.viewDidAppear(animated)
         navigationController?.navigationBar.barStyle = .default
         navigationController?.setNavigationBarHidden(false, animated: true)
+        navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.title = "Competitions"
         tableView.reloadData()
     }
@@ -62,11 +63,23 @@ class CompetitionsListController: UITableViewController {
     func fetchData() {
         CompetitionsService.shared.fetchCompetitions { (competitions) -> (Void) in
 //            print("DEBUG: competitions \(competitions)")
-            self.competitionsTable = competitions
+            var array = competitions
+            array.sort { (competition1, competition2) -> Bool in
+                competition1.startDate.timeIntervalSince1970 > competition2.startDate.timeIntervalSince1970
+            }
+            DispatchQueue.main.async {
+                self.competitionsTable = array
+            }
         }
         CompetitionsService.shared.fetchInvites { (competitions) -> (Void) in
 //            print("DEBUG: competitions \(competitions)")
-            self.invitesTable = competitions
+            var array = competitions
+            array.sort { (competition1, competition2) -> Bool in
+                competition1.startDate.timeIntervalSince1970 > competition2.startDate.timeIntervalSince1970
+            }
+            DispatchQueue.main.async {
+                self.invitesTable = array
+            }
         }
     }
     
@@ -120,6 +133,7 @@ extension CompetitionsListController {
             return cell
         } else {
             cell.competition = competitionsTable[indexPath.row]
+            cell.isInvitation = false
             return cell
         }
     }
@@ -132,39 +146,33 @@ extension CompetitionsListController {
         }
     }
     
-//    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-//
-//    }
-    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let controller = CompetitionController(withCompetition: competitionsTable[indexPath.row])
-        navigationController?.pushViewController(controller, animated: true)
+        if indexPath.section == 0 {
+            let controller = CompetitionController(withCompetition: competitionsTable[indexPath.row], isInvite: true)
+            navigationController?.pushViewController(controller, animated: true)
+        } else {
+            let controller = CompetitionController(withCompetition:     competitionsTable[indexPath.row], isInvite: false)
+            navigationController?.pushViewController(controller, animated: true)
+        }
     }
-    
 }
 
 extension CompetitionsListController: CompetitionsListCellDelegate {
     func acceptInvite(withID id: String) {
         guard let currentUID = Auth.auth().currentUser?.uid else {return}
         CompetitionsService.shared.addUserCompetiton(withCompetitonID: id, withUserID: currentUID, completion: {
-            for (index,value) in self.invitesTable.enumerated() {
-                if value.id == id {
-                    self.invitesTable.remove(at: index)
-                }
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
             }
         })
-        tableView.reloadData()
     }
     
     func rejectInvite(withID id: String) {
         guard let currentUID = Auth.auth().currentUser?.uid else {return}
         CompetitionsService.shared.deleteUserInvited(withCompetitonID: id, withUserID: currentUID, completion: {
-            for (index,value) in self.invitesTable.enumerated() {
-                if value.id == id {
-                    self.invitesTable.remove(at: index)
-                }
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
             }
         })
-        tableView.reloadData()
     }
 }

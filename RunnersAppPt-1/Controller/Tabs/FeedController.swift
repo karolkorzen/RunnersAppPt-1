@@ -194,6 +194,12 @@ extension FeedController: UICollectionViewDelegateFlowLayout {
 // MARK: - PostCell Delegate
 
 extension FeedController: PostCellDelegate {
+    func sharePostText(_ cell: PostCell) {
+        guard let postText:String = cell.post?.caption else {return}
+        let activityViewController = UIActivityViewController(activityItems : [postText], applicationActivities: nil)
+        present(activityViewController, animated: true, completion: nil)
+    }
+    
     func handleFetchUser(withUserName username: String) {
         UserService.shared.fetchUser(withUsername: username) { (user) in
             let controller = ProfileController(user: user)

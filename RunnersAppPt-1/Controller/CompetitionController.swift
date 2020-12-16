@@ -25,20 +25,42 @@ class CompetitionController: UICollectionViewController {
         
         button.frame = CGRect(x: 0, y:0, width: 64, height: 32)
         button.layer.cornerRadius = 10
-        
         button.addTarget(self, action: #selector(deleteCompetition), for: .touchUpInside)
         return button
     }()
     
-    
+    let isInvite: Bool
     var competition: Competition {
         didSet {
             collectionView.reloadData()
         }
     }
+    private lazy var acceptButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitleColor(.mainAppColor, for: .normal)
+        button.backgroundColor = .white
+        button.setDimensions(width: 36, height: 36)
+        button.layer.cornerRadius = 10
+        button.layer.borderWidth = 2
+        button.layer.borderColor = UIColor.mainAppColor.cgColor
+        button.addTarget(self, action: #selector(handleAccept), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var rejectButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitleColor(.mainAppColor, for: .normal)
+        button.setDimensions(width: 36, height: 36)
+        button.layer.cornerRadius = 10
+        button.layer.borderWidth = 2
+        button.layer.borderColor = UIColor.mainAppColor.cgColor
+        button.addTarget(self, action: #selector(handleReject), for: .touchUpInside)
+        return button
+    }()
     
     
-    init(withCompetition competition: Competition) {
+    init(withCompetition competition: Competition, isInvite bool: Bool) {
+        self.isInvite = bool
         self.competition = competition
         super.init(collectionViewLayout: UICollectionViewFlowLayout())
     }
@@ -56,6 +78,7 @@ class CompetitionController: UICollectionViewController {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.barStyle = .default
         navigationController?.navigationBar.isHidden = false
+        navigationController?.navigationBar.prefersLargeTitles = false
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: actionButton)
     }
     
@@ -65,6 +88,20 @@ class CompetitionController: UICollectionViewController {
         guard let currentUID = Auth.auth().currentUser?.uid else {return}
         CompetitionsService.shared.deleteUserCompetition(withCompetitonID: competition.id, withUserID: currentUID)
         navigationController?.popViewController(animated: true)
+    }
+    
+    @objc func handleAccept(){
+        guard let currentUID = Auth.auth().currentUser?.uid else {return}
+        CompetitionsService.shared.addUserCompetiton(withCompetitonID: competition.id, withUserID: currentUID, completion: {
+            self.navigationController?.popViewController(animated: true)
+        })
+    }
+    
+    @objc func handleReject(){
+        guard let currentUID = Auth.auth().currentUser?.uid else {return}
+        CompetitionsService.shared.deleteUserInvited(withCompetitonID: competition.id, withUserID: currentUID, completion: {
+            self.navigationController?.popViewController(animated: true)
+        })
     }
     
     //MARK: - Helpers
@@ -99,7 +136,7 @@ extension CompetitionController {
             }
             cell.distance = tmp
             if tmp>self.competition.distance {
-                cell.backgroundColor = .appTintColor
+                cell.backgroundColor = UIColor.blue.withAlphaComponent(0.3)
             }
         }
         return cell
@@ -114,11 +151,11 @@ extension CompetitionController {
 extension CompetitionController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: view.frame.width, height: 250)
+        return CGSize(width: view.frame.width, height: 200)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: (view.frame.width/2)-10, height: view.frame.height/5)
+        return CGSize(width: (view.frame.width/2)-10, height: 100)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {

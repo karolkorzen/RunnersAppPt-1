@@ -29,10 +29,8 @@ class NotificationCell: UICollectionViewCell {
         let iv = UIImageView()
         iv.contentMode = .scaleAspectFit
         iv.clipsToBounds = true
-        //iv.setDimensions(width: 40, height: 40)
         iv.layer.cornerRadius = 10
         iv.backgroundColor = .lightGray
-        
         let tap = UITapGestureRecognizer(target: self, action: #selector(handleProfileImageTapped))
         iv.addGestureRecognizer(tap)
         iv.isUserInteractionEnabled = true
@@ -43,7 +41,6 @@ class NotificationCell: UICollectionViewCell {
         let button = UIButton(type: .system)
         button.setTitle("Loading", for: .normal)
         button.setTitleColor(.mainAppColor, for: .normal)
-        //button.setDimensions(width: 92, height: 32)
         button.layer.cornerRadius = 16
         button.backgroundColor = .white
         button.layer.borderColor = UIColor.mainAppColor.cgColor
@@ -75,14 +72,6 @@ class NotificationCell: UICollectionViewCell {
         stack.centerY(inView: self)
         stack.anchor(left: leftAnchor, right: rightAnchor, paddingLeft: 12, paddingRight: 12)
         stack.alignment = .center
-        
-        //addSubview(followButton)
-        
-//      followButton.centerY(inView: self)
-//      followButton.anchor(right: rightAnchor, paddingRight: 12)
-        
-        
-        //stack.anchor(right: rightAnchor, paddingRight: 12, height: 60)
     }
     
     required init?(coder: NSCoder) {
@@ -114,11 +103,6 @@ class NotificationCell: UICollectionViewCell {
         } else {
             followButton.isHidden = false
         }
-        //followButton.isHidden = viewModel.shouldHideFollowButton
-        //followButton.setTitle(viewModel.followButtonText, for: .normal)
-//        if followButton.isHidden {
-//            notificationLabel.anchor(right: rightAnchor)
-//        }
     }
 }
 

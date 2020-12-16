@@ -22,7 +22,7 @@ struct PostViewModel {
     var timestamp: String {
         let formatter = DateComponentsFormatter()
         formatter.allowedUnits = [.second, .minute, .hour, .day, .weekOfMonth]
-        formatter.maximumUnitCount = 1
+        formatter.maximumUnitCount = 2
         formatter.unitsStyle = .abbreviated
         let now = Date()
         return formatter.string(from: post.timestamp, to: now) ?? "0s"

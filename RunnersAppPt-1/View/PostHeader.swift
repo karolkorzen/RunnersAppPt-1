@@ -14,6 +14,8 @@ protocol PostHeaderDelegate: class{
     func handleFetchUser(withUserName username: String)
     func handleReplyButtonTapped(_ post: Post)
     func handleLikeButtonTapped(_ post: Post)
+    func handleProfileImageTapped(_ cell: Post)
+    func sharePostText(_ caption: String)
 }
 
 class PostHeader: UICollectionReusableView {
@@ -104,7 +106,7 @@ class PostHeader: UICollectionReusableView {
         view.addSubview(divider1)
         divider1.anchor(top: view.topAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingLeft: 8, height: 1.0)
         
-        let stack = UIStackView(arrangedSubviews: [likesLabel, repostLabel])
+        let stack = UIStackView(arrangedSubviews: [likesLabel, /*repostLabel*/])
         stack.axis = .horizontal
         stack.spacing = 12
         
@@ -193,7 +195,7 @@ class PostHeader: UICollectionReusableView {
         addSubview(statsView)
         statsView.anchor(top: dateLabel.bottomAnchor, left: leftAnchor, right: rightAnchor, paddingTop: 12 , height: 40)
         
-        let actionStack = UIStackView(arrangedSubviews: [commentButton, repostButton, likeButton, shareButton])
+        let actionStack = UIStackView(arrangedSubviews: [commentButton, /*repostButton,*/ likeButton, shareButton])
         actionStack.axis = .horizontal
         actionStack.spacing = 72
         
@@ -211,7 +213,7 @@ class PostHeader: UICollectionReusableView {
     //MARK: - Selectors
     
     @objc func handleProfileImageTapped() {
-        
+        delegate?.handleProfileImageTapped(post)
     }
     
     @objc func showActionSheet(){
@@ -232,7 +234,7 @@ class PostHeader: UICollectionReusableView {
     }
     
     @objc func handleShareTapped(){
-        
+        delegate?.sharePostText(post.caption)
     }
     //MARK: - Helpers
     

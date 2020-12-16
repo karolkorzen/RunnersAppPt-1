@@ -29,22 +29,35 @@ class CompetitionsListCell: UITableViewCell {
     
     private lazy var acceptButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = .mainAppColor
-        button.setDimensions(width: 50, height: 50)
+        button.setTitleColor(.mainAppColor, for: .normal)
+        button.setDimensions(width: 36, height: 36)
         button.layer.cornerRadius = 10
+        button.layer.borderWidth = 2
+        button.layer.borderColor = UIColor.mainAppColor.cgColor
         button.addTarget(self, action: #selector(handleAccept), for: .touchUpInside)
         return button
     }()
     
     private lazy var rejectButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = .mainAppColor
-        button.setDimensions(width: 50, height: 50)
+        button.setTitleColor(.mainAppColor, for: .normal)
+        button.setDimensions(width: 36, height: 36)
         button.layer.cornerRadius = 10
-        button.addTarget(self, action: #selector(handleAccept), for: .touchUpInside)
+        button.layer.borderWidth = 2
+        button.layer.borderColor = UIColor.mainAppColor.cgColor
+        button.addTarget(self, action: #selector(handleReject), for: .touchUpInside)
         return button
+    }()
+    
+    private var numberLabel: UILabel = {
+        let label = UILabel()
+        label.layer.cornerRadius = 18
+        label.textColor = .mainAppColor
+        label.textAlignment = .center
+        label.layer.borderWidth = 2
+        label.layer.borderColor = UIColor.mainAppColor.cgColor
+        label.font = UIFont.monospacedDigitSystemFont(ofSize: 14, weight: .bold)
+        return label
     }()
     
     //MARK: - Lifecycle
@@ -67,16 +80,38 @@ class CompetitionsListCell: UITableViewCell {
     // MARK: - Selectors
     
     @objc func handleAccept(){
+        backgroundColor = .darkGray
+        isUserInteractionEnabled = false
+        acceptButton.isHidden = true
+        rejectButton.isHidden = true
+        numberLabel.isHidden = true
         guard let competition = competition else {return}
         delegate?.acceptInvite(withID: competition.id)
     }
     
     @objc func handleReject(){
+        backgroundColor = .darkGray
+        isUserInteractionEnabled = false
+        acceptButton.isHidden = true
+        rejectButton.isHidden = true
+        numberLabel.isHidden = true
         guard let competition = competition else {return}
         delegate?.rejectInvite(withID: competition.id)
     }
     
     // MARK: - Helpers
+    
+    override var frame: CGRect {
+        get {
+            return super.frame
+        }
+        set (newFrame) {
+            var frame = newFrame
+            frame.origin.x += 10
+            let f = CGRect(x: frame.origin.x+8, y: frame.origin.y, width: frame.width-36, height: frame.height-10)
+            super.frame = f
+        }
+    }
     
     func configure(){
         guard let competition = competition else {return}
@@ -89,12 +124,26 @@ class CompetitionsListCell: UITableViewCell {
         datesLabel.text = "\(formatter.string(from: competition.startDate)) - \(formatter.string(from: competition.stopDate))"
         
         if isInvitation {
+            acceptButton.isHidden = false
+            rejectButton.isHidden = false
+            numberLabel.isHidden = true
             acceptButton.setTitle("✔", for: .normal)
             rejectButton.setTitle("✖", for: .normal)
             addSubview(acceptButton)
             addSubview(rejectButton)
-            rejectButton.anchor(top: topAnchor, right: rightAnchor, paddingTop: 10, paddingRight: 10)
-            acceptButton.anchor(top: topAnchor, right: rejectButton.leftAnchor, paddingTop: 10, paddingRight: 10)
+            rejectButton.anchor(right: rightAnchor, paddingRight: 10)
+            acceptButton.centerY(inView: self)
+            acceptButton.anchor(right: rejectButton.leftAnchor, paddingRight: 10)
+            rejectButton.centerY(inView: self)
+        } else {
+            acceptButton.isHidden = true
+            rejectButton.isHidden = true
+            numberLabel.isHidden = false
+            numberLabel.text = competition.competitors.count.description
+            addSubview(numberLabel)
+            numberLabel.setDimensions(width: 36, height: 36)
+            numberLabel.anchor(right: rightAnchor, paddingRight: 10)
+            numberLabel.centerY(inView: self)
         }
     }
 }

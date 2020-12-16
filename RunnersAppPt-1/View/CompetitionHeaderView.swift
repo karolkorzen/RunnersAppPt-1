@@ -20,8 +20,8 @@ class CompetitionHeaderView: UICollectionReusableView {
 
     private var titleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 20)
-        label.textColor = .appTintColor
+        label.font = UIFont.boldSystemFont(ofSize: 34)
+        label.textColor = .black
         return label
     }()
 
@@ -38,6 +38,7 @@ class CompetitionHeaderView: UICollectionReusableView {
     
     override init (frame: CGRect) {
         super.init(frame: frame)
+        initUI()
     }
     
     required init?(coder: NSCoder) {
@@ -59,8 +60,11 @@ class CompetitionHeaderView: UICollectionReusableView {
         stopDateLabel.text = "Stop date:"
         distanceLabel.text = "Goal:"
         
-        startDateValueLabel.text = "\(competition.startDate)"
-        stopDateValueLabel.text = "\(competition.stopDate)"
+        let formatter = DateFormatter()
+        formatter.dateFormat = "d MMM yyyy HH:mm"
+        
+        startDateValueLabel.text = "\(formatter.string(from: competition.startDate))"
+        stopDateValueLabel.text = "\(formatter.string(from: competition.stopDate))"
         distanceValueLabel.text = "\(competition.distance)"
         
         addSubview(titleLabel)
@@ -72,14 +76,14 @@ class CompetitionHeaderView: UICollectionReusableView {
         addSubview(stopDateValueLabel)
         addSubview(distanceValueLabel)
         
-        titleLabel.anchor(top: topAnchor, left: leftAnchor, paddingTop: 10, paddingLeft: 10, width: 200, height: 50)
+        titleLabel.anchor(top: topAnchor, left: leftAnchor, paddingTop: 10, paddingLeft: 10, width: 400, height: 50)
         
-        startDateLabel.anchor(top: titleLabel.bottomAnchor, left: leftAnchor, paddingTop: 10, paddingLeft: 10 , width: 150, height: 50)
-        stopDateLabel.anchor(top: startDateLabel.bottomAnchor, left: leftAnchor, paddingTop: 10, paddingLeft: 10, width: 150, height: 50)
-        distanceLabel.anchor(top: stopDateLabel.bottomAnchor, left: leftAnchor, paddingTop: 10, paddingLeft: 10, width: 150, height: 50)
+        startDateLabel.anchor(top: titleLabel.bottomAnchor, left: leftAnchor, paddingTop: 8, paddingLeft: 10 , width: 150, height: 30)
+        stopDateLabel.anchor(top: startDateLabel.bottomAnchor, left: leftAnchor, paddingTop: 8, paddingLeft: 10, width: 150, height: 30)
+        distanceLabel.anchor(top: stopDateLabel.bottomAnchor, left: leftAnchor, paddingTop: 8, paddingLeft: 10, width: 150, height: 30)
         
-        startDateValueLabel.anchor(top: titleLabel.bottomAnchor, left: startDateLabel.rightAnchor, paddingTop: 20, paddingRight: 10, width: 200, height: 30)
-        stopDateValueLabel.anchor(top: startDateValueLabel.bottomAnchor, left: stopDateLabel.rightAnchor, paddingTop: 20,paddingRight: 10, width: 200, height: 30)
-        distanceValueLabel.anchor(top: stopDateValueLabel.bottomAnchor, left: distanceLabel.rightAnchor, paddingTop: 10,paddingRight: 10, width: 200, height: 50)
+        startDateValueLabel.anchor(top: titleLabel.bottomAnchor, left: startDateLabel.rightAnchor, paddingTop: 8, paddingRight: 10, width: 400, height: 30)
+        stopDateValueLabel.anchor(top: startDateValueLabel.bottomAnchor, left: stopDateLabel.rightAnchor, paddingTop: 8,paddingRight: 10, width: 400, height: 30)
+        distanceValueLabel.anchor(top: stopDateValueLabel.bottomAnchor, left: distanceLabel.rightAnchor, paddingTop: 8,paddingRight: 10, width: 400, height: 30)
     }
 }

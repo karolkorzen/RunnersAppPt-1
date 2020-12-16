@@ -125,7 +125,12 @@ class RunController: UIViewController {
     
     @objc func timerAppend() {
         time+=1
-        timeLabel.text = "\(time) s"
+        let (hours, minutes, seconds) = Utilities.shared.secondsToHoursMinutesSeconds(seconds: time)
+        if hours == 0{
+            timeLabel.text = ("\(minutes)m : \(seconds)s")
+        } else {
+            timeLabel.text = ("\(hours)h : \(minutes)m : \(seconds)s")
+        }
     }
     
     func stopTraining(){
@@ -326,6 +331,8 @@ class RunController: UIViewController {
     
     func handleNewLocation(withLocation location: CLLocation){
         self.speedLabel.text = viewModel.speedLabelText(withSpeed: location.speed)
+        //FIXME: - uncomment this
+//        self.speedLabel.text = "alt " + location.altitude.description
         if isRunning && location.speed>0.0 {
             if let last = runTable.last {
                 self.distance = viewModel.appendDistance(withCurrentDistance: self.distance, fromLocation: (last.retFullCLLocation()), toLocation: location)

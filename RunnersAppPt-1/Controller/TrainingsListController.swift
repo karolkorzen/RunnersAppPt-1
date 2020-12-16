@@ -66,12 +66,21 @@ extension TrainingsListController {
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! TrainingListCell
-        cell.viewModel = TrainingViewModel(stats: Array(viewModel.dict)[indexPath.row].value, id: Array(viewModel.dict)[indexPath.row].key)
+        var array = Array(viewModel.dict)
+        array.sort{ (training1, training2) -> Bool in
+            training1.value.timestampStart>training2.value.timestampStart
+        }
+        cell.viewModel = TrainingViewModel(stats: array[indexPath.row].value, id: array[indexPath.row].key)
+        //        cell.viewModel = TrainingViewModel(stats: Array(viewModel.dict)[indexPath.row].value, id: Array(viewModel.dict)[indexPath.row].key)
         return cell
     }
 
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let controller = RunSummaryController(withStats: Array(viewModel.dict)[indexPath.row].value, withDeleteEnabled: true, withTrainingUID: Array(viewModel.dict)[indexPath.row].key)
+        var array = Array(viewModel.dict)
+        array.sort{ (training1, training2) -> Bool in
+            training1.value.timestampStart>training2.value.timestampStart
+        }
+        let controller = RunSummaryController(withStats: array[indexPath.row].value, withDeleteEnabled: true, withTrainingUID: array[indexPath.row].key)
         controller.delegate = self
         let nav = UINavigationController(rootViewController: controller)
         present(nav, animated: true, completion: nil)

@@ -47,7 +47,7 @@ struct Location {
         self.horizontalAccuracy = location.horizontalAccuracy
         self.speed = round(location.speed*10)/10
         self.speedAccuracy = location.speedAccuracy
-        self.altitude = location.altitude.binade
+        self.altitude = round(Double(location.altitude.description)!)
         self.floor = location.floor?.level
         self.verticalAccuracy = location.verticalAccuracy
         self.timestamp = location.timestamp
