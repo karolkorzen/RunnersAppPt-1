@@ -53,11 +53,11 @@ class RunSummaryViewModel {
     }
     
     var minAltitudeLabelText: String {
-        return "minimum altitude:\n\(stats.altitudeMin) metres"
+        return "minimum altitude:\n\(Int(stats.altitudeMin)) metres"
     }
     
     var maxAltitudeLabelText: String {
-        return "maximum altitude:\n\(stats.altitudeMax) metres"
+        return "maximum altitude:\n\(Int(stats.altitudeMax)) metres"
     }
     
     var avgSpeedLabelText: String {

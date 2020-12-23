@@ -11,6 +11,7 @@ import UIKit
 enum UploadPostConfiguration {
     case post
     case reply(Post)
+    case postTraining
 }
 
 struct UploadPostViewModel{
@@ -31,6 +32,10 @@ struct UploadPostViewModel{
             placeholderText = "Post your reply"
             shouldShowReplyLabel = true
             replyText = "Replying to @\(post.user.username)"
+        case .postTraining:
+            actionButtonTitle = "Post"
+            placeholderText = "How's your training going?"
+            shouldShowReplyLabel = false
         }
     }
     

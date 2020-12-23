@@ -17,6 +17,7 @@ struct Post{
     var user: User
     var didLike = false
     var replyingTo: String?
+    var trainingID: String?
     
     var isReply: Bool {return replyingTo != nil}
     
@@ -33,5 +34,9 @@ struct Post{
             self.replyingTo = replyingTo
         }
         self.repostCount = dictionary["retweet"] as? Int ?? 0
+        
+        if let trainingID = dictionary["trainingID"] as? String {
+            self.trainingID = trainingID
+        }
     }
 }

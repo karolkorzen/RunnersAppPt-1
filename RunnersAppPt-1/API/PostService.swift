@@ -11,7 +11,7 @@ import Firebase
 struct PostService{
     static let shared = PostService()
     
-    func uploadPost(caption: String, type: UploadPostConfiguration, completion: @escaping(DatabaseCompletion)) {
+    func uploadPost(caption: String, trainingID: String?, stats: Stats?, type: UploadPostConfiguration, completion: @escaping(DatabaseCompletion)) {
         guard let uid = Auth.auth().currentUser?.uid else {return}
         
         var values = ["uid": uid,
@@ -32,8 +32,14 @@ struct PostService{
                 guard let replyKey = ref.key else {return}
                 REF_USER_REPLIES.child(uid).updateChildValues([post.postID : replyKey], withCompletionBlock: completion)
             }
+        case .postTraining:
+            values["trainingID"] = trainingID! as String
+            
+            REF_POSTS.childByAutoId().updateChildValues(values) { (error, ref) in
+                guard let postID = ref.key else {return}
+                REF_USER_POSTS.child(uid).updateChildValues([postID: 1], withCompletionBlock: completion)
+            }
         }
-        
     }
     
     func fetchPost(forPostID postID: String, completion: @escaping(Post) -> Void) {
@@ -158,7 +164,6 @@ struct PostService{
                 REF_POST_LIKES.child(post.postID).child(uid).removeValue(completionBlock: completion)
             }
         }
-        
     }
     
     func checkIfUserLikedPost(_ post: Post, completion: @escaping(Bool) -> Void) {
@@ -170,7 +175,6 @@ struct PostService{
     }
     
     func deletePost(forPost post: Post){
-        
         REF_POSTS.child(post.postID).removeValue()
     }
 }

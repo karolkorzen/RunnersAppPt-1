@@ -134,7 +134,7 @@ class StatsController: UIViewController {
     
     func setFloatingPanel() {
         fpc.delegate = self
-        let trainingListController = TrainingsListController(collectionViewLayout: UICollectionViewFlowLayout())
+        let trainingListController = TrainingsListController(withIsAdding: false)
         fpc.set(contentViewController: trainingListController)
         fpc.track(scrollView: trainingListController.collectionView)
         fpc.layout = MyStatsFloatingPanelLayout()

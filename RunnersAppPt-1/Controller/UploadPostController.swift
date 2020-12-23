@@ -36,18 +36,18 @@ class UploadPostController: UIViewController {
 //        return iv
 //    }()
 //
-//    private var selectImageButton: UIButton = {
-//        let button = UIButton(type: .system)
-//        button.backgroundColor = .bluish
-//        button.setTitle("Add Image", for: .normal)
-//        button.titleLabel?.textAlignment = .center
-//        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
-//        button.setTitleColor(.white, for: .normal)
-//        button.layer.cornerRadius = 10
-//        button.addTarget(self, action: #selector(handleAddImage), for: .touchUpInside)
-//
-//        return button
-//    }()
+    private var addTrainingButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.backgroundColor = .mainAppColor
+        button.setTitle("add training", for: .normal)
+        button.titleLabel?.textAlignment = .center
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
+        button.setTitleColor(.white, for: .normal)
+        button.layer.cornerRadius = 10
+        button.addTarget(self, action: #selector(handleAddTraining), for: .touchUpInside)
+
+        return button
+    }()
 
     private lazy var actionButton: UIButton = {
         let button = UIButton(type: .system)
@@ -85,6 +85,9 @@ class UploadPostController: UIViewController {
     
     private let captionTextView = InputTextView()
     
+    private var trainingID: String?
+    private var trainingStats: Stats?
+    
     // MARK: - Lifecycle
     
     init(user: User, config: UploadPostConfiguration) {
@@ -108,22 +111,19 @@ class UploadPostController: UIViewController {
             print("Post")
         case.reply(let post):
             print("Replying to \(post.user)")
+        case .postTraining: break
+
         }
     }
     
-//    override func viewWillAppear(_ animated: Bool) {
-//         self.addKeyboardObserver()
-//     }
-//
-//     override func viewWillDisappear(_ animated: Bool) {
-//         self.removeKeyboardObserver()
-//     }
-    
     // MARK: - Selectors
     
-//    @objc func handleAddImage(){
-//        self.present(imagePicker, animated: true, completion: nil)
-//    }
+    @objc func handleAddTraining(){
+        let nav = TrainingsListController(withIsAdding: true)
+        nav.addTrainingDelegate = self
+//        navigationController?.pushViewController(nav, animated: true)
+        present(nav, animated: true, completion: nil)
+    }
 
     @objc func handleCancel(){
         dismiss(animated: true, completion: nil)
@@ -131,18 +131,37 @@ class UploadPostController: UIViewController {
     
     @objc func handleUploadPost(){
         guard let caption = captionTextView.text else {return}
-        PostService.shared.uploadPost(caption: caption, type: config) { (error, ref) in
-            if let error = error {
-                print("DEBUG: Failed to upload post with error \(error.localizedDescription)")
-                return
+        if let trainingID = self.trainingID, let trainingStats = self.trainingStats {
+            PostService.shared.uploadPost(caption: caption, trainingID: trainingID, stats: trainingStats, type: .postTraining) { (error, ref) in
+
             }
-            if case .reply(let post) = self.config {
-                print("DEBUG: AM I HERE?")
-                
-                NotificationService.shared.uploadNotification(type: .reply, post: post)
+        } else {
+            PostService.shared.uploadPost(caption: caption, trainingID: nil, stats: nil, type: config) { (error, ref) in
+                if let error = error {
+                    print("DEBUG: Failed to upload post with error \(error.localizedDescription)")
+                    return
+                }
+                if case .reply(let post) = self.config {
+                    print("DEBUG: AM I HERE?")
+                    
+                    NotificationService.shared.uploadNotification(type: .reply, post: post)
+                }
+                // inject uploadMentionNotificationHere
+                //self.dismiss(animated: true, completion: nil)
             }
-            // inject uploadMentionNotificationHere
-            //self.dismiss(animated: true, completion: nil)
+//            PostService.shared.uploadPost(caption: caption, type: config) { (error, ref) in
+//                if let error = error {
+//                    print("DEBUG: Failed to upload post with error \(error.localizedDescription)")
+//                    return
+//                }
+//                if case .reply(let post) = self.config {
+//                    print("DEBUG: AM I HERE?")
+//
+//                    NotificationService.shared.uploadNotification(type: .reply, post: post)
+//                }
+//                // inject uploadMentionNotificationHere
+//                //self.dismiss(animated: true, completion: nil)
+//            }
         }
         self.dismiss(animated: true, completion: nil)
     }
@@ -179,10 +198,18 @@ class UploadPostController: UIViewController {
         
         view.addSubview(stack)
         stack.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 16, paddingLeft: 16, paddingRight: 16)
-
         
         actionButton.setTitle(viewModel.actionButtonTitle, for: .normal)
         captionTextView.placeholderLabel.text = viewModel.placeholderText
+        
+        view.addSubview(addTrainingButton)
+        let window = UIApplication.shared.keyWindow
+        guard let bottomPadding = window?.safeAreaInsets.bottom else {return}
+        if bottomPadding == 0 {
+            addTrainingButton.anchor(left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingLeft: 16, paddingBottom: 10, paddingRight: 16, height: 50)
+        } else {
+            addTrainingButton.anchor(left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingLeft: 16, paddingBottom: bottomPadding, paddingRight: 16, height: 50)
+        }
         
         replyLabel.isHidden = !viewModel.shouldShowReplyLabel
         guard let replyText = viewModel.replyText else {return}
@@ -201,8 +228,14 @@ class UploadPostController: UIViewController {
     
     func configureMentionHandler(){
         replyLabel.handleMentionTap { (mention) in
-            
-            
         }
+    }
+}
+
+extension UploadPostController: TrainingListControllerDelegate {
+    func addTrainingToPost(withTrainingID training: String, withStats stats: Stats) {
+        self.addTrainingButton.setTitle("\(Int(stats.distance))m", for: .normal)
+        self.trainingID = training
+        self.trainingStats = stats
     }
 }

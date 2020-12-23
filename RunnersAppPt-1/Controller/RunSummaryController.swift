@@ -145,7 +145,11 @@ class RunSummaryController: UIViewController {
         view.addSubview(avgSpeedLabel)
         view.addSubview(maxSpeedLabel)
         
-        timeLabel.anchor(top: view.topAnchor, left: view.leftAnchor, paddingTop: view.frame.height/4+10+(navigationController?.navigationBar.frame.height)!, paddingLeft: 10, width: view.frame.width - 20, height: view.frame.height/15)
+        let window = UIApplication.shared.keyWindow
+        guard let topPadding = window?.safeAreaInsets.top else {return}
+        
+        timeLabel.anchor(top: mapView.bottomAnchor/*view.topAnchor*/, left: view.leftAnchor, paddingTop: /*view.frame.height/4+10+(topPadding)*/10, paddingLeft: 10, width: view.frame.width - 20, height: view.frame.height/15)
+//        timeLabel.anchor(top: view.topAnchor, left: view.leftAnchor, paddingTop: view.frame.height/4+10+(navigationController?.navigationBar.frame.height)!, paddingLeft: 10, width: view.frame.width - 20, height: view.frame.height/15)
         distanceLabel.anchor(top: timeLabel.bottomAnchor, left: view.leftAnchor, paddingTop: 10, paddingLeft: 10, width: view.frame.width - 20, height: view.frame.height/15)
         minAltitudeLabel.anchor(top: distanceLabel.bottomAnchor, left: view.leftAnchor, paddingTop: 10, paddingLeft: 10, width: view.frame.width/2-15, height: view.frame.height/20)
         maxAltitudeLabel.anchor(top: distanceLabel.bottomAnchor, left: minAltitudeLabel.rightAnchor, paddingTop: 10, paddingLeft: 10, width: view.frame.width/2-15, height: view.frame.height/20)

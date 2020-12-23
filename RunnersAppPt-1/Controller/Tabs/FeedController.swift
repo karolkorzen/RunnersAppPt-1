@@ -194,6 +194,15 @@ extension FeedController: UICollectionViewDelegateFlowLayout {
 // MARK: - PostCell Delegate
 
 extension FeedController: PostCellDelegate {
+    func handleTrainingTapped(_ trainingID: String, runnerID: String) {
+        RunService.shared.fetchSingleStatsForUser(withUserUID: runnerID, withTrainingUID: trainingID) { (stats) in
+            let nav = RunSummaryController(withStats: stats)
+//            self.present(nav, animated: true, completion: nil)
+            let controller = UINavigationController(rootViewController: nav)
+            self.present(controller, animated: true, completion: nil)
+        }
+    }
+    
     func sharePostText(_ cell: PostCell) {
         guard let postText:String = cell.post?.caption else {return}
         let activityViewController = UIActivityViewController(activityItems : [postText], applicationActivities: nil)

@@ -15,6 +15,7 @@ protocol PostCellDelegate: class {
     func handleLikeButtonTapped(_ cell: PostCell)
     func handleFetchUser(withUserName username: String)
     func sharePostText(_ cell: PostCell)
+    func handleTrainingTapped(_ trainingID: String, runnerID: String)
 }
 
 class PostCell: UICollectionViewCell{
@@ -69,12 +70,12 @@ class PostCell: UICollectionViewCell{
         return button
     }()
     
-    private lazy var repostButton: UIButton = {
+    private lazy var runButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(UIImage(named: "retweet"), for: .normal)
+        button.setImage(UIImage(systemName: "hare"), for: .normal)
         button.tintColor = .darkGray
         button.setDimensions(width: 20, height: 20)
-        button.addTarget(self, action: #selector(handleRepostTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(handleRunTapped), for: .touchUpInside)
         return button
     }()
     
@@ -126,14 +127,6 @@ class PostCell: UICollectionViewCell{
         
         infoLabel.font = UIFont.systemFont(ofSize: 14)
         
-        let actionStack = UIStackView(arrangedSubviews: [commentButton, /*repostButton,*/ likeButton, shareButton])
-        
-        actionStack.axis = .horizontal
-        actionStack.spacing = 72
-        addSubview(actionStack)
-        actionStack.centerX(inView: self)
-        actionStack.anchor(bottom: bottomAnchor, paddingBottom: 17)
-        
 //        let underLineView = UIView()
 //        underLineView.backgroundColor = .systemGroupedBackground
 //        addSubview(underLineView)
@@ -154,8 +147,8 @@ class PostCell: UICollectionViewCell{
         delegate?.handleReplyButtonTapped(self)
     }
     
-    @objc func handleRepostTapped(){
-        
+    @objc func handleRunTapped(){
+        delegate?.handleTrainingTapped(post!.trainingID!, runnerID: post!.user.uid)
     }
     
     @objc func handleLikeTapped() {
@@ -185,6 +178,21 @@ class PostCell: UICollectionViewCell{
         replyLabel.text = viewModel.replyText
         
         captionLabel.isUserInteractionEnabled = true
+        if post.trainingID != nil {
+            let actionStack = UIStackView(arrangedSubviews: [commentButton, /*repostButton,*/ likeButton, shareButton, runButton])
+            actionStack.axis = .horizontal
+            actionStack.spacing = 72
+            addSubview(actionStack)
+            actionStack.centerX(inView: self)
+            actionStack.anchor(bottom: bottomAnchor, paddingBottom: 17)
+        } else {
+            let actionStack = UIStackView(arrangedSubviews: [commentButton, /*repostButton,*/ likeButton, shareButton/*, runButton*/])
+            actionStack.axis = .horizontal
+            actionStack.spacing = 72
+            addSubview(actionStack)
+            actionStack.centerX(inView: self)
+            actionStack.anchor(bottom: bottomAnchor, paddingBottom: 17)
+        }
     }
     
     func createButton(withImageName imageName: String) -> UIButton {

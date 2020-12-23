@@ -93,6 +93,20 @@ struct RunService {
         }
     }
     
+    func fetchSingleStatsForUser(withUserUID uid: String, withTrainingUID trainingUID: String, completion: @escaping(Stats) -> Void) {
+        let userUID = uid
+        print("DEBUG: userID \(userUID)")
+        print("DEBUG: trainingID \(trainingUID)")
+        REF_USER_RUNS.child(userUID).child(trainingUID).observeSingleEvent(of: .value) { (snapshot) in
+            let training = snapshot.value as? [String : AnyObject]
+            print("DEBUG: snapshot.value \(snapshot.value)")
+            if let t = training {
+                let stats = createStatsFromDictionary(training: t)
+                completion(stats)
+            }
+        }
+    }
+    
     func checkIfRunsAreEmpty(completion: @escaping((Bool) -> Void)){
         guard let currentUID = Auth.auth().currentUser?.uid else {return}
         

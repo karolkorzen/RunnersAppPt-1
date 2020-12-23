@@ -81,6 +81,9 @@ extension PostController{
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! PostCell
         cell.post = replies[indexPath.row]
+        cell.delegate = self
+        cell.subviews.last?.isHidden = true
+        
         return cell
     }
 }
@@ -110,7 +113,7 @@ extension PostController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let viewModel = PostViewModel(post: post)
         let height = viewModel.size(forWidth: view.frame.width).height
-        return CGSize(width: view.frame.width - 12, height: height + 100 + 20)
+        return CGSize(width: view.frame.width - 12, height: height + 70 + 20)
     }
 }
 
@@ -183,5 +186,50 @@ extension PostController: ActionSheetLauncherDelegate {
             PostService.shared.deletePost(forPost: post)
             self.navigationController?.popViewController(animated: true)
         }
+    }
+}
+
+//MARK: - PostListCellDelegate
+
+extension PostController: PostCellDelegate {
+    func handleTrainingTapped(_ trainingID: String, runnerID: String) {
+        RunService.shared.fetchSingleStatsForUser(withUserUID: runnerID, withTrainingUID: trainingID) { (stats) in
+            let nav = RunSummaryController(withStats: stats)
+//            self.present(nav, animated: true, completion: nil)
+            let controller = UINavigationController(rootViewController: nav)
+            self.present(controller, animated: true, completion: nil)
+        }
+    }
+    
+    func handleProfileImageTapped(_ cell: PostCell) {
+        if let user = cell.post?.user {
+            let controller = ProfileController(user: user)
+            self.navigationController?.pushViewController(controller, animated: true)
+        }
+    }
+    
+    func handleReplyButtonTapped(_ cell: PostCell) {
+        guard let post = cell.post else {return}
+        let controller = UploadPostController(user: post.user, config: .reply(post))
+        let nav = UINavigationController(rootViewController: controller)
+        nav.modalPresentationStyle = .fullScreen
+        present(nav, animated: true, completion: nil)
+    }
+    
+    func handleLikeButtonTapped(_ cell: PostCell) {
+        cell.post?.didLike.toggle()
+        guard let post = cell.post else {return}
+        PostService.shared.likePost(post: post) { (err, ref) in
+            cell.post?.likes = post.didLike ? post.likes + 1 : post.likes - 1
+            if post.didLike {
+                NotificationService.shared.uploadNotification(type: .like, post: post)
+            }
+        }
+    }
+    
+    func sharePostText(_ cell: PostCell) {
+        guard let postText:String = cell.post?.caption else {return}
+        let activityViewController = UIActivityViewController(activityItems : [postText], applicationActivities: nil)
+        present(activityViewController, animated: true, completion: nil)
     }
 }

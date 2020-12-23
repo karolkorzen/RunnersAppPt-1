@@ -11,8 +11,17 @@ import UIKit
 private let reuseIdentifier = "TrainingCell"
 private let headerIdentifier = "HeaderCell"
 
+protocol TrainingListControllerDelegate: class {
+    func addTrainingToPost(withTrainingID training: String, withStats stats: Stats)
+}
+
 class TrainingsListController: UICollectionViewController {
-    // MARK: - Lifecycle
+    
+    //MARK: - Properties
+    
+    let isAddTraining: Bool
+    
+    weak var addTrainingDelegate: TrainingListControllerDelegate?
     
     var viewModel = TrainingListViewModel() {
         didSet {
@@ -20,6 +29,17 @@ class TrainingsListController: UICollectionViewController {
                 self.collectionView.reloadData()
             }
         }
+    }
+    
+    //MARK: - Lifecycle
+    
+    init(withIsAdding bool: Bool){
+        self.isAddTraining = bool
+        super.init(collectionViewLayout: UICollectionViewFlowLayout())
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func viewDidLoad() {
@@ -80,10 +100,15 @@ extension TrainingsListController {
         array.sort{ (training1, training2) -> Bool in
             training1.value.timestampStart>training2.value.timestampStart
         }
-        let controller = RunSummaryController(withStats: array[indexPath.row].value, withDeleteEnabled: true, withTrainingUID: array[indexPath.row].key)
-        controller.delegate = self
-        let nav = UINavigationController(rootViewController: controller)
-        present(nav, animated: true, completion: nil)
+        if isAddTraining {
+            addTrainingDelegate?.addTrainingToPost(withTrainingID: array[indexPath.row].key, withStats: array[indexPath.row].value)
+            self.dismiss(animated: true, completion: nil)
+        } else {
+            let controller = RunSummaryController(withStats: array[indexPath.row].value, withDeleteEnabled: true, withTrainingUID: array[indexPath.row].key)
+            controller.delegate = self
+            let nav = UINavigationController(rootViewController: controller)
+            present(nav, animated: true, completion: nil)
+        }
     }
 }
 
@@ -115,8 +140,5 @@ extension TrainingsListController: RunSummaryControllerDelegate {
         RunService.shared.deleteRun(withTrainingID: id, completion: {
             self.fetchTrainings()
         })
-        
     }
-    
-
 }
