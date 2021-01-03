@@ -178,15 +178,18 @@ class PostCell: UICollectionViewCell{
         replyLabel.text = viewModel.replyText
         
         captionLabel.isUserInteractionEnabled = true
+        
         if post.trainingID != nil {
             let actionStack = UIStackView(arrangedSubviews: [commentButton, /*repostButton,*/ likeButton, shareButton, runButton])
+            actionStack.subviews.last!.isHidden = false
             actionStack.axis = .horizontal
             actionStack.spacing = 72
             addSubview(actionStack)
             actionStack.centerX(inView: self)
             actionStack.anchor(bottom: bottomAnchor, paddingBottom: 17)
         } else {
-            let actionStack = UIStackView(arrangedSubviews: [commentButton, /*repostButton,*/ likeButton, shareButton/*, runButton*/])
+            let actionStack = UIStackView(arrangedSubviews: [commentButton, /*repostButton,*/ likeButton, shareButton, runButton])
+            actionStack.subviews.last!.isHidden = true
             actionStack.axis = .horizontal
             actionStack.spacing = 72
             addSubview(actionStack)
